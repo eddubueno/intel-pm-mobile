@@ -4,15 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Inteligência Móvel — PM</title>
-
-<!-- PWA / iOS -->
-<meta name="theme-color" content="#0A0F14">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Intel PM">
-<!-- Se quiser, troque depois por um PNG seu hosteado no próprio repo -->
-<link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3a/Police_Badge.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -42,7 +33,7 @@
   .grid.cols-3{grid-template-columns:repeat(3,1fr)}
   .input{display:flex;flex-direction:column;gap:6px}
   .input label{font-size:.82rem;color:var(--muted)}
-  .input input, .input select{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);font-size:1rem}
+  .input input, .input select, .input textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);font-size:1rem}
   .hint{font-size:.86rem;color:var(--muted)}
   .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
   .quick .qbtn{display:flex;align-items:center;gap:.6rem;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:14px;border-radius:14px;font-weight:700;justify-content:center;text-align:center}
@@ -59,14 +50,16 @@
   .pill{font-size:.72rem;border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted)}
   .caps{letter-spacing:.06em;text-transform:uppercase}
   .sr{position:absolute;left:-9999px}
-  .iosTip{display:none;gap:.5rem;align-items:center;justify-content:center;padding:8px 10px;border-top:1px solid var(--line);background:rgba(255,255,255,.03);font-size:.9rem}
-  .iosTip .kbd{padding:2px 6px}
+  .toggle{display:inline-flex;gap:8px;align-items:center}
+  .btn-yes{background:linear-gradient(180deg, rgba(55,255,127,.12), rgba(55,255,127,.04));border:1px solid rgba(55,255,127,.15)}
+  .btn-no{background:linear-gradient(180deg, rgba(255,82,82,.06), rgba(255,82,82,.02));border:1px solid rgba(255,82,82,.08)}
+  /* Large touch targets on phones */
   @media (max-width:740px){
     .grid.cols-2{grid-template-columns:1fr}
     .grid.cols-3{grid-template-columns:1fr 1fr}
     .quick{grid-template-columns:1fr 1fr}
   }
-  .light{--bg:#F6FBFF; --panel:#ffffff; --ink:#0B1A24; --muted:#4b6a7a; --glass:#ffffffcc; --line:rgba(0,0,0,.08)}
+  .empty{opacity:.6}
 </style>
 </head>
 <body>
@@ -76,297 +69,406 @@
       <div class="badge">INTEL PM • MÓVEL</div>
       <div class="pill caps" id="status">offline-ready</div>
       <div class="grow"></div>
-      <button class="btn icon" id="btnInstall" title="Instalar no aparelho" hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15v4a2 2 0 002 2h10a2 2 0 002-2v-4" stroke-width="2" stroke-linecap="round"/></svg>
-        Instalar
-      </button>
       <button class="btn icon" id="btnTheme" title="Tema claro/escuro">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a9 9 0 109 9 7 7 0 01-9-9z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tema
       </button>
-      <button class="btn icon" id="btnFS" title="Tela cheia">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-    <div id="iosTip" class="iosTip">
-      No iPhone/iPad: toque <span class="kbd">Compartilhar</span> → <span class="kbd">Adicionar à Tela de Início</span> para instalar.
+      <button class="btn icon" id="btnFS" title="Tela cheia">Tela</button>
     </div>
   </header>
 
   <main>
-    <!-- CONSULTA RÁPIDA -->
-    <section class="card" aria-labelledby="t-consulta">
-      <div class="head"><div class="title" id="t-consulta">Consulta rápida</div><span class="hint">Local • sem envio • <span class="ok">privado</span></span></div>
-      <div class="body grid">
-        <div class="grid cols-2">
-          <div class="input"><label for="inpNome">Nome completo</label><input id="inpNome" placeholder="Ex.: João da Silva" autocomplete="off"/></div>
-          <div class="input"><label for="inpCPF">CPF</label><input id="inpCPF" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"/></div>
-          <div class="input"><label for="inpRG">RG</label><input id="inpRG" placeholder="00.000.000-0" maxlength="12"/></div>
-          <div class="input"><label for="inpPlaca">Placa</label><input id="inpPlaca" placeholder="ABC1D23" style="text-transform:uppercase" maxlength="7"/></div>
-          <div class="input"><label for="inpProc">Nº do processo (CNJ)</label><input id="inpProc" placeholder="0000000-00.0000.0.00.0000" maxlength="25"/></div>
-          <div class="input"><label for="inpObs">Observação local (opcional)</label><input id="inpObs" placeholder="Breve nota… (fica só no aparelho)"/></div>
-        </div>
+    <!-- FORMULÁRIO DE ABORDADO -->
+    <section class="card" aria-labelledby="t-abordado">
+      <div class="head"><div class="title" id="t-abordado">Registrar abordado</div><span class="hint">Os campos obrigatórios são marcados</span></div>
+      <div class="body">
+        <form id="formAbordado" autocomplete="off">
+          <div class="grid cols-2">
+            <div class="input">
+              <label for="rg">RG <span style="color:#ffb86b">*</span></label>
+              <input id="rg" name="rg" inputmode="numeric" pattern="[0-9]*" placeholder="Somente números" required />
+              <div class="hint">Ao digitar RG o teclado numérico aparece (iOS/Android).</div>
+            </div>
+            <div class="input">
+              <label for="nome">Nome completo <span style="color:#ffb86b">*</span></label>
+              <input id="nome" name="nome" placeholder="Nome completo" required />
+            </div>
+
+            <div class="input">
+              <label for="matricula">Matrícula (opcional)</label>
+              <input id="matricula" name="matricula" placeholder="Ex.: 12345" />
+            </div>
+            <div class="input">
+              <label for="nasc">Data de nascimento (opcional)</label>
+              <input id="nasc" name="nasc" type="date" />
+            </div>
+
+            <div class="input">
+              <label for="pai">Nome do pai (opcional)</label>
+              <input id="pai" name="pai" />
+            </div>
+            <div class="input">
+              <label for="mae">Nome da mãe (opcional)</label>
+              <input id="mae" name="mae" />
+            </div>
+          </div>
+
+          <div style="margin-top:8px" class="grid cols-2">
+            <div class="input">
+              <label>Criminal?</label>
+              <div>
+                <label style="margin-right:8px"><input type="radio" name="criminal" value="sim" required> Sim</label>
+                <label><input type="radio" name="criminal" value="nao" required> Não</label>
+              </div>
+            </div>
+            <div class="input">
+              <label>Passagem criminal?</label>
+              <div class="toggle">
+                <button type="button" id="btnPassagemSim" class="btn btn-yes">Sim</button>
+                <button type="button" id="btnPassagemNao" class="btn btn-no">Não</button>
+                <input type="hidden" id="passagem" value="nao" />
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:10px" class="grid cols-2">
+            <div class="input">
+              <label for="endereco">Endereço (preenchido automaticamente)</label>
+              <input id="endereco" name="endereco" placeholder="Endereço / coordenadas" />
+            </div>
+            <div class="input">
+              <label for="hora">Data / Hora da abordagem</label>
+              <input id="hora" name="hora" readonly />
+            </div>
+          </div>
+
+          <div style="margin-top:10px" class="row">
+            <button class="btn primary" id="btnAdd" type="submit">Adicionar abordado</button>
+            <button class="btn" type="button" id="btnLimparForm">Limpar</button>
+            <button class="btn" type="button" id="btnExport">Exportar CSV</button>
+          </div>
+
+          <div style="margin-top:8px" class="hint">Se quiser preenchimento automático do nome pelo RG, configure uma API no código (RG_LOOKUP_URL).</div>
+        </form>
+      </div>
+    </section>
+
+    <!-- LISTA DO DIA -->
+    <section class="card" aria-labelledby="t-lista">
+      <div class="head"><div class="title" id="t-lista">Abordados do dia</div><span class="hint" id="countHint">0 registros hoje</span></div>
+      <div class="body" id="listaContainer">
+        <div id="lista" class="list empty">Nenhum registro hoje.</div>
+      </div>
+    </section>
+
+    <!-- OUTROS CONTROLES RÁPIDOS -->
+    <section class="card" aria-labelledby="t-config">
+      <div class="head"><div class="title" id="t-config">Configurações rápidas</div></div>
+      <div class="body">
         <div class="row">
-          <button class="btn primary" id="btnSalvar">Salvar preenchimento</button>
-          <button class="btn" id="btnLimpar">Limpar</button>
+          <button class="btn" id="btnClearAll">Apagar TODOS os registros (local)</button>
+          <button class="btn" id="btnForceGeo">Atualizar minha localização agora</button>
         </div>
-        <div class="hint">Dica: toque e segure nos campos para copiar. Nada é enviado a servidores — os dados ficam em <span class="kbd">localStorage</span> deste aparelho.</div>
-      </div>
-    </section>
-
-    <!-- ATALHOS OFICIAIS -->
-    <section class="card" aria-labelledby="t-atalhos">
-      <div class="head"><div class="title" id="t-atalhos">Atalhos oficiais (abre em nova aba)</div><span class="hint">Alguns exigem captcha/autenticação</span></div>
-      <div class="body">
-        <div class="quick" style="margin-bottom:10px">
-          <button class="qbtn" data-open="https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path d="M12 7v5l3 3" stroke-width="2" stroke-linecap="round"/></svg>
-            BNMP — Mandados
-          </button>
-          <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 6 6 .5-4.5 4 .5 6L12 16 6 18.5l.5-6L2 8.5 8 8z" stroke-width="2"/></svg>
-            Validade de Selo — TJSP
-          </button>
-          <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/><path d="M7 8h10M7 12h6" stroke-width="2" stroke-linecap="round"/></svg>
-            Processo — TJSP
-          </button>
-          <button class="qbtn" id="qbtnTJSPPesquisa" title="Pesquisar no site do TJSP com Google">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="7" stroke-width="2"/></svg>
-            Buscar no site TJSP
-          </button>
-          <button class="qbtn" data-open="https://www.detran.sp.gov.br/">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 13l2-5h14l2 5M5 13h14M7 18h10" stroke-width="2" stroke-linecap="round"/></svg>
-            DETRAN-SP (portal)
-          </button>
-          <button class="qbtn" data-open="https://www.gov.br/mj/pt-br/assuntos/senasp/sinesp">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h18M5 7l2 12h10l2-12" stroke-width="2"/><path d="M8 7l1-3h6l1 3" stroke-width="2"/></svg>
-            SINESP (info/links)
-          </button>
-        </div>
-        <div class="hint">Em ambiente institucional, ajuste os atalhos para portais internos/autenticados.</div>
-      </div>
-    </section>
-
-    <!-- BUSCAS -->
-    <section class="card" aria-labelledby="t-busca">
-      <div class="head"><div class="title" id="t-busca">Buscas com filtro (Google)</div><span class="hint">Gera consultas <span class="kbd">site:</span> prontas</span></div>
-      <div class="body grid">
-        <div class="grid cols-3">
-          <button class="btn" id="gBNMP">Buscar em BNMP</button>
-          <button class="btn" id="gTJSP">Buscar em TJSP</button>
-          <button class="btn" id="gGeral">Busca combinada</button>
-        </div>
-        <div class="hint small">As buscas abrem em nova aba e <b>respeitam a LGPD</b>; nada é enviado automaticamente.</div>
-      </div>
-    </section>
-
-    <!-- FERRAMENTAS DO TURNO -->
-    <section class="card" aria-labelledby="t-turno">
-      <div class="head"><div class="title" id="t-turno">Ferramentas de turno</div><span class="hint">Qualidade de vida do operador</span></div>
-      <div class="body grid">
-        <div class="grid cols-3">
-          <button class="btn" id="btnLanterna">Lanterna</button>
-          <button class="btn" id="btnApito">Beep Alerta</button>
-          <button class="btn" id="btnNota">Nota rápida</button>
-        </div>
-        <div class="list" id="notas"></div>
-      </div>
-    </section>
-
-    <section class="card" aria-labelledby="t-sobre">
-      <div class="head"><div class="title" id="t-sobre">Sobre • privacidade</div><span class="pill">v1.1</span></div>
-      <div class="body">
-        <p class="small">Interface <b>PWA</b> (instalável). Off-line para o que não depende de sites externos. Nenhum dado é enviado; entradas ficam apenas neste aparelho (<span class="kbd">localStorage</span>). Atalhos abrem em outra aba.</p>
+        <div style="margin-top:8px" class="hint">Os registros ficam neste aparelho. Para mais segurança, exporte e salve em servidor/pendrive corporativo.</div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="small">© Operacional — uso interno. Ajuste os atalhos conforme normas da corporação.</div>
+    <div class="small">© Operacional — uso interno. Ajuste conforme normas.</div>
   </footer>
 </div>
 
 <script>
-// ===== helpers =====
-const $ = (sel)=>document.querySelector(sel);
-const ls = (k,v)=> v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k, JSON.stringify(v));
-const fields = ['inpNome','inpCPF','inpRG','inpPlaca','inpProc','inpObs'];
+/*
+  Implementação:
+  - Salva entradas em localStorage por data (chave 'intelpm.registros')
+  - Auto-preenche hora e busca geolocalização para endereço (Nominatim reverse)
+  - Tentativa opcional de lookup por RG (configurar RG_LOOKUP_URL)
+  - Exporta CSV e lista por dia
+*/
 
-// ===== estado local =====
-function loadState(){
-  const st = ls('intelpm.form')||{};
-  fields.forEach(id=>{ if(st[id]) document.getElementById(id).value = st[id]; });
-  renderNotas();
-}
-function saveState(){
-  const st={};
-  fields.forEach(id=> st[id] = document.getElementById(id).value.trim());
-  ls('intelpm.form', st);
-}
-$('#btnSalvar').addEventListener('click', ()=>{ saveState(); toast('Dados salvos localmente'); });
-$('#btnLimpar').addEventListener('click', ()=>{ fields.forEach(id=> document.getElementById(id).value=''); saveState(); toast('Limpado'); });
+// === CONFIGURAÇÕES ===
+// Se tiver uma API que retorne { nome: "Fulano" } ao receber ?rg=... coloque a URL aqui.
+// Ex: const RG_LOOKUP_URL = "https://meuservico.local/lookupRg";
+const RG_LOOKUP_URL = null; // <-- deixe null se não tiver
 
-// ===== atalhos =====
-for (const el of document.querySelectorAll('[data-open]')) el.addEventListener('click', e=>window.open(e.currentTarget.getAttribute('data-open'),'_blank','noopener'));
+// Nominatim (OpenStreetMap) é usado para reverse geocode; pode haver rate limit.
+const NOMINATIM_BASE = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2';
 
-// ===== buscas Google (site:) =====
-function q(v){return encodeURIComponent(v)}
-function valores(){
-  const nome = $('#inpNome').value.trim();
-  const cpf = $('#inpCPF').value.trim();
-  const rg = $('#inpRG').value.trim();
-  const placa = $('#inpPlaca').value.trim();
-  const proc = $('#inpProc').value.trim();
-  return {nome, cpf, rg, placa, proc};
-}
-$('#gBNMP').addEventListener('click', ()=>{
-  const {nome,cpf,rg} = valores();
-  const terms = [nome, cpf, rg].filter(Boolean).join(' ');
-  const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br`;
-  window.open(url,'_blank','noopener');
-});
-$('#gTJSP').addEventListener('click', ()=>{
-  const {nome,proc,rg,cpf} = valores();
-  const terms = [proc, nome, rg, cpf].filter(Boolean).join(' ');
-  const url = `https://www.google.com/search?q=${q(terms)}+site%3Aesaj.tjsp.jus.br`;
-  window.open(url,'_blank','noopener');
-});
-$('#gGeral').addEventListener('click', ()=>{
-  const {nome,cpf,rg,placa,proc} = valores();
-  const terms = [proc, nome, cpf, rg, placa].filter(Boolean).join(' ');
-  const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br+OR+site%3Aesaj.tjsp.jus.br`;
-  window.open(url,'_blank','noopener');
-});
-$('#qbtnTJSPPesquisa').addEventListener('click', ()=>{
-  const {proc,nome} = valores();
-  const base = [proc,nome].filter(Boolean).join(' ');
-  const url = `https://www.google.com/search?q=${q(base)}+site%3Aesaj.tjsp.jus.br+cpopg`;
-  window.open(url,'_blank','noopener');
-});
+const ls = (k,v) => v===undefined ? JSON.parse(localStorage.getItem(k) || 'null') : localStorage.setItem(k, JSON.stringify(v));
+const todayKey = () => {
+  const d = new Date(); return d.toISOString().slice(0,10); // YYYY-MM-DD
+};
 
-// ===== ferramentas =====
-let stream;
-$('#btnLanterna').addEventListener('click', async ()=>{
-  try{
-    if(!('mediaDevices' in navigator)) throw new Error('Sem câmera');
-    if(!stream){
-      stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', advanced:[{torch:true}]}}); // Android
-      const track = stream.getVideoTracks()[0];
-      await track.applyConstraints({advanced:[{torch:true}]});
-      toast('Lanterna: ligada');
-    }else{
-      stream.getVideoTracks().forEach(t=>t.stop()); stream=null; toast('Lanterna: desligada');
-    }
-  }catch(e){
-    // iOS fallback: tela branca por 4s
-    const oldBg = document.body.style.background, oldColor = document.body.style.color;
-    document.documentElement.style.background = '#ffffff';
-    document.body.style.background = '#ffffff'; document.body.style.color = '#000000';
-    toast('Tela branca (fallback)'); setTimeout(()=>{ document.documentElement.style.background = ''; document.body.style.background = oldBg; document.body.style.color = oldColor; }, 4000);
-  }
-});
-$('#btnApito').addEventListener('click', ()=>{
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator(); const g = ctx.createGain();
-    o.type='square'; o.frequency.value=1200; g.gain.value=.08; o.connect(g); g.connect(ctx.destination); o.start();
-    setTimeout(()=>{o.stop(); ctx.close();}, 700);
-  }catch(e){}
-});
-$('#btnNota').addEventListener('click', ()=>{
-  const txt = prompt('Descreva rapidamente (fica no aparelho):');
-  if(!txt) return; const list = ls('intelpm.notas')||[]; list.unshift({t:Date.now(), txt}); ls('intelpm.notas', list); renderNotas();
-});
-function renderNotas(){
-  const list = ls('intelpm.notas')||[]; const box = $('#notas'); box.innerHTML='';
-  for(const n of list.slice(0,8)){
-    const li = document.createElement('div'); li.className='list-item';
-    li.innerHTML = `<div class="list"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-      <div><span class="pill">${new Date(n.t).toLocaleString()}</span></div>
-      <button class="btn warn" data-rm="${n.t}">apagar</button>
-    </div>
-    <div style="margin-top:6px">${escapeHtml(n.txt)}</div></div>`;
-    box.appendChild(li);
-  }
-  for(const b of box.querySelectorAll('[data-rm]')) b.addEventListener('click', e=>{
-    const id = Number(e.currentTarget.getAttribute('data-rm'));
-    const list = (ls('intelpm.notas')||[]).filter(x=>x.t!==id); ls('intelpm.notas', list); renderNotas();
-  });
-}
-function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+// elementos
+const $ = sel => document.querySelector(sel);
+const form = $('#formAbordado');
+const rgInput = $('#rg');
+const nomeInput = $('#nome');
+const horaInput = $('#hora');
+const enderecoInput = $('#endereco');
+const listaEl = $('#lista');
+const countHint = $('#countHint');
+const btnPassSim = $('#btnPassagemSim');
+const btnPassNao = $('#btnPassagemNao');
+const passagemHidden = $('#passagem');
 
-// ===== máscaras / validação leve =====
-const onlyDigits = s => s.replace(/\D/g,'');
-$('#inpCPF').addEventListener('input', e=>{
-  let v = onlyDigits(e.target.value).slice(0,11);
-  if(v.length>9) e.target.value = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2}).*$/,'$1.$2.$3-$4');
-  else if(v.length>6) e.target.value = v.replace(/^(\d{3})(\d{3})(\d{0,3}).*$/,'$1.$2.$3');
-  else if(v.length>3) e.target.value = v.replace(/^(\d{3})(\d{0,3}).*$/,'$1.$2');
-  else e.target.value = v;
-});
-$('#inpRG').addEventListener('input', e=>{
-  let v = onlyDigits(e.target.value).slice(0,9);
-  if(v.length>8) e.target.value = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,1}).*$/,'$1.$2.$3-$4');
-  else if(v.length>5) e.target.value = v.replace(/^(\d{2})(\d{3})(\d{0,3}).*$/,'$1.$2.$3');
-  else if(v.length>2) e.target.value = v.replace(/^(\d{2})(\d{0,3}).*$/,'$1.$2');
-  else e.target.value = v;
-});
-$('#inpPlaca').addEventListener('input', e=>{
-  let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7);
-  // tenta converter o formato antigo ABC-1234 para Mercosul ABC1D23 ao colar
-  if(/^[A-Z]{3}\d{4}$/.test(v)) v = v.slice(0,4) + 'A' + v.slice(4,6); // aproximação
-  e.target.value = v;
-});
-$('#inpProc').addEventListener('input', e=>{
-  let v = e.target.value.toUpperCase().replace(/[^0-9.\-]/g,'').slice(0,25);
-  // força padrão 0000000-00.0000.0.00.0000 conforme digita (tolerante)
-  v = v.replace(/^(\d{7})(\d)/,'$1-$2')
-       .replace(/^(\d{7}-\d{2})(\d)/,'$1.$2')
-       .replace(/^(\d{7}-\d{2}\.\d{4})(\d)/,'$1.$2')
-       .replace(/^(\d{7}-\d{2}\.\d{4}\.\d)(\d)/,'$1.$2')
-       .replace(/^(\d{7}-\d{2}\.\d{4}\.\d\.\d{2})(\d)/,'$1.$2');
-  e.target.value = v;
-});
+// estado
+let currentCoords = null;
 
-// ===== UI util =====
+// helpers
 function toast(msg){
   const t = document.createElement('div');
   t.textContent = msg; t.style.position='fixed'; t.style.left='50%'; t.style.bottom='20px'; t.style.transform='translateX(-50%)';
-  t.style.background='rgba(10,16,22,.9)'; t.style.border='1px solid var(--line)'; t.style.padding='10px 14px'; t.style.borderRadius='12px'; t.style.zIndex=9999;
-  document.body.appendChild(t); setTimeout(()=>t.remove(), 1400);
+  t.style.background='rgba(10,16,22,.95)'; t.style.border='1px solid rgba(255,255,255,.08)'; t.style.padding='8px 12px'; t.style.borderRadius='10px'; t.style.zIndex=9999;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 1600);
 }
-$('#btnTheme').addEventListener('click', ()=>{ document.documentElement.classList.toggle('light'); toast(document.documentElement.classList.contains('light')? 'Tema claro' : 'Tema escuro'); });
-$('#btnFS').addEventListener('click', ()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); });
+function nowFormatted(){
+  return new Date().toLocaleString();
+}
 
-// ===== PWA (manifest + SW inline) =====
-let deferredPrompt; const btnInstall = $('#btnInstall');
-const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-if(isiOS){ btnInstall.hidden = true; document.getElementById('iosTip').style.display='flex'; }
-window.addEventListener('beforeinstallprompt', (e)=>{ if(isiOS) return; e.preventDefault(); deferredPrompt = e; btnInstall.hidden=false; });
-btnInstall?.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; toast(outcome==='accepted'? 'Instalado' : 'Instalação cancelada'); deferredPrompt=null; btnInstall.hidden=true; });
+// valida RG (só números)
+rgInput.addEventListener('input', e => {
+  const v = e.target.value.replace(/\D/g,'');
+  e.target.value = v;
+  // se configurado RG_LOOKUP_URL, tente buscar nome automaticamente (após 6+ dígitos)
+  if(RG_LOOKUP_URL && v.length >= 6){
+    lookupRg(v);
+  }
+});
 
-// Manifest dinâmico (simples)
-(function makeManifest(){
-  const manifest = { name: 'Inteligência Móvel — PM', short_name: 'Intel PM', start_url: '.', display: 'standalone', background_color: '#0A0F14', theme_color: '#0A0F14', icons: [] };
-  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-  const url = URL.createObjectURL(blob); const link = document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
+// lookup de RG (opcional)
+async function lookupRg(rg){
+  try{
+    const url = RG_LOOKUP_URL + (RG_LOOKUP_URL.includes('?') ? '&' : '?') + 'rg=' + encodeURIComponent(rg);
+    const res = await fetch(url, {mode:'cors'});
+    if(!res.ok) return;
+    const j = await res.json();
+    if(j && j.nome){
+      nomeInput.value = j.nome;
+      toast('Nome preenchido pelo lookup');
+    }
+  }catch(e){
+    // falha é tolerável
+    //console.log('lookup failed', e);
+  }
+}
+
+// geolocalização + reverse geocode
+async function updateLocationAndAddress(){
+  if(!('geolocation' in navigator)) return;
+  const p = new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(pos => resolve(pos), err => reject(err), {timeout:10000, maximumAge:60000});
+  });
+  try{
+    const pos = await p;
+    currentCoords = [pos.coords.latitude, pos.coords.longitude];
+    // tente reverse geocode
+    try{
+      const res = await fetch(`${NOMINATIM_BASE}&lat=${currentCoords[0]}&lon=${currentCoords[1]}`);
+      if(res.ok){
+        const j = await res.json();
+        if(j && j.display_name){
+          enderecoInput.value = j.display_name;
+        } else {
+          enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
+        }
+      } else {
+        enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
+      }
+    }catch(e){
+      enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
+    }
+    toast('Localização atualizada');
+  }catch(err){
+    // user denied or timed out
+    //console.log('geo error', err);
+    toast('Não foi possível obter localização (verifique permissões)');
+  }
+}
+
+// montar e salvar registro
+function saveRegistro(reg){
+  const all = ls('intelpm.registros') || {};
+  const key = reg.data.slice(0,10);
+  if(!all[key]) all[key] = [];
+  all[key].unshift(reg);
+  ls('intelpm.registros', all);
+}
+
+// render lista do dia
+function renderLista(){
+  const key = todayKey();
+  const all = ls('intelpm.registros') || {};
+  const hoje = all[key] || [];
+  countHint.textContent = `${hoje.length} registro(s) hoje`;
+  if(hoje.length === 0){
+    listaEl.innerHTML = '<div class="empty">Nenhum registro hoje.</div>';
+    return;
+  }
+  listaEl.innerHTML = '';
+  for(const r of hoje){
+    const node = document.createElement('div');
+    node.className = 'list-item';
+    node.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div>
+          <strong>${escapeHtml(r.nome || '—')}</strong> <span class="pill">${r.rg || ''}</span><br/>
+          <small class="small">${escapeHtml(r.hora)} — ${escapeHtml(r.endereco || '')}</small>
+        </div>
+        <div style="text-align:right">
+          <div class="pill">${r.criminal? 'Criminal' : 'Não criminal'}</div>
+          <div style="margin-top:6px"><button class="btn" data-id="${r.id}" data-date="${r.data}">Detalhes</button></div>
+        </div>
+      </div>
+      <div style="margin-top:8px;color:var(--muted)">${r.matricula? 'Matrícula: '+escapeHtml(r.matricula)+' • ' : ''}${r.nasc? 'Nasc: '+escapeHtml(r.nasc) : ''}</div>
+    `;
+    listaEl.appendChild(node);
+  }
+  // bind detalhes (alert)
+  for(const b of listaEl.querySelectorAll('button[data-id]')){
+    b.addEventListener('click', (e)=>{
+      const id = e.currentTarget.getAttribute('data-id');
+      const date = e.currentTarget.getAttribute('data-date');
+      const all = ls('intelpm.registros') || {};
+      const r = (all[date] || []).find(x => x.id === id);
+      if(r){
+        alert(
+`Detalhes:
+Nome: ${r.nome}
+RG: ${r.rg}
+Hora: ${r.hora}
+Endereço: ${r.endereco}
+Criminal: ${r.criminal ? 'Sim':'Não'}
+Passagem criminal: ${r.passagem ? 'Sim':'Não'}
+Matrícula: ${r.matricula || '-'}
+Nascimento: ${r.nasc || '-'}
+Pai/Mãe: ${r.pai || '-'} / ${r.mae || '-'}
+Obs: ${r.obs || '-'}`
+        );
+      }
+    });
+  }
+}
+
+// CSV export do dia
+function exportCSV(){
+  const key = todayKey();
+  const all = ls('intelpm.registros') || {};
+  const hoje = all[key] || [];
+  if(hoje.length === 0){ toast('Nada para exportar'); return; }
+  const cols = ['data','hora','rg','nome','matricula','nasc','pai','mae','criminal','passagem','endereco','coords'];
+  const rows = [cols.join(',')];
+  for(const r of hoje){
+    const row = cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(',');
+    rows.push(row);
+  }
+  const csv = rows.join('\n');
+  // cria link de download
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `abordados-${key}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast('CSV gerado');
+}
+
+// escape
+function escapeHtml(s){ return (s||'').toString().replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+// cria id simples
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+// inicializa hora do formulário
+function setHoraNow(){
+  horaInput.value = new Date().toLocaleString();
+}
+
+// manipulação botões passagem criminal
+btnPassSim.addEventListener('click', ()=>{ passagemHidden.value='sim'; btnPassSim.classList.add('active'); toast('Passagem: Sim'); });
+btnPassNao.addEventListener('click', ()=>{ passagemHidden.value='nao'; btnPassNao.classList.add('active'); toast('Passagem: Não'); });
+
+// limpar form
+$('#btnLimparForm').addEventListener('click', (e)=>{
+  form.reset();
+  setHoraNow();
+  enderecoInput.value = '';
+  toast('Formulário limpo');
+});
+
+// força obter localização
+$('#btnForceGeo').addEventListener('click', ()=> updateLocationAndAddress());
+
+// export CSV
+$('#btnExport').addEventListener('click', exportCSV);
+
+// apagar todos (local)
+$('#btnClearAll').addEventListener('click', ()=>{
+  if(confirm('Apagar TODOS os registros salvos neste aparelho?')){ localStorage.removeItem('intelpm.registros'); renderLista(); toast('Registros apagados'); }
+});
+
+// submissão do formulário (adicionar abordado)
+form.addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  // valida básicos
+  const rg = rgInput.value.trim();
+  const nome = nomeInput.value.trim();
+  const criminal = form.querySelector('input[name="criminal"]:checked');
+  if(!rg || !nome || !criminal){
+    toast('Preencha RG, Nome e marque "Criminal?"');
+    return;
+  }
+  // pega campos opcionais
+  const matricula = $('#matricula').value.trim();
+  const nasc = $('#nasc').value;
+  const pai = $('#pai').value.trim();
+  const mae = $('#mae').value.trim();
+  const passagem = passagemHidden.value === 'sim';
+  // hora atual (garante timestamp)
+  const dataHora = new Date();
+  // se não temos coords atuais, tenta pegar (não bloqueia UI totalmente)
+  if(!currentCoords && 'geolocation' in navigator){
+    try{
+      await updateLocationAndAddress();
+    }catch(e){}
+  }
+  const coords = currentCoords ? `${currentCoords[0].toFixed(6)},${currentCoords[1].toFixed(6)}` : '';
+  const endereco = enderecoInput.value.trim() || coords;
+
+  const reg = {
+    id: uid(),
+    data: dataHora.toISOString(),
+    hora: dataHora.toLocaleString(),
+    rg, nome, matricula, nasc, pai, mae,
+    criminal: criminal.value === 'sim',
+    passagem,
+    endereco,
+    coords,
+    obs: ''
+  };
+  // salvar
+  saveRegistro(reg);
+  // atualizar UI
+  setHoraNow();
+  renderLista();
+  toast('Abordado adicionado');
+  form.reset();
+  setHoraNow();
+});
+
+// boot
+(function boot(){
+  setHoraNow();
+  // tenta atualizar localização no boot (se permitido)
+  updateLocationAndAddress().catch(()=>{});
+  renderLista();
+  document.getElementById('status').textContent = 'pronto';
 })();
 
-// Service Worker via Blob (cache básico)
-if('serviceWorker' in navigator){
-  const swCode = `
-    const C = 'intelpm-cache-v1';
-    self.addEventListener('install', e=>{ e.waitUntil(caches.open(C).then(c=>c.addAll(['./']))); self.skipWaiting(); });
-    self.addEventListener('activate', e=>{ e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==C).map(k=>caches.delete(k))))); self.clients.claim(); });
-    self.addEventListener('fetch', e=>{ const url = new URL(e.request.url); if(url.origin===location.origin){ e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))); } });
-  `;
-  const blob = new Blob([swCode], {type:'text/javascript'});
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).then(()=>{ document.getElementById('status').textContent='PWA pronto'; }).catch(()=>{});
-}
-
-// ===== boot =====
-loadState();
 </script>
 </body>
 </html>
