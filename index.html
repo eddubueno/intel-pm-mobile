@@ -7,23 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#06090d;           /* fundo */
-    --panel:#0b1220;        /* cartões */
-    --ink:#e8f2ff;          /* texto principal */
-    --muted:#89a2b8;        /* texto secundário */
-    --line:rgba(255,255,255,.08);
-    --accent:#00e0c6;       /* ciano */
-    --accent2:#77a8ff;      /* azul */
-    --ok:#46ff93; 
-    --danger:#ff5b6b;
-    --warn:#ffd166;
+    --bg:#06090d; --panel:#0b1220; --ink:#e8f2ff; --muted:#89a2b8;
+    --line:rgba(255,255,255,.08); --accent:#00e0c6; --accent2:#77a8ff;
+    --ok:#46ff93; --danger:#ff5b6b; --warn:#ffd166;
     --glass:linear-gradient(180deg,rgba(19,32,54,.75),rgba(13,20,32,.85));
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:radial-gradient(1200px 800px at 78% -10%,#0f1b2c 0%,#08111b 55%,#06090d 100%);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif}
   .wrap{min-height:100%;display:flex;flex-direction:column}
   a{color:var(--accent);text-decoration:none}
-  /* HEADER */
   header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(0deg,rgba(8,16,26,.6),rgba(8,16,26,.95));backdrop-filter:saturate(1.3) blur(10px)}
   .bar{display:flex;align-items:center;gap:12px;padding:12px 14px}
   .brand{font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
@@ -34,7 +26,6 @@
   .btn.ghost{background:transparent}
   .btn.warn{border-color:rgba(255,91,107,.2);background:linear-gradient(180deg,rgba(255,91,107,.14),rgba(255,91,107,.04))}
   .btn:active{transform:scale(.98)}
-  /* LAYOUT */
   main{padding:18px;display:grid;gap:18px;grid-template-columns:340px 1fr}
   @media (max-width:980px){ main{grid-template-columns:1fr} }
   .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--glass)}
@@ -42,27 +33,46 @@
   .card .title{font-weight:800;letter-spacing:.02em}
   .card .body{padding:14px}
   .hint{color:var(--muted);font-size:.88rem}
-  /* QUICK / ATALHOS */
   .quick{display:grid;gap:10px}
   .qbtn{display:flex;align-items:center;gap:.6rem;justify-content:center;border:1px dashed rgba(0,224,198,.25);background:rgba(0,224,198,.06);padding:12px;border-radius:12px;font-weight:700}
   .qbtn:hover{border-style:solid}
-  /* FORM */
   form{display:grid;gap:12px}
   .grid{display:grid;gap:12px}
   .cols-2{grid-template-columns:repeat(2,1fr)}
   .cols-3{grid-template-columns:repeat(3,1fr)}
   @media (max-width:740px){ .cols-2,.cols-3{grid-template-columns:1fr} }
-  .field{display:flex;flex-direction:column;gap:6px}
-  .field label{font-size:.86rem;color:var(--muted)}
-  .field input, .field select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);font-size:1rem}
+  .field{display:flex;flex-direction:column;gap:6px; position:relative;}
+  .field label{font-size:.86rem;color:var(--muted); display:flex; align-items:center; gap:8px;}
+  .badge-req,.badge-opt{font-size:.68rem; line-height:1; padding:3px 6px; border-radius:999px; border:1px solid var(--line); color:var(--muted);}
+  .badge-req{ color:#fff; border-color:rgba(0,224,198,.35); background:rgba(0,224,198,.10);}
+  .badge-opt{ color:var(--muted); background:rgba(255,255,255,.03);}
+  .field input, .field select{
+    width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.035);color:var(--ink);font-size:1rem; outline: none;
+    transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .field input:focus{
+    border-color:rgba(0,224,198,.55);
+    box-shadow:0 0 0 4px rgba(0,224,198,.12), inset 0 0 0 1px rgba(0,224,198,.15);
+    background:rgba(255,255,255,.045);
+  }
+  .field.required input{ border-left:3px solid rgba(0,224,198,.6); padding-left:12px;}
+  .field.optional input{ border-left:3px solid rgba(255,255,255,.06); padding-left:12px;}
+  .field input:invalid{ border-color:rgba(255,91,107,.5); box-shadow:0 0 0 3px rgba(255,91,107,.12);}
   .row{display:flex;gap:10px;flex-wrap:wrap}
   .row .btn{flex:1}
   .pill{border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted);font-size:.75rem}
   .list{display:grid;gap:10px}
   .item{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+  .item .actions{display:flex; gap:8px; justify-content:flex-end; margin-top:8px;}
   .muted{color:var(--muted)}
-  /* BADGES */
   .b-ok{color:var(--ok)} .b-warn{color:var(--warn)} .b-danger{color:var(--danger)}
+  .flag{display:inline-block; border-radius:10px; padding:4px 8px; font-weight:800; letter-spacing:.02em; border:1px solid transparent;}
+  .flag.red{ background: rgba(255,91,107,.18); border-color: rgba(255,91,107,.35); color:#fff; }
+  .flag.green{ background: rgba(70,255,147,.18); border-color: rgba(70,255,147,.35); color:#dfffee; }
+  details{border:1px dashed rgba(255,255,255,.08); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.02)}
+  details>summary{cursor:pointer; list-style:none; font-weight:700}
+  details>summary::-webkit-details-marker{display:none}
 </style>
 </head>
 <body>
@@ -77,7 +87,7 @@
   </header>
 
   <main>
-    <!-- LADO ESQUERDO: ATALHOS -->
+    <!-- ESQUERDA: ATALHOS -->
     <section class="card">
       <div class="head">
         <div class="title">Atalhos de Inteligência</div>
@@ -89,97 +99,151 @@
           <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo">Validade de Selo — TJSP</button>
           <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do">Consulta Processo — TJSP</button>
         </div>
-        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
-        <div class="title" style="font-size:.95rem;margin-bottom:8px">Buscas com filtro (Google)</div>
-        <div class="grid cols-2">
-          <button class="btn" id="gBNMP">Buscar em BNMP</button>
-          <button class="btn" id="gTJSP">Buscar em TJSP</button>
-        </div>
-        <div class="row" style="margin-top:8px">
-          <button class="btn" id="gComb">Busca combinada</button>
-        </div>
-        <div class="hint" style="margin-top:8px">As buscas usam <b>site:</b> (CNJ / BNMP / ESAJ) e abrem em nova aba.</div>
       </div>
     </section>
 
-    <!-- LADO DIREITO: FORM + LISTA -->
+    <!-- DIREITA: FORM + LISTA -->
     <section class="card">
       <div class="head">
         <div class="title">Registrar abordado</div>
         <span class="pill">dados locais</span>
       </div>
       <div class="body">
-        <!-- FORM com layout intuitivo -->
         <form id="formAbordado" autocomplete="off">
-          <!-- Linha 1: RG + Nome (obrigatórios) -->
+          <!-- RG + Nome -->
           <div class="grid cols-2">
-            <div class="field">
-              <label for="rg">RG (apenas 8 dígitos) <span class="b-warn">*</span></label>
-              <input id="rg" name="rg" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="________" required>
+            <div class="field required">
+              <label for="rg">RG <span class="badge-req">Obrigatório</span></label>
+              <input id="rg" name="rg" inputmode="numeric" pattern="\\d{8}" maxlength="8" placeholder="8 dígitos" required>
             </div>
-            <div class="field">
-              <label for="nome">Nome completo <span class="b-warn">*</span></label>
+            <div class="field required">
+              <label for="nome">Nome completo <span class="badge-req">Obrigatório</span></label>
               <input id="nome" name="nome" placeholder="Ex.: João da Silva" required>
             </div>
           </div>
 
-          <!-- Linha 2: flags obrigatórias -->
+          <!-- Passagem + Matrícula + Nasc -->
           <div class="grid cols-3">
-            <div class="field">
-              <label>Criminal? <span class="b-warn">*</span></label>
-              <div class="row">
-                <label><input type="radio" name="criminal" value="sim" required> Sim</label>
-                <label><input type="radio" name="criminal" value="nao" required> Não</label>
-              </div>
-            </div>
-            <div class="field">
-              <label>Passagem criminal?</label>
+            <div class="field required">
+              <label>Passagem criminal? <span class="badge-req">Obrigatório</span></label>
               <div class="row">
                 <button class="btn" type="button" id="passSim">Sim</button>
                 <button class="btn" type="button" id="passNao">Não</button>
                 <input type="hidden" id="passagem" value="nao">
               </div>
             </div>
-            <div class="field">
-              <label for="matricula">Matrícula (opcional)</label>
+            <div class="field optional">
+              <label for="matricula">Matrícula <span class="badge-opt">Opcional</span></label>
               <input id="matricula" placeholder="12345">
+            </div>
+            <div class="field optional">
+              <label for="nasc">Nascimento <span class="badge-opt">Opcional</span></label>
+              <input id="nasc" type="date">
             </div>
           </div>
 
-          <!-- Linha 3: parentais e nascimento -->
-          <div class="grid cols-3">
-            <div class="field">
-              <label for="nasc">Nascimento (opcional)</label>
-              <input id="nasc" type="date">
-            </div>
-            <div class="field">
-              <label for="pai">Nome do pai (opcional)</label>
+          <!-- Pai/Mãe -->
+          <div class="grid cols-2">
+            <div class="field optional">
+              <label for="pai">Nome do pai <span class="badge-opt">Opcional</span></label>
               <input id="pai">
             </div>
-            <div class="field">
-              <label for="mae">Nome da mãe (opcional)</label>
+            <div class="field optional">
+              <label for="mae">Nome da mãe <span class="badge-opt">Opcional</span></label>
               <input id="mae">
             </div>
           </div>
 
-          <!-- Linha 4: endereço + timestamp (automáticos) -->
+          <!-- Endereço + Hora -->
           <div class="grid cols-2">
-            <div class="field">
-              <label for="endereco">Endereço (auto)</label>
+            <div class="field optional">
+              <label for="endereco">Endereço (auto) <span class="badge-opt">Opcional</span></label>
               <input id="endereco" placeholder="Obtendo localização..." />
             </div>
-            <div class="field">
-              <label for="hora">Data/Hora</label>
+            <div class="field optional">
+              <label for="hora">Data/Hora <span class="badge-opt">Auto</span></label>
               <input id="hora" readonly />
             </div>
           </div>
 
-          <div class="row" style="margin-top:6px">
-            <button class="btn primary" id="btnAdd" type="submit">Adicionar</button>
+          <!-- Caixa expansiva: Veículo -->
+          <details id="boxVeiculo">
+            <summary>➕ Adicionar Veículo Abordado</summary>
+            <div class="grid cols-3" style="margin-top:10px">
+              <div class="field required">
+                <label for="tipoPlaca">Tipo de placa <span class="badge-req">Obrigatório</span></label>
+                <select id="tipoPlaca" required>
+                  <option value="MERCOSUL">MERCOSUL (ABC1D23)</option>
+                  <option value="ANTIGA">ANTIGA (ABC-1234)</option>
+                </select>
+              </div>
+              <div class="field required" id="boxPlacaMercosul">
+                <label for="placaMerc">Placa MERCOSUL <span class="badge-req">Obrigatório</span></label>
+                <input id="placaMerc" placeholder="ABC1D23" maxlength="7" inputmode="latin" pattern="[A-Za-z]{3}[0-9][A-Za-z][0-9]{2}">
+              </div>
+              <div class="field required" id="boxPlacaAntiga" style="display:none">
+                <label for="placaAnt">Placa ANTIGA <span class="badge-req">Obrigatório</span></label>
+                <input id="placaAnt" placeholder="ABC-1234" maxlength="8" inputmode="latin" pattern="[A-Za-z]{3}-[0-9]{4}">
+              </div>
+            </div>
+
+            <!-- Caixa expansiva: Condutor -->
+            <details id="boxCondutor" style="margin-top:12px">
+              <summary>➕ Adicionar Condutor do Veículo</summary>
+              <div class="grid cols-2" style="margin-top:10px">
+                <div class="field required">
+                  <label for="rgCond">RG do condutor <span class="badge-req">Obrigatório</span></label>
+                  <input id="rgCond" inputmode="numeric" maxlength="8" pattern="\\d{8}" placeholder="8 dígitos">
+                </div>
+                <div class="field required">
+                  <label for="nomeCond">Nome do condutor <span class="badge-req">Obrigatório</span></label>
+                  <input id="nomeCond" placeholder="Ex.: Maria Souza">
+                </div>
+              </div>
+              <div class="grid cols-3">
+                <div class="field required">
+                  <label>Passagem criminal? <span class="badge-req">Obrigatório</span></label>
+                  <div class="row">
+                    <button class="btn" type="button" id="passC_Sim">Sim</button>
+                    <button class="btn" type="button" id="passC_Nao">Não</button>
+                    <input type="hidden" id="passagemCond" value="nao">
+                  </div>
+                </div>
+                <div class="field optional">
+                  <label for="matriculaCond">Matrícula <span class="badge-opt">Opcional</span></label>
+                  <input id="matriculaCond" placeholder="12345">
+                </div>
+                <div class="field optional">
+                  <label for="nascCond">Nascimento <span class="badge-opt">Opcional</span></label>
+                  <input id="nascCond" type="date">
+                </div>
+              </div>
+              <div class="grid cols-2">
+                <div class="field optional">
+                  <label for="paiCond">Nome do pai <span class="badge-opt">Opcional</span></label>
+                  <input id="paiCond">
+                </div>
+                <div class="field optional">
+                  <label for="maeCond">Nome da mãe <span class="badge-opt">Opcional</span></label>
+                  <input id="maeCond">
+                </div>
+              </div>
+              <div class="row" style="margin-top:6px">
+                <button type="button" id="btnAddCondutor" class="btn primary">Adicionar Condutor à Lista</button>
+              </div>
+            </details>
+          </details>
+
+          <!-- Ações principais -->
+          <div class="row" style="margin-top:10px">
+            <button class="btn primary" id="btnAdd" type="submit">Adicionar Abordado</button>
             <button class="btn" type="button" id="btnLimparForm">Limpar</button>
             <button class="btn" type="button" id="btnExport">Exportar CSV</button>
+            <button class="btn" type="button" id="btnExportJSON">Exportar JSON</button>
           </div>
-          <div class="hint" style="margin-top:8px">Tudo fica salvo <b>neste aparelho</b> (localStorage). Endereço usa geolocalização + reverse (OpenStreetMap).</div>
+          <div class="hint" style="margin-top:8px">
+            Tudo fica salvo <b>neste aparelho</b> (localStorage). Endereço usa geolocalização + reverse (OpenStreetMap).
+          </div>
         </form>
 
         <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
@@ -187,7 +251,10 @@
         <!-- LISTA DO DIA -->
         <div class="row" style="align-items:center;justify-content:space-between;margin-bottom:6px">
           <div class="title" style="font-size:1rem">Abordados do dia</div>
-          <span class="pill" id="countHint">0</span>
+          <div class="row" style="gap:8px">
+            <span class="pill" id="countHint">0</span>
+            <button class="btn warn" id="btnClearToday" title="Excluir todos os registros de hoje">Excluir todos de hoje</button>
+          </div>
         </div>
         <div id="lista" class="list">
           <div class="hint muted">Nenhum registro hoje.</div>
@@ -214,54 +281,44 @@ function nowStr(){ return new Date().toLocaleString(); }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function esc(s){ return (s||'').toString().replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
 
-/* ======== ATALHOS ======== */
+/* ======== ATALHOS (links diretos) ======== */
 for (const el of document.querySelectorAll('[data-open]')) {
   el.addEventListener('click', e => window.open(e.currentTarget.getAttribute('data-open'), '_blank', 'noopener'));
 }
-function q(v){return encodeURIComponent(v)}
-function getTerms(){
-  return {
-    nome: $('#nome').value.trim(),
-    rg: $('#rg').value.trim()
-  };
-}
-$('#gBNMP').addEventListener('click', ()=>{
-  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
-  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br`,'_blank');
-});
-$('#gTJSP').addEventListener('click', ()=>{
-  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
-  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Aesaj.tjsp.jus.br`,'_blank');
-});
-$('#gComb').addEventListener('click', ()=>{
-  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
-  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br+OR+site%3Aesaj.tjsp.jus.br`,'_blank');
-});
 
-/* ======== FORM ======== */
+/* ======== FORM PRINCIPAL ======== */
 const form = $('#formAbordado');
 const rg = $('#rg'); const nome = $('#nome'); const hora = $('#hora'); const endereco = $('#endereco');
 const nasc=$('#nasc'), pai=$('#pai'), mae=$('#mae'), matricula=$('#matricula');
 const passSim=$('#passSim'), passNao=$('#passNao'), passagemHidden=$('#passagem');
 const listaEl = $('#lista'), countHint = $('#countHint');
+const btnClearToday = $('#btnClearToday');
 
 let coords=null;
 
-/* RG: só números e no máximo 8 */
+/* RG: só números (8) */
 rg.addEventListener('input', e=>{
   const clean = e.target.value.replace(/\D/g,'').slice(0,8);
   e.target.value = clean;
 });
 
-/* Passagem toggle */
-passSim.addEventListener('click', ()=>{ passagemHidden.value='sim'; toast('Passagem: Sim'); });
-passNao.addEventListener('click', ()=>{ passagemHidden.value='nao'; toast('Passagem: Não'); });
+/* Passagem (abordado) */
+passSim.addEventListener('click', ()=>{
+  passagemHidden.value='sim';
+  passSim.classList.add('warn'); passNao.classList.remove('warn');
+  toast('Passagem criminal: SIM');
+});
+passNao.addEventListener('click', ()=>{
+  passagemHidden.value='nao';
+  passNao.classList.add('warn'); passSim.classList.remove('warn');
+  toast('Passagem criminal: NÃO');
+});
 
 /* Timestamp inicial */
 function setNow(){ hora.value = nowStr(); }
 setNow();
 
-/* Geo + reverse (Nominatim) */
+/* Geolocalização + reverse (Nominatim) */
 async function updateGeo(){
   if(!('geolocation' in navigator)) return;
   try{
@@ -274,92 +331,222 @@ async function updateGeo(){
     }catch{
       endereco.value = `coords: ${coords[0].toFixed(5)}, ${coords[1].toFixed(5)}`;
     }
-  }catch{
-    // silencioso
-  }
+  }catch{}
 }
 updateGeo();
 
-/* Salvar registro */
+/* STORAGE HELPERS */
+function getAll(){ return ls('intelpm.registros') || {}; }
+function setAll(all){ ls('intelpm.registros', all); }
+function existsToday(rg){
+  const all = getAll(); const arr = all[todayKey()] || [];
+  return arr.some(x => x.rg === rg && (x.role||'pessoa')==='pessoa'); // duplicado só para pessoas do dia
+}
 function saveRegistro(reg){
-  const all = ls('intelpm.registros') || {};
-  const key = reg.data.slice(0,10);
+  const all = getAll(); const key = reg.data.slice(0,10);
   if(!all[key]) all[key]=[];
   all[key].unshift(reg);
-  ls('intelpm.registros', all);
+  setAll(all);
+}
+function deleteRegistro(id){
+  const all = getAll(); const key = todayKey();
+  if(!all[key]) return;
+  const before = all[key].length;
+  all[key] = all[key].filter(r => r.id !== id);
+  setAll(all);
+  if(before !== all[key].length) toast('Registro excluído');
+  renderLista();
+}
+function clearToday(){
+  const all = getAll(); const key = todayKey();
+  if(all[key]){ all[key]=[]; setAll(all); toast('Todos os registros de hoje foram excluídos'); }
+  renderLista();
 }
 
-/* Render lista de hoje */
+/* RENDER LISTA */
 function renderLista(){
-  const all = ls('intelpm.registros') || {};
-  const arr = all[todayKey()] || [];
+  const all = getAll(); const arr = all[todayKey()] || [];
   countHint.textContent = `${arr.length}`;
   if(!arr.length){ listaEl.innerHTML = `<div class="hint muted">Nenhum registro hoje.</div>`; return; }
   listaEl.innerHTML='';
   for(const r of arr){
     const el=document.createElement('div'); el.className='item';
+    const flagClass = r.passagem ? 'red' : 'green';
+    const vehicleInfo = r.vehicle ? `<div class="muted">Veículo: <b>${esc(r.vehicle.placa)}</b> (${esc(r.vehicle.tipo)})</div>` : ``;
+    const role = r.role==='condutor' ? '<span class="pill">Condutor</span>' : '<span class="pill">Pessoa</span>';
     el.innerHTML = `
-      <div style="display:flex;justify-content:space-between;gap:8px">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div>
-          <strong>${esc(r.nome)}</strong> <span class="pill">${esc(r.rg)}</span><br>
+          <span class="flag ${flagClass}">${esc(r.nome)}</span> ${role} <span class="pill">${esc(r.rg)}</span><br>
+          ${vehicleInfo}
           <span class="muted">${esc(r.hora)} — ${esc(r.endereco)}</span>
         </div>
         <div style="text-align:right">
-          <span class="pill">${r.criminal?'Criminal':'Não criminal'}</span><br>
-          <span class="muted">${r.passagem?'Passagem: Sim':'Passagem: Não'}</span>
+          <span class="pill">${r.passagem ? 'Passagem: Sim' : 'Passagem: Não'}</span><br>
+          ${r.matricula ? `<span class="muted">Matrícula: ${esc(r.matricula)}</span>` : ``}
         </div>
+      </div>
+      <div class="actions">
+        <button class="btn warn" data-del="${r.id}">Excluir</button>
       </div>
     `;
     listaEl.appendChild(el);
   }
+  // listeners excluir
+  for(const b of listaEl.querySelectorAll('[data-del]')){
+    b.addEventListener('click', e=> deleteRegistro(e.currentTarget.getAttribute('data-del')));
+  }
 }
 renderLista();
+btnClearToday.addEventListener('click', clearToday);
 
-/* Limpar form */
-$('#btnLimparForm').addEventListener('click', ()=>{
-  form.reset(); passagemHidden.value='nao'; setNow(); toast('Limpo');
-});
-
-/* Export CSV (dia) */
+/* EXPORTS */
 $('#btnExport').addEventListener('click', ()=>{
-  const all = ls('intelpm.registros') || {};
-  const arr = all[todayKey()] || [];
+  const all = getAll(); const arr = all[todayKey()] || [];
   if(!arr.length){ toast('Nada para exportar'); return; }
-  const cols=['data','hora','rg','nome','criminal','passagem','matricula','nasc','pai','mae','endereco','coords'];
+  const cols=['data','hora','rg','nome','passagem','role','placa','tipoPlaca','matricula','nasc','pai','mae','endereco','coords'];
   const rows=[cols.join(',')];
-  for(const r of arr){ rows.push(cols.map(c=>`"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(',')); }
+  for(const r of arr){
+    const vals = {
+      data:r.data, hora:r.hora, rg:r.rg, nome:r.nome, passagem:r.passagem,
+      role:r.role||'pessoa', placa:r.vehicle?.placa||'', tipoPlaca:r.vehicle?.tipo||'',
+      matricula:r.matricula||'', nasc:r.nasc||'', pai:r.pai||'', mae:r.mae||'',
+      endereco:r.endereco||'', coords:r.coords||''
+    };
+    rows.push(cols.map(c=>`"${(vals[c]||'').toString().replace(/"/g,'""')}"`).join(','));
+  }
   const csv = rows.join('\n'); const blob = new Blob([csv],{type:'text/csv'});
   const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`abordados-${todayKey()}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
+$('#btnExportJSON').addEventListener('click', ()=>{
+  const all = getAll(); const arr = all[todayKey()] || [];
+  if(!arr.length){ toast('Nada para exportar'); return; }
+  const blob = new Blob([JSON.stringify(arr,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`abordados-${todayKey()}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
 
-/* Add registro */
+/* SUBMIT PESSOA */
 form.addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const rgv = rg.value.trim();
-  const nomev = nome.value.trim();
-  const criminal = form.querySelector('input[name="criminal"]:checked');
-  if(!rgv || rgv.length!==8 || !nomev || !criminal){ toast('Preencha: RG (8 dígitos), Nome e Criminal?'); return; }
-
+  const rgv = rg.value.trim(); const nomev = nome.value.trim();
+  if(!rgv || rgv.length!==8 || !nomev){ toast('Preencha: RG (8 dígitos) e Nome.'); return; }
+  if(existsToday(rgv)){ toast('RG já registrado hoje.'); return; }
   if(!coords) { try{ await updateGeo(); }catch{} }
   const reg = {
-    id: uid(),
-    data: new Date().toISOString(),
-    hora: nowStr(),
-    rg: rgv,
-    nome: nomev,
-    criminal: (criminal.value==='sim'),
+    id: uid(), role:'pessoa',
+    data: new Date().toISOString(), hora: nowStr(),
+    rg: rgv, nome: nomev,
     passagem: (passagemHidden.value==='sim'),
-    matricula: matricula.value.trim(),
-    nasc: nasc.value,
-    pai: pai.value.trim(),
-    mae: mae.value.trim(),
-    endereco: endereco.value.trim(),
+    matricula: (matricula.value||'').trim(),
+    nasc: nasc.value, pai: (pai.value||'').trim(), mae: (mae.value||'').trim(),
+    endereco: (endereco.value||'').trim(),
     coords: coords ? `${coords[0].toFixed(6)},${coords[1].toFixed(6)}` : ''
   };
   saveRegistro(reg);
   renderLista();
-  form.reset(); passagemHidden.value='nao'; setNow();
-  toast('Abordado adicionado');
+  form.reset(); passagemHidden.value='nao'; passNao.classList.remove('warn'); passSim.classList.remove('warn');
+  setNow(); toast('Abordado adicionado');
+});
+
+/* ======== VEÍCULO ======== */
+const tipoPlaca = $('#tipoPlaca');
+const boxPlacaMerc = $('#boxPlacaMerc'); const placaMerc = $('#placaMerc');
+const boxPlacaAnt = $('#boxPlacaAnt'); const placaAnt = $('#placaAnt');
+
+tipoPlaca.addEventListener('change', ()=>{
+  if(tipoPlaca.value==='MERCOSUL'){
+    boxPlacaMerc.style.display='block'; boxPlacaAnt.style.display='none';
+    placaAnt.value='';
+  }else{
+    boxPlacaMerc.style.display='none'; boxPlacaAnt.style.display='block';
+    placaMerc.value='';
+  }
+});
+
+/* Validações/formatos das placas */
+function onlyLetters(s){ return s.replace(/[^A-Za-z]/g,''); }
+function onlyDigits(s){ return s.replace(/\D/g,''); }
+function up(s){ return (s||'').toUpperCase(); }
+
+function validateMerc(v){
+  v = up(v).replace(/[^A-Z0-9]/g,'').slice(0,7);
+  // Padrão: LLL D L DD
+  const re=/^[A-Z]{3}[0-9][A-Z][0-9]{2}$/;
+  return {v, ok: re.test(v)};
+}
+placaMerc.addEventListener('input', e=>{
+  const raw = e.target.value;
+  const {v, ok} = validateMerc(raw);
+  e.target.value = v;
+  e.target.setCustomValidity(ok ? '' : 'Formato MERCOSUL: ABC1D23');
+});
+
+function validateOld(v){
+  v = up(v).replace(/[^A-Z0-9]/g,'');
+  const letters = onlyLetters(v.slice(0,3));
+  const nums = onlyDigits(v.slice(3,7));
+  let out = letters; if(letters.length>=3) out = letters + '-' + nums;
+  out = out.slice(0,8);
+  const re=/^[A-Z]{3}-[0-9]{4}$/;
+  return {v:out, ok: re.test(out)};
+}
+placaAnt.addEventListener('input', e=>{
+  const {v, ok} = validateOld(e.target.value);
+  e.target.value = v;
+  e.target.setCustomValidity(ok ? '' : 'Formato ANTIGO: ABC-1234');
+});
+
+/* ======== CONDUTOR ======== */
+const rgCond=$('#rgCond'), nomeCond=$('#nomeCond');
+const passC_Sim=$('#passC_Sim'), passC_Nao=$('#passC_Nao'), passagemCond=$('#passagemCond');
+const matriculaCond=$('#matriculaCond'), nascCond=$('#nascCond'), paiCond=$('#paiCond'), maeCond=$('#maeCond');
+
+rgCond.addEventListener('input', e=>{
+  const clean = e.target.value.replace(/\D/g,'').slice(0,8);
+  e.target.value = clean;
+});
+passC_Sim.addEventListener('click', ()=>{ passagemCond.value='sim'; passC_Sim.classList.add('warn'); passC_Nao.classList.remove('warn'); toast('Condutor: Passagem SIM'); });
+passC_Nao.addEventListener('click', ()=>{ passagemCond.value='nao'; passC_Nao.classList.add('warn'); passC_Sim.classList.remove('warn'); toast('Condutor: Passagem NÃO'); });
+
+/* Adicionar condutor -> cai na mesma lista */
+$('#btnAddCondutor').addEventListener('click', async ()=>{
+  // Precisa de placa válida
+  let tipo = tipoPlaca.value;
+  let placa = tipo==='MERCOSUL' ? placaMerc.value : placaAnt.value;
+  if(tipo==='MERCOSUL'){
+    const chk = validateMerc(placa);
+    if(!chk.ok){ toast('Informe placa MERCOSUL válida (ABC1D23)'); return; }
+    placa = chk.v;
+  } else {
+    const chk = validateOld(placa);
+    if(!chk.ok){ toast('Informe placa ANTIGA válida (ABC-1234)'); return; }
+    placa = chk.v;
+  }
+
+  // Condutor obrigatório: RG + Nome
+  const rgv = rgCond.value.trim(); const nomev = nomeCond.value.trim();
+  if(!rgv || rgv.length!==8 || !nomev){ toast('Condutor: preencha RG (8 dígitos) e Nome.'); return; }
+
+  if(!coords) { try{ await updateGeo(); }catch{} }
+
+  const reg = {
+    id: uid(), role:'condutor',
+    data: new Date().toISOString(), hora: nowStr(),
+    rg: rgv, nome: nomev,
+    passagem: (passagemCond.value==='sim'),
+    matricula: (matriculaCond.value||'').trim(),
+    nasc: nascCond.value, pai: (paiCond.value||'').trim(), mae: (maeCond.value||'').trim(),
+    endereco: (endereco.value||'').trim(),
+    coords: coords ? `${coords[0].toFixed(6)},${coords[1].toFixed(6)}` : '',
+    vehicle: { tipo, placa }
+  };
+  saveRegistro(reg);
+  renderLista();
+  // Limpa só campos do condutor (mantém placa)
+  rgCond.value=''; nomeCond.value=''; passagemCond.value='nao';
+  passC_Nao.classList.remove('warn'); passC_Sim.classList.remove('warn');
+  nascCond.value=''; paiCond.value=''; maeCond.value=''; matriculaCond.value='';
+  toast('Condutor adicionado');
 });
 
 /* Tela cheia */
