@@ -3,472 +3,370 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Inteligência Móvel — PM</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
+<title>Intel PM — Operações</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0F14; --panel:#0D141B; --ink:#E8F0F5; --muted:#9FB2BF;
-    --accent:#00E0C6; --accent-2:#8AE5FF; --danger:#ff5252; --ok:#37ff7f;
-    --line:rgba(255,255,255,.08); --glass:rgba(10,16,22,.6);
+    --bg:#06090d;           /* fundo */
+    --panel:#0b1220;        /* cartões */
+    --ink:#e8f2ff;          /* texto principal */
+    --muted:#89a2b8;        /* texto secundário */
+    --line:rgba(255,255,255,.08);
+    --accent:#00e0c6;       /* ciano */
+    --accent2:#77a8ff;      /* azul */
+    --ok:#46ff93; 
+    --danger:#ff5b6b;
+    --warn:#ffd166;
+    --glass:linear-gradient(180deg,rgba(19,32,54,.75),rgba(13,20,32,.85));
   }
   *{box-sizing:border-box}
-  html,body{height:100%;background:var(--bg);color:var(--ink);margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif}
+  html,body{height:100%;margin:0;background:radial-gradient(1200px 800px at 78% -10%,#0f1b2c 0%,#08111b 55%,#06090d 100%);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif}
   .wrap{min-height:100%;display:flex;flex-direction:column}
-  header{position:sticky;top:0;z-index:20;background:linear-gradient(0deg, rgba(10,16,22,.2), rgba(10,16,22,.8));backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
-  .bar{display:flex;align-items:center;gap:.6rem;padding:12px 14px}
-  .badge{font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;color:var(--accent)}
+  a{color:var(--accent);text-decoration:none}
+  /* HEADER */
+  header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(0deg,rgba(8,16,26,.6),rgba(8,16,26,.95));backdrop-filter:saturate(1.3) blur(10px)}
+  .bar{display:flex;align-items:center;gap:12px;padding:12px 14px}
+  .brand{font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .status{font-size:.78rem;border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted)}
   .grow{flex:1}
-  .btn{appearance:none;border:1px solid var(--line);background:var(--glass);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+  .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(0,224,198,.22), rgba(0,224,198,.06));}
+  .btn.ghost{background:transparent}
+  .btn.warn{border-color:rgba(255,91,107,.2);background:linear-gradient(180deg,rgba(255,91,107,.14),rgba(255,91,107,.04))}
   .btn:active{transform:scale(.98)}
-  .btn.icon{display:inline-flex;align-items:center;gap:.5rem}
-  .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(0,224,198,.25), rgba(0,224,198,.08));}
-  .btn.warn{border-color:#ff6767;background:linear-gradient(180deg, rgba(255,103,103,.2), rgba(255,103,103,.06));}
-  main{padding:16px;display:grid;gap:16px}
-  .card{background:var(--glass);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  /* LAYOUT */
+  main{padding:18px;display:grid;gap:18px;grid-template-columns:340px 1fr}
+  @media (max-width:980px){ main{grid-template-columns:1fr} }
+  .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--glass)}
   .card .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
   .card .title{font-weight:800;letter-spacing:.02em}
-  .card .body{padding:12px 14px}
+  .card .body{padding:14px}
+  .hint{color:var(--muted);font-size:.88rem}
+  /* QUICK / ATALHOS */
+  .quick{display:grid;gap:10px}
+  .qbtn{display:flex;align-items:center;gap:.6rem;justify-content:center;border:1px dashed rgba(0,224,198,.25);background:rgba(0,224,198,.06);padding:12px;border-radius:12px;font-weight:700}
+  .qbtn:hover{border-style:solid}
+  /* FORM */
+  form{display:grid;gap:12px}
   .grid{display:grid;gap:12px}
-  .grid.cols-2{grid-template-columns:1fr 1fr}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-  .input{display:flex;flex-direction:column;gap:6px}
-  .input label{font-size:.82rem;color:var(--muted)}
-  .input input, .input select, .input textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);font-size:1rem}
-  .hint{font-size:.86rem;color:var(--muted)}
-  .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .quick .qbtn{display:flex;align-items:center;gap:.6rem;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:14px;border-radius:14px;font-weight:700;justify-content:center;text-align:center}
-  .qbtn svg{width:22px;height:22px}
+  .cols-2{grid-template-columns:repeat(2,1fr)}
+  .cols-3{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:740px){ .cols-2,.cols-3{grid-template-columns:1fr} }
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:.86rem;color:var(--muted)}
+  .field input, .field select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);font-size:1rem}
   .row{display:flex;gap:10px;flex-wrap:wrap}
   .row .btn{flex:1}
-  .kbd{font-family:"Source Code Pro",ui-monospace,monospace;font-weight:600;border:1px solid var(--line);padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.04)}
-  footer{padding:14px;color:var(--muted);text-align:center}
-  .small{font-size:.9rem}
-  .ok{color:var(--ok)}
-  .list{display:grid;gap:8px}
-  .list a{display:flex;align-items:center;gap:.6rem;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);color:var(--ink);text-decoration:none}
-  .list a:active{transform:scale(.98)}
-  .pill{font-size:.72rem;border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted)}
-  .caps{letter-spacing:.06em;text-transform:uppercase}
-  .sr{position:absolute;left:-9999px}
-  .toggle{display:inline-flex;gap:8px;align-items:center}
-  .btn-yes{background:linear-gradient(180deg, rgba(55,255,127,.12), rgba(55,255,127,.04));border:1px solid rgba(55,255,127,.15)}
-  .btn-no{background:linear-gradient(180deg, rgba(255,82,82,.06), rgba(255,82,82,.02));border:1px solid rgba(255,82,82,.08)}
-  /* Large touch targets on phones */
-  @media (max-width:740px){
-    .grid.cols-2{grid-template-columns:1fr}
-    .grid.cols-3{grid-template-columns:1fr 1fr}
-    .quick{grid-template-columns:1fr 1fr}
-  }
-  .empty{opacity:.6}
+  .pill{border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted);font-size:.75rem}
+  .list{display:grid;gap:10px}
+  .item{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+  .muted{color:var(--muted)}
+  /* BADGES */
+  .b-ok{color:var(--ok)} .b-warn{color:var(--warn)} .b-danger{color:var(--danger)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="bar">
-      <div class="badge">INTEL PM • MÓVEL</div>
-      <div class="pill caps" id="status">offline-ready</div>
+      <div class="brand">INTEL • PM</div>
+      <div class="status" id="status">pronto</div>
       <div class="grow"></div>
-      <button class="btn icon" id="btnTheme" title="Tema claro/escuro">
-        Tema
-      </button>
-      <button class="btn icon" id="btnFS" title="Tela cheia">Tela</button>
+      <button class="btn ghost" id="btnFS">Tela Cheia</button>
     </div>
   </header>
 
   <main>
-    <!-- FORMULÁRIO DE ABORDADO -->
-    <section class="card" aria-labelledby="t-abordado">
-      <div class="head"><div class="title" id="t-abordado">Registrar abordado</div><span class="hint">Os campos obrigatórios são marcados</span></div>
+    <!-- LADO ESQUERDO: ATALHOS -->
+    <section class="card">
+      <div class="head">
+        <div class="title">Atalhos de Inteligência</div>
+        <span class="pill">acesso rápido</span>
+      </div>
       <div class="body">
+        <div class="quick">
+          <button class="qbtn" data-open="https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca">BNMP — Mandados</button>
+          <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo">Validade de Selo — TJSP</button>
+          <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do">Consulta Processo — TJSP</button>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+        <div class="title" style="font-size:.95rem;margin-bottom:8px">Buscas com filtro (Google)</div>
+        <div class="grid cols-2">
+          <button class="btn" id="gBNMP">Buscar em BNMP</button>
+          <button class="btn" id="gTJSP">Buscar em TJSP</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="gComb">Busca combinada</button>
+        </div>
+        <div class="hint" style="margin-top:8px">As buscas usam <b>site:</b> (CNJ / BNMP / ESAJ) e abrem em nova aba.</div>
+      </div>
+    </section>
+
+    <!-- LADO DIREITO: FORM + LISTA -->
+    <section class="card">
+      <div class="head">
+        <div class="title">Registrar abordado</div>
+        <span class="pill">dados locais</span>
+      </div>
+      <div class="body">
+        <!-- FORM com layout intuitivo -->
         <form id="formAbordado" autocomplete="off">
+          <!-- Linha 1: RG + Nome (obrigatórios) -->
           <div class="grid cols-2">
-            <div class="input">
-              <label for="rg">RG <span style="color:#ffb86b">*</span></label>
-              <input id="rg" name="rg" inputmode="numeric" pattern="[0-9]*" placeholder="Somente números" required />
-              <div class="hint">Ao digitar RG o teclado numérico aparece (iOS/Android).</div>
+            <div class="field">
+              <label for="rg">RG (apenas 8 dígitos) <span class="b-warn">*</span></label>
+              <input id="rg" name="rg" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="________" required>
             </div>
-            <div class="input">
-              <label for="nome">Nome completo <span style="color:#ffb86b">*</span></label>
-              <input id="nome" name="nome" placeholder="Nome completo" required />
-            </div>
-
-            <div class="input">
-              <label for="matricula">Matrícula (opcional)</label>
-              <input id="matricula" name="matricula" placeholder="Ex.: 12345" />
-            </div>
-            <div class="input">
-              <label for="nasc">Data de nascimento (opcional)</label>
-              <input id="nasc" name="nasc" type="date" />
-            </div>
-
-            <div class="input">
-              <label for="pai">Nome do pai (opcional)</label>
-              <input id="pai" name="pai" />
-            </div>
-            <div class="input">
-              <label for="mae">Nome da mãe (opcional)</label>
-              <input id="mae" name="mae" />
+            <div class="field">
+              <label for="nome">Nome completo <span class="b-warn">*</span></label>
+              <input id="nome" name="nome" placeholder="Ex.: João da Silva" required>
             </div>
           </div>
 
-          <div style="margin-top:8px" class="grid cols-2">
-            <div class="input">
-              <label>Criminal?</label>
-              <div>
-                <label style="margin-right:8px"><input type="radio" name="criminal" value="sim" required> Sim</label>
+          <!-- Linha 2: flags obrigatórias -->
+          <div class="grid cols-3">
+            <div class="field">
+              <label>Criminal? <span class="b-warn">*</span></label>
+              <div class="row">
+                <label><input type="radio" name="criminal" value="sim" required> Sim</label>
                 <label><input type="radio" name="criminal" value="nao" required> Não</label>
               </div>
             </div>
-            <div class="input">
+            <div class="field">
               <label>Passagem criminal?</label>
-              <div class="toggle">
-                <button type="button" id="btnPassagemSim" class="btn btn-yes">Sim</button>
-                <button type="button" id="btnPassagemNao" class="btn btn-no">Não</button>
-                <input type="hidden" id="passagem" value="nao" />
+              <div class="row">
+                <button class="btn" type="button" id="passSim">Sim</button>
+                <button class="btn" type="button" id="passNao">Não</button>
+                <input type="hidden" id="passagem" value="nao">
               </div>
             </div>
-          </div>
-
-          <div style="margin-top:10px" class="grid cols-2">
-            <div class="input">
-              <label for="endereco">Endereço (preenchido automaticamente)</label>
-              <input id="endereco" name="endereco" placeholder="Endereço / coordenadas" />
-            </div>
-            <div class="input">
-              <label for="hora">Data / Hora da abordagem</label>
-              <input id="hora" name="hora" readonly />
+            <div class="field">
+              <label for="matricula">Matrícula (opcional)</label>
+              <input id="matricula" placeholder="12345">
             </div>
           </div>
 
-          <div style="margin-top:10px" class="row">
-            <button class="btn primary" id="btnAdd" type="submit">Adicionar abordado</button>
+          <!-- Linha 3: parentais e nascimento -->
+          <div class="grid cols-3">
+            <div class="field">
+              <label for="nasc">Nascimento (opcional)</label>
+              <input id="nasc" type="date">
+            </div>
+            <div class="field">
+              <label for="pai">Nome do pai (opcional)</label>
+              <input id="pai">
+            </div>
+            <div class="field">
+              <label for="mae">Nome da mãe (opcional)</label>
+              <input id="mae">
+            </div>
+          </div>
+
+          <!-- Linha 4: endereço + timestamp (automáticos) -->
+          <div class="grid cols-2">
+            <div class="field">
+              <label for="endereco">Endereço (auto)</label>
+              <input id="endereco" placeholder="Obtendo localização..." />
+            </div>
+            <div class="field">
+              <label for="hora">Data/Hora</label>
+              <input id="hora" readonly />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:6px">
+            <button class="btn primary" id="btnAdd" type="submit">Adicionar</button>
             <button class="btn" type="button" id="btnLimparForm">Limpar</button>
             <button class="btn" type="button" id="btnExport">Exportar CSV</button>
           </div>
-
-          <div style="margin-top:8px" class="hint">Se quiser preenchimento automático do nome pelo RG, configure uma API no código (RG_LOOKUP_URL).</div>
+          <div class="hint" style="margin-top:8px">Tudo fica salvo <b>neste aparelho</b> (localStorage). Endereço usa geolocalização + reverse (OpenStreetMap).</div>
         </form>
-      </div>
-    </section>
 
-    <!-- LISTA DO DIA -->
-    <section class="card" aria-labelledby="t-lista">
-      <div class="head"><div class="title" id="t-lista">Abordados do dia</div><span class="hint" id="countHint">0 registros hoje</span></div>
-      <div class="body" id="listaContainer">
-        <div id="lista" class="list empty">Nenhum registro hoje.</div>
-      </div>
-    </section>
+        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
 
-    <!-- OUTROS CONTROLES RÁPIDOS -->
-    <section class="card" aria-labelledby="t-config">
-      <div class="head"><div class="title" id="t-config">Configurações rápidas</div></div>
-      <div class="body">
-        <div class="row">
-          <button class="btn" id="btnClearAll">Apagar TODOS os registros (local)</button>
-          <button class="btn" id="btnForceGeo">Atualizar minha localização agora</button>
+        <!-- LISTA DO DIA -->
+        <div class="row" style="align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div class="title" style="font-size:1rem">Abordados do dia</div>
+          <span class="pill" id="countHint">0</span>
         </div>
-        <div style="margin-top:8px" class="hint">Os registros ficam neste aparelho. Para mais segurança, exporte e salve em servidor/pendrive corporativo.</div>
+        <div id="lista" class="list">
+          <div class="hint muted">Nenhum registro hoje.</div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="small">© Operacional — uso interno. Ajuste conforme normas.</div>
-  </footer>
+  <footer class="hint" style="text-align:center;padding:14px">© Operações — uso interno. Ajuste conforme normas.</footer>
 </div>
 
 <script>
-/*
-  Implementação:
-  - Salva entradas em localStorage por data (chave 'intelpm.registros')
-  - Auto-preenche hora e busca geolocalização para endereço (Nominatim reverse)
-  - Tentativa opcional de lookup por RG (configurar RG_LOOKUP_URL)
-  - Exporta CSV e lista por dia
-*/
-
-// === CONFIGURAÇÕES ===
-// Se tiver uma API que retorne { nome: "Fulano" } ao receber ?rg=... coloque a URL aqui.
-// Ex: const RG_LOOKUP_URL = "https://meuservico.local/lookupRg";
-const RG_LOOKUP_URL = null; // <-- deixe null se não tiver
-
-// Nominatim (OpenStreetMap) é usado para reverse geocode; pode haver rate limit.
-const NOMINATIM_BASE = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2';
-
-const ls = (k,v) => v===undefined ? JSON.parse(localStorage.getItem(k) || 'null') : localStorage.setItem(k, JSON.stringify(v));
-const todayKey = () => {
-  const d = new Date(); return d.toISOString().slice(0,10); // YYYY-MM-DD
-};
-
-// elementos
+/* ======== UTIL ======== */
 const $ = sel => document.querySelector(sel);
-const form = $('#formAbordado');
-const rgInput = $('#rg');
-const nomeInput = $('#nome');
-const horaInput = $('#hora');
-const enderecoInput = $('#endereco');
-const listaEl = $('#lista');
-const countHint = $('#countHint');
-const btnPassSim = $('#btnPassagemSim');
-const btnPassNao = $('#btnPassagemNao');
-const passagemHidden = $('#passagem');
-
-// estado
-let currentCoords = null;
-
-// helpers
+const ls = (k,v)=> v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k, JSON.stringify(v));
+const todayKey = ()=> new Date().toISOString().slice(0,10);
 function toast(msg){
-  const t = document.createElement('div');
-  t.textContent = msg; t.style.position='fixed'; t.style.left='50%'; t.style.bottom='20px'; t.style.transform='translateX(-50%)';
-  t.style.background='rgba(10,16,22,.95)'; t.style.border='1px solid rgba(255,255,255,.08)'; t.style.padding='8px 12px'; t.style.borderRadius='10px'; t.style.zIndex=9999;
-  document.body.appendChild(t); setTimeout(()=>t.remove(), 1600);
+  const t=document.createElement('div');
+  t.textContent=msg; t.style.position='fixed'; t.style.left='50%'; t.style.bottom='18px'; t.style.transform='translateX(-50%)';
+  t.style.background='rgba(9,16,24,.95)'; t.style.border='1px solid rgba(255,255,255,.08)'; t.style.padding='8px 12px'; t.style.borderRadius='10px'; t.style.zIndex=9999;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),1600);
 }
-function nowFormatted(){
-  return new Date().toLocaleString();
-}
+function nowStr(){ return new Date().toLocaleString(); }
+function uid(){ return Math.random().toString(36).slice(2,9); }
+function esc(s){ return (s||'').toString().replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
 
-// valida RG (só números)
-rgInput.addEventListener('input', e => {
-  const v = e.target.value.replace(/\D/g,'');
-  e.target.value = v;
-  // se configurado RG_LOOKUP_URL, tente buscar nome automaticamente (após 6+ dígitos)
-  if(RG_LOOKUP_URL && v.length >= 6){
-    lookupRg(v);
-  }
+/* ======== ATALHOS ======== */
+for (const el of document.querySelectorAll('[data-open]')) {
+  el.addEventListener('click', e => window.open(e.currentTarget.getAttribute('data-open'), '_blank', 'noopener'));
+}
+function q(v){return encodeURIComponent(v)}
+function getTerms(){
+  return {
+    nome: $('#nome').value.trim(),
+    rg: $('#rg').value.trim()
+  };
+}
+$('#gBNMP').addEventListener('click', ()=>{
+  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
+  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br`,'_blank');
+});
+$('#gTJSP').addEventListener('click', ()=>{
+  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
+  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Aesaj.tjsp.jus.br`,'_blank');
+});
+$('#gComb').addEventListener('click', ()=>{
+  const {nome,rg} = getTerms(); const terms=[nome,rg].filter(Boolean).join(' ');
+  window.open(`https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br+OR+site%3Aesaj.tjsp.jus.br`,'_blank');
 });
 
-// lookup de RG (opcional)
-async function lookupRg(rg){
-  try{
-    const url = RG_LOOKUP_URL + (RG_LOOKUP_URL.includes('?') ? '&' : '?') + 'rg=' + encodeURIComponent(rg);
-    const res = await fetch(url, {mode:'cors'});
-    if(!res.ok) return;
-    const j = await res.json();
-    if(j && j.nome){
-      nomeInput.value = j.nome;
-      toast('Nome preenchido pelo lookup');
-    }
-  }catch(e){
-    // falha é tolerável
-    //console.log('lookup failed', e);
-  }
-}
+/* ======== FORM ======== */
+const form = $('#formAbordado');
+const rg = $('#rg'); const nome = $('#nome'); const hora = $('#hora'); const endereco = $('#endereco');
+const nasc=$('#nasc'), pai=$('#pai'), mae=$('#mae'), matricula=$('#matricula');
+const passSim=$('#passSim'), passNao=$('#passNao'), passagemHidden=$('#passagem');
+const listaEl = $('#lista'), countHint = $('#countHint');
 
-// geolocalização + reverse geocode
-async function updateLocationAndAddress(){
+let coords=null;
+
+/* RG: só números e no máximo 8 */
+rg.addEventListener('input', e=>{
+  const clean = e.target.value.replace(/\D/g,'').slice(0,8);
+  e.target.value = clean;
+});
+
+/* Passagem toggle */
+passSim.addEventListener('click', ()=>{ passagemHidden.value='sim'; toast('Passagem: Sim'); });
+passNao.addEventListener('click', ()=>{ passagemHidden.value='nao'; toast('Passagem: Não'); });
+
+/* Timestamp inicial */
+function setNow(){ hora.value = nowStr(); }
+setNow();
+
+/* Geo + reverse (Nominatim) */
+async function updateGeo(){
   if(!('geolocation' in navigator)) return;
-  const p = new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(pos => resolve(pos), err => reject(err), {timeout:10000, maximumAge:60000});
-  });
   try{
-    const pos = await p;
-    currentCoords = [pos.coords.latitude, pos.coords.longitude];
-    // tente reverse geocode
+    const pos = await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{timeout:10000,maximumAge:60000}));
+    coords=[pos.coords.latitude,pos.coords.longitude];
     try{
-      const res = await fetch(`${NOMINATIM_BASE}&lat=${currentCoords[0]}&lon=${currentCoords[1]}`);
-      if(res.ok){
-        const j = await res.json();
-        if(j && j.display_name){
-          enderecoInput.value = j.display_name;
-        } else {
-          enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
-        }
-      } else {
-        enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
-      }
-    }catch(e){
-      enderecoInput.value = `coords: ${currentCoords[0].toFixed(5)}, ${currentCoords[1].toFixed(5)}`;
+      const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${coords[0]}&lon=${coords[1]}`;
+      const r = await fetch(u); const j = await r.json();
+      endereco.value = j?.display_name || `coords: ${coords[0].toFixed(5)}, ${coords[1].toFixed(5)}`;
+    }catch{
+      endereco.value = `coords: ${coords[0].toFixed(5)}, ${coords[1].toFixed(5)}`;
     }
-    toast('Localização atualizada');
-  }catch(err){
-    // user denied or timed out
-    //console.log('geo error', err);
-    toast('Não foi possível obter localização (verifique permissões)');
+  }catch{
+    // silencioso
   }
 }
+updateGeo();
 
-// montar e salvar registro
+/* Salvar registro */
 function saveRegistro(reg){
   const all = ls('intelpm.registros') || {};
   const key = reg.data.slice(0,10);
-  if(!all[key]) all[key] = [];
+  if(!all[key]) all[key]=[];
   all[key].unshift(reg);
   ls('intelpm.registros', all);
 }
 
-// render lista do dia
+/* Render lista de hoje */
 function renderLista(){
-  const key = todayKey();
   const all = ls('intelpm.registros') || {};
-  const hoje = all[key] || [];
-  countHint.textContent = `${hoje.length} registro(s) hoje`;
-  if(hoje.length === 0){
-    listaEl.innerHTML = '<div class="empty">Nenhum registro hoje.</div>';
-    return;
-  }
-  listaEl.innerHTML = '';
-  for(const r of hoje){
-    const node = document.createElement('div');
-    node.className = 'list-item';
-    node.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+  const arr = all[todayKey()] || [];
+  countHint.textContent = `${arr.length}`;
+  if(!arr.length){ listaEl.innerHTML = `<div class="hint muted">Nenhum registro hoje.</div>`; return; }
+  listaEl.innerHTML='';
+  for(const r of arr){
+    const el=document.createElement('div'); el.className='item';
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:8px">
         <div>
-          <strong>${escapeHtml(r.nome || '—')}</strong> <span class="pill">${r.rg || ''}</span><br/>
-          <small class="small">${escapeHtml(r.hora)} — ${escapeHtml(r.endereco || '')}</small>
+          <strong>${esc(r.nome)}</strong> <span class="pill">${esc(r.rg)}</span><br>
+          <span class="muted">${esc(r.hora)} — ${esc(r.endereco)}</span>
         </div>
         <div style="text-align:right">
-          <div class="pill">${r.criminal? 'Criminal' : 'Não criminal'}</div>
-          <div style="margin-top:6px"><button class="btn" data-id="${r.id}" data-date="${r.data}">Detalhes</button></div>
+          <span class="pill">${r.criminal?'Criminal':'Não criminal'}</span><br>
+          <span class="muted">${r.passagem?'Passagem: Sim':'Passagem: Não'}</span>
         </div>
       </div>
-      <div style="margin-top:8px;color:var(--muted)">${r.matricula? 'Matrícula: '+escapeHtml(r.matricula)+' • ' : ''}${r.nasc? 'Nasc: '+escapeHtml(r.nasc) : ''}</div>
     `;
-    listaEl.appendChild(node);
-  }
-  // bind detalhes (alert)
-  for(const b of listaEl.querySelectorAll('button[data-id]')){
-    b.addEventListener('click', (e)=>{
-      const id = e.currentTarget.getAttribute('data-id');
-      const date = e.currentTarget.getAttribute('data-date');
-      const all = ls('intelpm.registros') || {};
-      const r = (all[date] || []).find(x => x.id === id);
-      if(r){
-        alert(
-`Detalhes:
-Nome: ${r.nome}
-RG: ${r.rg}
-Hora: ${r.hora}
-Endereço: ${r.endereco}
-Criminal: ${r.criminal ? 'Sim':'Não'}
-Passagem criminal: ${r.passagem ? 'Sim':'Não'}
-Matrícula: ${r.matricula || '-'}
-Nascimento: ${r.nasc || '-'}
-Pai/Mãe: ${r.pai || '-'} / ${r.mae || '-'}
-Obs: ${r.obs || '-'}`
-        );
-      }
-    });
+    listaEl.appendChild(el);
   }
 }
+renderLista();
 
-// CSV export do dia
-function exportCSV(){
-  const key = todayKey();
+/* Limpar form */
+$('#btnLimparForm').addEventListener('click', ()=>{
+  form.reset(); passagemHidden.value='nao'; setNow(); toast('Limpo');
+});
+
+/* Export CSV (dia) */
+$('#btnExport').addEventListener('click', ()=>{
   const all = ls('intelpm.registros') || {};
-  const hoje = all[key] || [];
-  if(hoje.length === 0){ toast('Nada para exportar'); return; }
-  const cols = ['data','hora','rg','nome','matricula','nasc','pai','mae','criminal','passagem','endereco','coords'];
-  const rows = [cols.join(',')];
-  for(const r of hoje){
-    const row = cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(',');
-    rows.push(row);
-  }
-  const csv = rows.join('\n');
-  // cria link de download
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `abordados-${key}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  toast('CSV gerado');
-}
-
-// escape
-function escapeHtml(s){ return (s||'').toString().replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-// cria id simples
-function uid(){ return Math.random().toString(36).slice(2,9); }
-
-// inicializa hora do formulário
-function setHoraNow(){
-  horaInput.value = new Date().toLocaleString();
-}
-
-// manipulação botões passagem criminal
-btnPassSim.addEventListener('click', ()=>{ passagemHidden.value='sim'; btnPassSim.classList.add('active'); toast('Passagem: Sim'); });
-btnPassNao.addEventListener('click', ()=>{ passagemHidden.value='nao'; btnPassNao.classList.add('active'); toast('Passagem: Não'); });
-
-// limpar form
-$('#btnLimparForm').addEventListener('click', (e)=>{
-  form.reset();
-  setHoraNow();
-  enderecoInput.value = '';
-  toast('Formulário limpo');
+  const arr = all[todayKey()] || [];
+  if(!arr.length){ toast('Nada para exportar'); return; }
+  const cols=['data','hora','rg','nome','criminal','passagem','matricula','nasc','pai','mae','endereco','coords'];
+  const rows=[cols.join(',')];
+  for(const r of arr){ rows.push(cols.map(c=>`"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(',')); }
+  const csv = rows.join('\n'); const blob = new Blob([csv],{type:'text/csv'});
+  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`abordados-${todayKey()}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
 
-// força obter localização
-$('#btnForceGeo').addEventListener('click', ()=> updateLocationAndAddress());
-
-// export CSV
-$('#btnExport').addEventListener('click', exportCSV);
-
-// apagar todos (local)
-$('#btnClearAll').addEventListener('click', ()=>{
-  if(confirm('Apagar TODOS os registros salvos neste aparelho?')){ localStorage.removeItem('intelpm.registros'); renderLista(); toast('Registros apagados'); }
-});
-
-// submissão do formulário (adicionar abordado)
-form.addEventListener('submit', async (ev)=>{
-  ev.preventDefault();
-  // valida básicos
-  const rg = rgInput.value.trim();
-  const nome = nomeInput.value.trim();
+/* Add registro */
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const rgv = rg.value.trim();
+  const nomev = nome.value.trim();
   const criminal = form.querySelector('input[name="criminal"]:checked');
-  if(!rg || !nome || !criminal){
-    toast('Preencha RG, Nome e marque "Criminal?"');
-    return;
-  }
-  // pega campos opcionais
-  const matricula = $('#matricula').value.trim();
-  const nasc = $('#nasc').value;
-  const pai = $('#pai').value.trim();
-  const mae = $('#mae').value.trim();
-  const passagem = passagemHidden.value === 'sim';
-  // hora atual (garante timestamp)
-  const dataHora = new Date();
-  // se não temos coords atuais, tenta pegar (não bloqueia UI totalmente)
-  if(!currentCoords && 'geolocation' in navigator){
-    try{
-      await updateLocationAndAddress();
-    }catch(e){}
-  }
-  const coords = currentCoords ? `${currentCoords[0].toFixed(6)},${currentCoords[1].toFixed(6)}` : '';
-  const endereco = enderecoInput.value.trim() || coords;
+  if(!rgv || rgv.length!==8 || !nomev || !criminal){ toast('Preencha: RG (8 dígitos), Nome e Criminal?'); return; }
 
+  if(!coords) { try{ await updateGeo(); }catch{} }
   const reg = {
     id: uid(),
-    data: dataHora.toISOString(),
-    hora: dataHora.toLocaleString(),
-    rg, nome, matricula, nasc, pai, mae,
-    criminal: criminal.value === 'sim',
-    passagem,
-    endereco,
-    coords,
-    obs: ''
+    data: new Date().toISOString(),
+    hora: nowStr(),
+    rg: rgv,
+    nome: nomev,
+    criminal: (criminal.value==='sim'),
+    passagem: (passagemHidden.value==='sim'),
+    matricula: matricula.value.trim(),
+    nasc: nasc.value,
+    pai: pai.value.trim(),
+    mae: mae.value.trim(),
+    endereco: endereco.value.trim(),
+    coords: coords ? `${coords[0].toFixed(6)},${coords[1].toFixed(6)}` : ''
   };
-  // salvar
   saveRegistro(reg);
-  // atualizar UI
-  setHoraNow();
   renderLista();
+  form.reset(); passagemHidden.value='nao'; setNow();
   toast('Abordado adicionado');
-  form.reset();
-  setHoraNow();
 });
 
-// boot
-(function boot(){
-  setHoraNow();
-  // tenta atualizar localização no boot (se permitido)
-  updateLocationAndAddress().catch(()=>{});
-  renderLista();
-  document.getElementById('status').textContent = 'pronto';
-})();
-
+/* Tela cheia */
+$('#btnFS').addEventListener('click', ()=>{
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
 </script>
 </body>
 </html>
