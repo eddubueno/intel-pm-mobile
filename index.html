@@ -4,6 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Inteligência Móvel — PM</title>
+
+<!-- PWA / iOS -->
+<meta name="theme-color" content="#0A0F14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Intel PM">
+<!-- Se quiser, troque depois por um PNG seu hosteado no próprio repo -->
+<link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3a/Police_Badge.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -50,13 +59,13 @@
   .pill{font-size:.72rem;border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted)}
   .caps{letter-spacing:.06em;text-transform:uppercase}
   .sr{position:absolute;left:-9999px}
-  /* Large touch targets on phones */
+  .iosTip{display:none;gap:.5rem;align-items:center;justify-content:center;padding:8px 10px;border-top:1px solid var(--line);background:rgba(255,255,255,.03);font-size:.9rem}
+  .iosTip .kbd{padding:2px 6px}
   @media (max-width:740px){
     .grid.cols-2{grid-template-columns:1fr}
     .grid.cols-3{grid-template-columns:1fr 1fr}
     .quick{grid-template-columns:1fr 1fr}
   }
-  /* Light theme toggle */
   .light{--bg:#F6FBFF; --panel:#ffffff; --ink:#0B1A24; --muted:#4b6a7a; --glass:#ffffffcc; --line:rgba(0,0,0,.08)}
 </style>
 </head>
@@ -78,19 +87,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
+    <div id="iosTip" class="iosTip">
+      No iPhone/iPad: toque <span class="kbd">Compartilhar</span> → <span class="kbd">Adicionar à Tela de Início</span> para instalar.
+    </div>
   </header>
 
   <main>
-    <!-- CONSULTA RÁPIDA (dados não são enviados/armazenados) -->
+    <!-- CONSULTA RÁPIDA -->
     <section class="card" aria-labelledby="t-consulta">
       <div class="head"><div class="title" id="t-consulta">Consulta rápida</div><span class="hint">Local • sem envio • <span class="ok">privado</span></span></div>
       <div class="body grid">
         <div class="grid cols-2">
           <div class="input"><label for="inpNome">Nome completo</label><input id="inpNome" placeholder="Ex.: João da Silva" autocomplete="off"/></div>
-          <div class="input"><label for="inpCPF">CPF</label><input id="inpCPF" inputmode="numeric" placeholder="000.000.000-00"/></div>
-          <div class="input"><label for="inpRG">RG</label><input id="inpRG" placeholder="RG"/></div>
-          <div class="input"><label for="inpPlaca">Placa</label><input id="inpPlaca" placeholder="ABC1D23" style="text-transform:uppercase"/></div>
-          <div class="input"><label for="inpProc">Nº do processo</label><input id="inpProc" placeholder="Ex.: 1000000-00.2024.8.26.0000"/></div>
+          <div class="input"><label for="inpCPF">CPF</label><input id="inpCPF" inputmode="numeric" placeholder="000.000.000-00" maxlength="14"/></div>
+          <div class="input"><label for="inpRG">RG</label><input id="inpRG" placeholder="00.000.000-0" maxlength="12"/></div>
+          <div class="input"><label for="inpPlaca">Placa</label><input id="inpPlaca" placeholder="ABC1D23" style="text-transform:uppercase" maxlength="7"/></div>
+          <div class="input"><label for="inpProc">Nº do processo (CNJ)</label><input id="inpProc" placeholder="0000000-00.0000.0.00.0000" maxlength="25"/></div>
           <div class="input"><label for="inpObs">Observação local (opcional)</label><input id="inpObs" placeholder="Breve nota… (fica só no aparelho)"/></div>
         </div>
         <div class="row">
@@ -103,32 +115,39 @@
 
     <!-- ATALHOS OFICIAIS -->
     <section class="card" aria-labelledby="t-atalhos">
-      <div class="head"><div class="title" id="t-atalhos">Atalhos oficiais (abrir em nova aba)</div><span class="hint">Forças externas podem exigir captcha/autenticação</span></div>
+      <div class="head"><div class="title" id="t-atalhos">Atalhos oficiais (abre em nova aba)</div><span class="hint">Alguns exigem captcha/autenticação</span></div>
       <div class="body">
         <div class="quick" style="margin-bottom:10px">
-          <button class="qbtn" data-open="https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca" title="Consulta BNMP (pode exigir captcha)">
-            <!-- target icon -->
+          <button class="qbtn" data-open="https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path d="M12 7v5l3 3" stroke-width="2" stroke-linecap="round"/></svg>
             BNMP — Mandados
           </button>
-          <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo" title="Validade de Selo TJSP">
+          <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 6 6 .5-4.5 4 .5 6L12 16 6 18.5l.5-6L2 8.5 8 8z" stroke-width="2"/></svg>
             Validade de Selo — TJSP
           </button>
-          <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do" title="Processo TJSP 1ª instância">
+          <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/><path d="M7 8h10M7 12h6" stroke-width="2" stroke-linecap="round"/></svg>
-            Consulta Processo — TJSP
+            Processo — TJSP
           </button>
           <button class="qbtn" id="qbtnTJSPPesquisa" title="Pesquisar no site do TJSP com Google">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="7" stroke-width="2"/></svg>
             Buscar no site TJSP
           </button>
+          <button class="qbtn" data-open="https://www.detran.sp.gov.br/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 13l2-5h14l2 5M5 13h14M7 18h10" stroke-width="2" stroke-linecap="round"/></svg>
+            DETRAN-SP (portal)
+          </button>
+          <button class="qbtn" data-open="https://www.gov.br/mj/pt-br/assuntos/senasp/sinesp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h18M5 7l2 12h10l2-12" stroke-width="2"/><path d="M8 7l1-3h6l1 3" stroke-width="2"/></svg>
+            SINESP (info/links)
+          </button>
         </div>
-        <div class="hint">Se possível, mantenha um <b>token</b> ou login oficial acessível para agilizar os acessos exigidos por captcha.</div>
+        <div class="hint">Em ambiente institucional, ajuste os atalhos para portais internos/autenticados.</div>
       </div>
     </section>
 
-    <!-- BUSCAS COM FILTRO (Google site:) -->
+    <!-- BUSCAS -->
     <section class="card" aria-labelledby="t-busca">
       <div class="head"><div class="title" id="t-busca">Buscas com filtro (Google)</div><span class="hint">Gera consultas <span class="kbd">site:</span> prontas</span></div>
       <div class="body grid">
@@ -137,7 +156,7 @@
           <button class="btn" id="gTJSP">Buscar em TJSP</button>
           <button class="btn" id="gGeral">Busca combinada</button>
         </div>
-        <div class="hint small">As buscas abrem em nova aba e <b>respeitam a LGPD</b>; nada daqui é enviado a terceiros automaticamente.</div>
+        <div class="hint small">As buscas abrem em nova aba e <b>respeitam a LGPD</b>; nada é enviado automaticamente.</div>
       </div>
     </section>
 
@@ -154,11 +173,10 @@
       </div>
     </section>
 
-    <!-- SOBRE / PRIVACIDADE -->
     <section class="card" aria-labelledby="t-sobre">
-      <div class="head"><div class="title" id="t-sobre">Sobre • privacidade</div><span class="pill">v1</span></div>
+      <div class="head"><div class="title" id="t-sobre">Sobre • privacidade</div><span class="pill">v1.1</span></div>
       <div class="body">
-        <p class="small">Esta interface é <b>PWA</b> (instalável) e funciona off‑line para o que não depende de sites externos. Nenhum dado é enviado; as entradas ficam salvas somente neste aparelho (<span class="kbd">localStorage</span>). Para acessos oficiais (BNMP/TJSP), a navegação abre em outra aba.</p>
+        <p class="small">Interface <b>PWA</b> (instalável). Off-line para o que não depende de sites externos. Nenhum dado é enviado; entradas ficam apenas neste aparelho (<span class="kbd">localStorage</span>). Atalhos abrem em outra aba.</p>
       </div>
     </section>
   </main>
@@ -169,11 +187,12 @@
 </div>
 
 <script>
-// ===== ESTADO LOCAL =====
+// ===== helpers =====
 const $ = (sel)=>document.querySelector(sel);
 const ls = (k,v)=> v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k, JSON.stringify(v));
 const fields = ['inpNome','inpCPF','inpRG','inpPlaca','inpProc','inpObs'];
 
+// ===== estado local =====
 function loadState(){
   const st = ls('intelpm.form')||{};
   fields.forEach(id=>{ if(st[id]) document.getElementById(id).value = st[id]; });
@@ -184,22 +203,13 @@ function saveState(){
   fields.forEach(id=> st[id] = document.getElementById(id).value.trim());
   ls('intelpm.form', st);
 }
-
 $('#btnSalvar').addEventListener('click', ()=>{ saveState(); toast('Dados salvos localmente'); });
-$('#btnLimpar').addEventListener('click', ()=>{
-  fields.forEach(id=> document.getElementById(id).value='');
-  saveState(); toast('Limpado');
-});
+$('#btnLimpar').addEventListener('click', ()=>{ fields.forEach(id=> document.getElementById(id).value=''); saveState(); toast('Limpado'); });
 
-// ===== ATALHOS OFICIAIS =====
-for (const el of document.querySelectorAll('[data-open]')){
-  el.addEventListener('click', (e)=>{
-    const url = e.currentTarget.getAttribute('data-open');
-    window.open(url, '_blank', 'noopener');
-  });
-}
+// ===== atalhos =====
+for (const el of document.querySelectorAll('[data-open]')) el.addEventListener('click', e=>window.open(e.currentTarget.getAttribute('data-open'),'_blank','noopener'));
 
-// Extra: busca Google restrita
+// ===== buscas Google (site:) =====
 function q(v){return encodeURIComponent(v)}
 function valores(){
   const nome = $('#inpNome').value.trim();
@@ -209,61 +219,52 @@ function valores(){
   const proc = $('#inpProc').value.trim();
   return {nome, cpf, rg, placa, proc};
 }
-
 $('#gBNMP').addEventListener('click', ()=>{
   const {nome,cpf,rg} = valores();
   const terms = [nome, cpf, rg].filter(Boolean).join(' ');
   const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br`;
-  window.open(url, '_blank', 'noopener');
+  window.open(url,'_blank','noopener');
 });
 $('#gTJSP').addEventListener('click', ()=>{
   const {nome,proc,rg,cpf} = valores();
   const terms = [proc, nome, rg, cpf].filter(Boolean).join(' ');
   const url = `https://www.google.com/search?q=${q(terms)}+site%3Aesaj.tjsp.jus.br`;
-  window.open(url, '_blank', 'noopener');
+  window.open(url,'_blank','noopener');
 });
 $('#gGeral').addEventListener('click', ()=>{
   const {nome,cpf,rg,placa,proc} = valores();
   const terms = [proc, nome, cpf, rg, placa].filter(Boolean).join(' ');
   const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br+OR+site%3Aesaj.tjsp.jus.br`;
-  window.open(url, '_blank', 'noopener');
+  window.open(url,'_blank','noopener');
 });
 $('#qbtnTJSPPesquisa').addEventListener('click', ()=>{
   const {proc,nome} = valores();
   const base = [proc,nome].filter(Boolean).join(' ');
-  const url = `https://www.google.com/search?q=${q(base)}+site%3Aesaj.tjsp.jus.br+cpopg+OR+cpopg.do`;
-  window.open(url, '_blank', 'noopener');
+  const url = `https://www.google.com/search?q=${q(base)}+site%3Aesaj.tjsp.jus.br+cpopg`;
+  window.open(url,'_blank','noopener');
 });
 
-// ===== Ferramentas de turno =====
+// ===== ferramentas =====
 let stream;
 $('#btnLanterna').addEventListener('click', async ()=>{
-  // Alterna lanterna via Torch se suportado (Android Chrome com permissões)
   try{
-    if(!('mediaDevices' in navigator)) throw new Error('Navegador não suporta câmera');
+    if(!('mediaDevices' in navigator)) throw new Error('Sem câmera');
     if(!stream){
-      stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', advanced:[{torch:true}]}});
+      stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', advanced:[{torch:true}]}}); // Android
       const track = stream.getVideoTracks()[0];
       await track.applyConstraints({advanced:[{torch:true}]});
       toast('Lanterna: ligada');
     }else{
-      stream.getVideoTracks().forEach(t=>t.stop());
-      stream = null; toast('Lanterna: desligada');
+      stream.getVideoTracks().forEach(t=>t.stop()); stream=null; toast('Lanterna: desligada');
     }
   }catch(e){
-    // Fallback: brilho máximo da tela
+    // iOS fallback: tela branca por 4s
+    const oldBg = document.body.style.background, oldColor = document.body.style.color;
     document.documentElement.style.background = '#ffffff';
-    document.body.style.background = '#ffffff';
-    document.body.style.color = '#000000';
-    toast('Fallback: tela branca (toque novamente para voltar)');
-    setTimeout(()=>{
-      document.documentElement.style.background = '';
-      document.body.style.background = '';
-      document.body.style.color = '';
-    }, 4000);
+    document.body.style.background = '#ffffff'; document.body.style.color = '#000000';
+    toast('Tela branca (fallback)'); setTimeout(()=>{ document.documentElement.style.background = ''; document.body.style.background = oldBg; document.body.style.color = oldColor; }, 4000);
   }
 });
-
 $('#btnApito').addEventListener('click', ()=>{
   try{
     const ctx = new (window.AudioContext||window.webkitAudioContext)();
@@ -272,12 +273,10 @@ $('#btnApito').addEventListener('click', ()=>{
     setTimeout(()=>{o.stop(); ctx.close();}, 700);
   }catch(e){}
 });
-
 $('#btnNota').addEventListener('click', ()=>{
   const txt = prompt('Descreva rapidamente (fica no aparelho):');
   if(!txt) return; const list = ls('intelpm.notas')||[]; list.unshift({t:Date.now(), txt}); ls('intelpm.notas', list); renderNotas();
 });
-
 function renderNotas(){
   const list = ls('intelpm.notas')||[]; const box = $('#notas'); box.innerHTML='';
   for(const n of list.slice(0,8)){
@@ -289,14 +288,45 @@ function renderNotas(){
     <div style="margin-top:6px">${escapeHtml(n.txt)}</div></div>`;
     box.appendChild(li);
   }
-  for(const b of box.querySelectorAll('[data-rm]')){
-    b.addEventListener('click', (e)=>{
-      const id = Number(e.currentTarget.getAttribute('data-rm'));
-      const list = (ls('intelpm.notas')||[]).filter(x=>x.t!==id); ls('intelpm.notas', list); renderNotas();
-    });
-  }
+  for(const b of box.querySelectorAll('[data-rm]')) b.addEventListener('click', e=>{
+    const id = Number(e.currentTarget.getAttribute('data-rm'));
+    const list = (ls('intelpm.notas')||[]).filter(x=>x.t!==id); ls('intelpm.notas', list); renderNotas();
+  });
 }
 function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+
+// ===== máscaras / validação leve =====
+const onlyDigits = s => s.replace(/\D/g,'');
+$('#inpCPF').addEventListener('input', e=>{
+  let v = onlyDigits(e.target.value).slice(0,11);
+  if(v.length>9) e.target.value = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2}).*$/,'$1.$2.$3-$4');
+  else if(v.length>6) e.target.value = v.replace(/^(\d{3})(\d{3})(\d{0,3}).*$/,'$1.$2.$3');
+  else if(v.length>3) e.target.value = v.replace(/^(\d{3})(\d{0,3}).*$/,'$1.$2');
+  else e.target.value = v;
+});
+$('#inpRG').addEventListener('input', e=>{
+  let v = onlyDigits(e.target.value).slice(0,9);
+  if(v.length>8) e.target.value = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,1}).*$/,'$1.$2.$3-$4');
+  else if(v.length>5) e.target.value = v.replace(/^(\d{2})(\d{3})(\d{0,3}).*$/,'$1.$2.$3');
+  else if(v.length>2) e.target.value = v.replace(/^(\d{2})(\d{0,3}).*$/,'$1.$2');
+  else e.target.value = v;
+});
+$('#inpPlaca').addEventListener('input', e=>{
+  let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7);
+  // tenta converter o formato antigo ABC-1234 para Mercosul ABC1D23 ao colar
+  if(/^[A-Z]{3}\d{4}$/.test(v)) v = v.slice(0,4) + 'A' + v.slice(4,6); // aproximação
+  e.target.value = v;
+});
+$('#inpProc').addEventListener('input', e=>{
+  let v = e.target.value.toUpperCase().replace(/[^0-9.\-]/g,'').slice(0,25);
+  // força padrão 0000000-00.0000.0.00.0000 conforme digita (tolerante)
+  v = v.replace(/^(\d{7})(\d)/,'$1-$2')
+       .replace(/^(\d{7}-\d{2})(\d)/,'$1.$2')
+       .replace(/^(\d{7}-\d{2}\.\d{4})(\d)/,'$1.$2')
+       .replace(/^(\d{7}-\d{2}\.\d{4}\.\d)(\d)/,'$1.$2')
+       .replace(/^(\d{7}-\d{2}\.\d{4}\.\d\.\d{2})(\d)/,'$1.$2');
+  e.target.value = v;
+});
 
 // ===== UI util =====
 function toast(msg){
@@ -305,29 +335,24 @@ function toast(msg){
   t.style.background='rgba(10,16,22,.9)'; t.style.border='1px solid var(--line)'; t.style.padding='10px 14px'; t.style.borderRadius='12px'; t.style.zIndex=9999;
   document.body.appendChild(t); setTimeout(()=>t.remove(), 1400);
 }
-
-// Tema e tela cheia
-$('#btnTheme').addEventListener('click', ()=>{
-  document.documentElement.classList.toggle('light');
-  toast(document.documentElement.classList.contains('light')? 'Tema claro' : 'Tema escuro');
-});
-$('#btnFS').addEventListener('click', ()=>{
-  if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
-});
+$('#btnTheme').addEventListener('click', ()=>{ document.documentElement.classList.toggle('light'); toast(document.documentElement.classList.contains('light')? 'Tema claro' : 'Tema escuro'); });
+$('#btnFS').addEventListener('click', ()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); });
 
 // ===== PWA (manifest + SW inline) =====
 let deferredPrompt; const btnInstall = $('#btnInstall');
-window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt = e; btnInstall.hidden=false; });
-btnInstall.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; toast(outcome==='accepted'? 'Instalado' : 'Instalação cancelada'); deferredPrompt=null; btnInstall.hidden=true; });
+const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+if(isiOS){ btnInstall.hidden = true; document.getElementById('iosTip').style.display='flex'; }
+window.addEventListener('beforeinstallprompt', (e)=>{ if(isiOS) return; e.preventDefault(); deferredPrompt = e; btnInstall.hidden=false; });
+btnInstall?.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; toast(outcome==='accepted'? 'Instalado' : 'Instalação cancelada'); deferredPrompt=null; btnInstall.hidden=true; });
 
-// Dinamicamente injeta manifest
+// Manifest dinâmico (simples)
 (function makeManifest(){
   const manifest = { name: 'Inteligência Móvel — PM', short_name: 'Intel PM', start_url: '.', display: 'standalone', background_color: '#0A0F14', theme_color: '#0A0F14', icons: [] };
   const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
   const url = URL.createObjectURL(blob); const link = document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
 })();
 
-// Service Worker via Blob (cache básico do app-shell)
+// Service Worker via Blob (cache básico)
 if('serviceWorker' in navigator){
   const swCode = `
     const C = 'intelpm-cache-v1';
@@ -340,9 +365,8 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register(swUrl).then(()=>{ document.getElementById('status').textContent='PWA pronto'; }).catch(()=>{});
 }
 
-// ===== BOOT =====
+// ===== boot =====
 loadState();
-
 </script>
 </body>
 </html>
