@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Inteligência Móvel — PM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F14; --panel:#0D141B; --ink:#E8F0F5; --muted:#9FB2BF;
+    --accent:#00E0C6; --accent-2:#8AE5FF; --danger:#ff5252; --ok:#37ff7f;
+    --line:rgba(255,255,255,.08); --glass:rgba(10,16,22,.6);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;background:var(--bg);color:var(--ink);margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif}
+  .wrap{min-height:100%;display:flex;flex-direction:column}
+  header{position:sticky;top:0;z-index:20;background:linear-gradient(0deg, rgba(10,16,22,.2), rgba(10,16,22,.8));backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:.6rem;padding:12px 14px}
+  .badge{font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;color:var(--accent)}
+  .grow{flex:1}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--glass);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+  .btn:active{transform:scale(.98)}
+  .btn.icon{display:inline-flex;align-items:center;gap:.5rem}
+  .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(0,224,198,.25), rgba(0,224,198,.08));}
+  .btn.warn{border-color:#ff6767;background:linear-gradient(180deg, rgba(255,103,103,.2), rgba(255,103,103,.06));}
+  main{padding:16px;display:grid;gap:16px}
+  .card{background:var(--glass);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .card .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .card .title{font-weight:800;letter-spacing:.02em}
+  .card .body{padding:12px 14px}
+  .grid{display:grid;gap:12px}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .input{display:flex;flex-direction:column;gap:6px}
+  .input label{font-size:.82rem;color:var(--muted)}
+  .input input, .input select{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);font-size:1rem}
+  .hint{font-size:.86rem;color:var(--muted)}
+  .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .quick .qbtn{display:flex;align-items:center;gap:.6rem;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:14px;border-radius:14px;font-weight:700;justify-content:center;text-align:center}
+  .qbtn svg{width:22px;height:22px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row .btn{flex:1}
+  .kbd{font-family:"Source Code Pro",ui-monospace,monospace;font-weight:600;border:1px solid var(--line);padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.04)}
+  footer{padding:14px;color:var(--muted);text-align:center}
+  .small{font-size:.9rem}
+  .ok{color:var(--ok)}
+  .list{display:grid;gap:8px}
+  .list a{display:flex;align-items:center;gap:.6rem;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);color:var(--ink);text-decoration:none}
+  .list a:active{transform:scale(.98)}
+  .pill{font-size:.72rem;border:1px solid var(--line);padding:2px 8px;border-radius:999px;color:var(--muted)}
+  .caps{letter-spacing:.06em;text-transform:uppercase}
+  .sr{position:absolute;left:-9999px}
+  /* Large touch targets on phones */
+  @media (max-width:740px){
+    .grid.cols-2{grid-template-columns:1fr}
+    .grid.cols-3{grid-template-columns:1fr 1fr}
+    .quick{grid-template-columns:1fr 1fr}
+  }
+  /* Light theme toggle */
+  .light{--bg:#F6FBFF; --panel:#ffffff; --ink:#0B1A24; --muted:#4b6a7a; --glass:#ffffffcc; --line:rgba(0,0,0,.08)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="bar">
+      <div class="badge">INTEL PM • MÓVEL</div>
+      <div class="pill caps" id="status">offline-ready</div>
+      <div class="grow"></div>
+      <button class="btn icon" id="btnInstall" title="Instalar no aparelho" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15v4a2 2 0 002 2h10a2 2 0 002-2v-4" stroke-width="2" stroke-linecap="round"/></svg>
+        Instalar
+      </button>
+      <button class="btn icon" id="btnTheme" title="Tema claro/escuro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a9 9 0 109 9 7 7 0 01-9-9z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="btn icon" id="btnFS" title="Tela cheia">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-18h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- CONSULTA RÁPIDA (dados não são enviados/armazenados) -->
+    <section class="card" aria-labelledby="t-consulta">
+      <div class="head"><div class="title" id="t-consulta">Consulta rápida</div><span class="hint">Local • sem envio • <span class="ok">privado</span></span></div>
+      <div class="body grid">
+        <div class="grid cols-2">
+          <div class="input"><label for="inpNome">Nome completo</label><input id="inpNome" placeholder="Ex.: João da Silva" autocomplete="off"/></div>
+          <div class="input"><label for="inpCPF">CPF</label><input id="inpCPF" inputmode="numeric" placeholder="000.000.000-00"/></div>
+          <div class="input"><label for="inpRG">RG</label><input id="inpRG" placeholder="RG"/></div>
+          <div class="input"><label for="inpPlaca">Placa</label><input id="inpPlaca" placeholder="ABC1D23" style="text-transform:uppercase"/></div>
+          <div class="input"><label for="inpProc">Nº do processo</label><input id="inpProc" placeholder="Ex.: 1000000-00.2024.8.26.0000"/></div>
+          <div class="input"><label for="inpObs">Observação local (opcional)</label><input id="inpObs" placeholder="Breve nota… (fica só no aparelho)"/></div>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="btnSalvar">Salvar preenchimento</button>
+          <button class="btn" id="btnLimpar">Limpar</button>
+        </div>
+        <div class="hint">Dica: toque e segure nos campos para copiar. Nada é enviado a servidores — os dados ficam em <span class="kbd">localStorage</span> deste aparelho.</div>
+      </div>
+    </section>
+
+    <!-- ATALHOS OFICIAIS -->
+    <section class="card" aria-labelledby="t-atalhos">
+      <div class="head"><div class="title" id="t-atalhos">Atalhos oficiais (abrir em nova aba)</div><span class="hint">Forças externas podem exigir captcha/autenticação</span></div>
+      <div class="body">
+        <div class="quick" style="margin-bottom:10px">
+          <button class="qbtn" data-open="https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca" title="Consulta BNMP (pode exigir captcha)">
+            <!-- target icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path d="M12 7v5l3 3" stroke-width="2" stroke-linecap="round"/></svg>
+            BNMP — Mandados
+          </button>
+          <button class="qbtn" data-open="https://extrajudicial.tjsp.jus.br/validade-selo" title="Validade de Selo TJSP">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 6 6 .5-4.5 4 .5 6L12 16 6 18.5l.5-6L2 8.5 8 8z" stroke-width="2"/></svg>
+            Validade de Selo — TJSP
+          </button>
+          <button class="qbtn" data-open="https://esaj.tjsp.jus.br/cpopg/open.do" title="Processo TJSP 1ª instância">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="14" rx="2" stroke-width="2"/><path d="M7 8h10M7 12h6" stroke-width="2" stroke-linecap="round"/></svg>
+            Consulta Processo — TJSP
+          </button>
+          <button class="qbtn" id="qbtnTJSPPesquisa" title="Pesquisar no site do TJSP com Google">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="10" r="7" stroke-width="2"/></svg>
+            Buscar no site TJSP
+          </button>
+        </div>
+        <div class="hint">Se possível, mantenha um <b>token</b> ou login oficial acessível para agilizar os acessos exigidos por captcha.</div>
+      </div>
+    </section>
+
+    <!-- BUSCAS COM FILTRO (Google site:) -->
+    <section class="card" aria-labelledby="t-busca">
+      <div class="head"><div class="title" id="t-busca">Buscas com filtro (Google)</div><span class="hint">Gera consultas <span class="kbd">site:</span> prontas</span></div>
+      <div class="body grid">
+        <div class="grid cols-3">
+          <button class="btn" id="gBNMP">Buscar em BNMP</button>
+          <button class="btn" id="gTJSP">Buscar em TJSP</button>
+          <button class="btn" id="gGeral">Busca combinada</button>
+        </div>
+        <div class="hint small">As buscas abrem em nova aba e <b>respeitam a LGPD</b>; nada daqui é enviado a terceiros automaticamente.</div>
+      </div>
+    </section>
+
+    <!-- FERRAMENTAS DO TURNO -->
+    <section class="card" aria-labelledby="t-turno">
+      <div class="head"><div class="title" id="t-turno">Ferramentas de turno</div><span class="hint">Qualidade de vida do operador</span></div>
+      <div class="body grid">
+        <div class="grid cols-3">
+          <button class="btn" id="btnLanterna">Lanterna</button>
+          <button class="btn" id="btnApito">Beep Alerta</button>
+          <button class="btn" id="btnNota">Nota rápida</button>
+        </div>
+        <div class="list" id="notas"></div>
+      </div>
+    </section>
+
+    <!-- SOBRE / PRIVACIDADE -->
+    <section class="card" aria-labelledby="t-sobre">
+      <div class="head"><div class="title" id="t-sobre">Sobre • privacidade</div><span class="pill">v1</span></div>
+      <div class="body">
+        <p class="small">Esta interface é <b>PWA</b> (instalável) e funciona off‑line para o que não depende de sites externos. Nenhum dado é enviado; as entradas ficam salvas somente neste aparelho (<span class="kbd">localStorage</span>). Para acessos oficiais (BNMP/TJSP), a navegação abre em outra aba.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="small">© Operacional — uso interno. Ajuste os atalhos conforme normas da corporação.</div>
+  </footer>
+</div>
+
+<script>
+// ===== ESTADO LOCAL =====
+const $ = (sel)=>document.querySelector(sel);
+const ls = (k,v)=> v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k, JSON.stringify(v));
+const fields = ['inpNome','inpCPF','inpRG','inpPlaca','inpProc','inpObs'];
+
+function loadState(){
+  const st = ls('intelpm.form')||{};
+  fields.forEach(id=>{ if(st[id]) document.getElementById(id).value = st[id]; });
+  renderNotas();
+}
+function saveState(){
+  const st={};
+  fields.forEach(id=> st[id] = document.getElementById(id).value.trim());
+  ls('intelpm.form', st);
+}
+
+$('#btnSalvar').addEventListener('click', ()=>{ saveState(); toast('Dados salvos localmente'); });
+$('#btnLimpar').addEventListener('click', ()=>{
+  fields.forEach(id=> document.getElementById(id).value='');
+  saveState(); toast('Limpado');
+});
+
+// ===== ATALHOS OFICIAIS =====
+for (const el of document.querySelectorAll('[data-open]')){
+  el.addEventListener('click', (e)=>{
+    const url = e.currentTarget.getAttribute('data-open');
+    window.open(url, '_blank', 'noopener');
+  });
+}
+
+// Extra: busca Google restrita
+function q(v){return encodeURIComponent(v)}
+function valores(){
+  const nome = $('#inpNome').value.trim();
+  const cpf = $('#inpCPF').value.trim();
+  const rg = $('#inpRG').value.trim();
+  const placa = $('#inpPlaca').value.trim();
+  const proc = $('#inpProc').value.trim();
+  return {nome, cpf, rg, placa, proc};
+}
+
+$('#gBNMP').addEventListener('click', ()=>{
+  const {nome,cpf,rg} = valores();
+  const terms = [nome, cpf, rg].filter(Boolean).join(' ');
+  const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br`;
+  window.open(url, '_blank', 'noopener');
+});
+$('#gTJSP').addEventListener('click', ()=>{
+  const {nome,proc,rg,cpf} = valores();
+  const terms = [proc, nome, rg, cpf].filter(Boolean).join(' ');
+  const url = `https://www.google.com/search?q=${q(terms)}+site%3Aesaj.tjsp.jus.br`;
+  window.open(url, '_blank', 'noopener');
+});
+$('#gGeral').addEventListener('click', ()=>{
+  const {nome,cpf,rg,placa,proc} = valores();
+  const terms = [proc, nome, cpf, rg, placa].filter(Boolean).join(' ');
+  const url = `https://www.google.com/search?q=${q(terms)}+site%3Acnj.jus.br+OR+site%3Aportalbnmp.cnj.jus.br+OR+site%3Aesaj.tjsp.jus.br`;
+  window.open(url, '_blank', 'noopener');
+});
+$('#qbtnTJSPPesquisa').addEventListener('click', ()=>{
+  const {proc,nome} = valores();
+  const base = [proc,nome].filter(Boolean).join(' ');
+  const url = `https://www.google.com/search?q=${q(base)}+site%3Aesaj.tjsp.jus.br+cpopg+OR+cpopg.do`;
+  window.open(url, '_blank', 'noopener');
+});
+
+// ===== Ferramentas de turno =====
+let stream;
+$('#btnLanterna').addEventListener('click', async ()=>{
+  // Alterna lanterna via Torch se suportado (Android Chrome com permissões)
+  try{
+    if(!('mediaDevices' in navigator)) throw new Error('Navegador não suporta câmera');
+    if(!stream){
+      stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', advanced:[{torch:true}]}});
+      const track = stream.getVideoTracks()[0];
+      await track.applyConstraints({advanced:[{torch:true}]});
+      toast('Lanterna: ligada');
+    }else{
+      stream.getVideoTracks().forEach(t=>t.stop());
+      stream = null; toast('Lanterna: desligada');
+    }
+  }catch(e){
+    // Fallback: brilho máximo da tela
+    document.documentElement.style.background = '#ffffff';
+    document.body.style.background = '#ffffff';
+    document.body.style.color = '#000000';
+    toast('Fallback: tela branca (toque novamente para voltar)');
+    setTimeout(()=>{
+      document.documentElement.style.background = '';
+      document.body.style.background = '';
+      document.body.style.color = '';
+    }, 4000);
+  }
+});
+
+$('#btnApito').addEventListener('click', ()=>{
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type='square'; o.frequency.value=1200; g.gain.value=.08; o.connect(g); g.connect(ctx.destination); o.start();
+    setTimeout(()=>{o.stop(); ctx.close();}, 700);
+  }catch(e){}
+});
+
+$('#btnNota').addEventListener('click', ()=>{
+  const txt = prompt('Descreva rapidamente (fica no aparelho):');
+  if(!txt) return; const list = ls('intelpm.notas')||[]; list.unshift({t:Date.now(), txt}); ls('intelpm.notas', list); renderNotas();
+});
+
+function renderNotas(){
+  const list = ls('intelpm.notas')||[]; const box = $('#notas'); box.innerHTML='';
+  for(const n of list.slice(0,8)){
+    const li = document.createElement('div'); li.className='list-item';
+    li.innerHTML = `<div class="list"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div><span class="pill">${new Date(n.t).toLocaleString()}</span></div>
+      <button class="btn warn" data-rm="${n.t}">apagar</button>
+    </div>
+    <div style="margin-top:6px">${escapeHtml(n.txt)}</div></div>`;
+    box.appendChild(li);
+  }
+  for(const b of box.querySelectorAll('[data-rm]')){
+    b.addEventListener('click', (e)=>{
+      const id = Number(e.currentTarget.getAttribute('data-rm'));
+      const list = (ls('intelpm.notas')||[]).filter(x=>x.t!==id); ls('intelpm.notas', list); renderNotas();
+    });
+  }
+}
+function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+
+// ===== UI util =====
+function toast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg; t.style.position='fixed'; t.style.left='50%'; t.style.bottom='20px'; t.style.transform='translateX(-50%)';
+  t.style.background='rgba(10,16,22,.9)'; t.style.border='1px solid var(--line)'; t.style.padding='10px 14px'; t.style.borderRadius='12px'; t.style.zIndex=9999;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 1400);
+}
+
+// Tema e tela cheia
+$('#btnTheme').addEventListener('click', ()=>{
+  document.documentElement.classList.toggle('light');
+  toast(document.documentElement.classList.contains('light')? 'Tema claro' : 'Tema escuro');
+});
+$('#btnFS').addEventListener('click', ()=>{
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
+});
+
+// ===== PWA (manifest + SW inline) =====
+let deferredPrompt; const btnInstall = $('#btnInstall');
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt = e; btnInstall.hidden=false; });
+btnInstall.addEventListener('click', async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const {outcome} = await deferredPrompt.userChoice; toast(outcome==='accepted'? 'Instalado' : 'Instalação cancelada'); deferredPrompt=null; btnInstall.hidden=true; });
+
+// Dinamicamente injeta manifest
+(function makeManifest(){
+  const manifest = { name: 'Inteligência Móvel — PM', short_name: 'Intel PM', start_url: '.', display: 'standalone', background_color: '#0A0F14', theme_color: '#0A0F14', icons: [] };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const url = URL.createObjectURL(blob); const link = document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
+})();
+
+// Service Worker via Blob (cache básico do app-shell)
+if('serviceWorker' in navigator){
+  const swCode = `
+    const C = 'intelpm-cache-v1';
+    self.addEventListener('install', e=>{ e.waitUntil(caches.open(C).then(c=>c.addAll(['./']))); self.skipWaiting(); });
+    self.addEventListener('activate', e=>{ e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==C).map(k=>caches.delete(k))))); self.clients.claim(); });
+    self.addEventListener('fetch', e=>{ const url = new URL(e.request.url); if(url.origin===location.origin){ e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))); } });
+  `;
+  const blob = new Blob([swCode], {type:'text/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).then(()=>{ document.getElementById('status').textContent='PWA pronto'; }).catch(()=>{});
+}
+
+// ===== BOOT =====
+loadState();
+
+</script>
+</body>
+</html>
