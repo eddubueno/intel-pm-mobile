@@ -1,94 +1,436 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>INTEL • PM — Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0e1420; --panel:#121a2a; --ink:#eef6ff; --muted:#9fb3c9;
-    --line:rgba(255,255,255,.14); --accent:#22d3ee; --accent2:#6aa3ff;
-    --glass:linear-gradient(180deg,rgba(23,35,56,.72),rgba(14,22,36,.9));
-    --radius:16px;
-  }
-  [data-theme="hc"]{ --bg:#000; --panel:#0b0b0b; --ink:#fff; --muted:#cfcfcf; --line:rgba(255,255,255,.35); --accent:#00fff0; --accent2:#9cc3ff; }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:radial-gradient(1200px 800px at 78% -10%, #1b2a44 0%, #0f1a2a 55%, var(--bg) 100%);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif}
-  .wrap{min-height:100%;display:flex;flex-direction:column}
-  header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:linear-gradient(0deg,rgba(10,18,32,.7),rgba(10,18,32,.96));backdrop-filter:saturate(1.2) blur(10px)}
-  .bar{display:flex;align-items:center;gap:12px;padding:12px 14px}
-  .brand{font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-  .status{font-family:"Space Mono",monospace;font-size:.8rem;border:1px solid var(--line);padding:4px 8px;border-radius:999px;color:var(--muted)}
-  .grow{flex:1}
-  .btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
-  .btn.ghost{background:transparent}
-  .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(34,211,238,.22), rgba(34,211,238,.06))}
-  .btn:active{transform:scale(.98)}
-  main{padding:18px;display:grid;gap:18px;grid-template-columns:1fr}
-  .card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--glass)}
-  .card .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
-  .card .title{font-weight:800;letter-spacing:.02em}
-  .card .body{padding:14px}
-  .hint{color:var(--muted);font-size:.92rem}
-  .section-title{display:flex;align-items:center;gap:10px;margin:8px 0}
-  .section-title .dot{width:9px;height:9px;border-radius:999px;background:var(--accent)}
-  .grid{display:grid;gap:12px}
-  .cols-2{grid-template-columns:repeat(2,1fr)}
-  .cols-3{grid-template-columns:repeat(3,1fr)}
-  @media (max-width:780px){ .cols-2,.cols-3{grid-template-columns:1fr} }
-  .qbtn{display:flex; align-items:center; gap:.9rem; border:1px solid rgba(255,255,255,.16);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));padding:14px;border-radius:14px;font-weight:800; cursor:pointer; text-align:left;transition:transform .06s ease, border-color .12s ease, background .12s ease;}
-  .qbtn:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.34) }
-  .qbtn .ico{font-size:1.25rem; width:1.6rem; text-align:center}
-  .qbtn small{display:block; color:var(--muted); font-weight:600}
-  .splash{position:fixed;inset:0;background:radial-gradient(1200px 800px at 50% -10%, #22314f 0%, #0b1422 55%, #000 100%);display:flex;align-items:center;justify-content:center;z-index:1000;}
-  .splash .box{width:min(740px,92vw);padding:28px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(10,16,28,.7),rgba(8,12,22,.9))}
-  .badge{display:inline-block;border:1px solid var(--line);padding:4px 10px;border-radius:999px;color:var(--muted);font-size:.82rem}
-  .hero{display:flex;align-items:center;gap:14px;margin-top:8px}
-  .hero .logo{width:56px;height:56px;border-radius:12px;background:conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), var(--accent));filter:saturate(1.3) brightness(1.05); border:1px solid var(--line)}
-  .hero h1{margin:0;font-size:1.7rem;letter-spacing:.06em;text-transform:uppercase}
-  .hero p{margin:0;color:var(--muted)}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>INTEL • PM — Portal Tático</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0e1420;
+      --panel:#121a2a;
+      --ink:#eef6ff;
+      --muted:#9fb3c9;
+      --line:rgba(255,255,255,.14);
+      --accent:#22d3ee;
+      --accent2:#6aa3ff;
+      --glass:linear-gradient(180deg,rgba(23,35,56,.72),rgba(14,22,36,.9));
+      --radius:16px;
+    }
+    [data-theme="hc"]{
+      --bg:#000;
+      --panel:#0b0b0b;
+      --ink:#fff;
+      --muted:#cfcfcf;
+      --line:rgba(255,255,255,.35);
+      --accent:#00fff0;
+      --accent2:#9cc3ff;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    html,body{
+      height:100%;
+      background:radial-gradient(1200px 800px at 78% -10%, #1b2a44 0%, #0f1a2a 55%, var(--bg) 100%);
+      color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(0deg,rgba(10,18,32,.7),rgba(10,18,32,.96));
+      backdrop-filter:saturate(1.2) blur(10px);
+    }
+
+    .bar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+    }
+
+    .brand{
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--accent);
+    }
+
+    .status{
+      font-family:"Space Mono",monospace;
+      font-size:.8rem;
+      border:1px solid var(--line);
+      padding:4px 8px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+
+    .grow{flex:1}
+
+    .btn{
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(15,23,42,.4);
+      color:var(--ink);
+      padding:7px 13px;
+      font-size:.85rem;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      transition:background .12s ease, transform .06s ease, border-color .12s ease;
+    }
+    .btn:hover{background:rgba(15,23,42,.9);border-color:rgba(255,255,255,.26)}
+    .btn:active{transform:scale(.97)}
+    .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(34,211,238,.22), rgba(34,211,238,.06))}
+    .btn.ghost{background:transparent}
+
+    main{
+      padding:18px;
+      display:grid;
+      gap:18px;
+      grid-template-columns:340px 1fr;
+      align-items:flex-start;
+    }
+    @media (max-width:980px){
+      main{grid-template-columns:1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:var(--glass);
+    }
+    .card .head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+    }
+    .card .title{
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .card .body{
+      padding:14px;
+    }
+
+    .hint{
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .pill{
+      border:1px solid var(--line);
+      padding:2px 8px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:.75rem;
+    }
+
+    /* Busca / lado esquerdo */
+    .search{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .search input{
+      flex:1;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--ink);
+      font-size:1rem;
+      outline:none;
+    }
+    .search input:focus{
+      border-color:rgba(34,211,238,.6);
+      box-shadow:0 0 0 4px rgba(34,211,238,.14);
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:.9rem;
+    }
+    .field input{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--ink);
+      outline:none;
+    }
+
+    details summary{
+      cursor:pointer;
+      font-weight:800;
+      margin-bottom:4px;
+      list-style:none;
+    }
+    details summary::-webkit-details-marker{display:none}
+
+    .mini{
+      font-size:.86rem;
+      color:var(--muted);
+    }
+
+    /* Grupos de atalhos */
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      margin-top:14px;
+    }
+    .section-title .dot{
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      background:var(--accent);
+    }
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .cols-2{grid-template-columns:repeat(2,1fr)}
+    .cols-3{grid-template-columns:repeat(3,1fr)}
+    .cols-4{grid-template-columns:repeat(4,1fr)}
+
+    @media (max-width:1100px){
+      .cols-4{grid-template-columns:repeat(3,1fr)}
+    }
+    @media (max-width:780px){
+      .cols-3,.cols-4,.cols-2{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:520px){
+      .cols-3,.cols-4,.cols-2{grid-template-columns:1fr}
+    }
+
+    .qbtn{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+      padding:14px;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+      text-align:left;
+      transition:transform .06s ease, border-color .12s ease, background .12s ease;
+    }
+    .qbtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.34);
+    }
+    .qbtn .ico{
+      font-size:1.25rem;
+      width:1.6rem;
+      text-align:center;
+    }
+    .qbtn small{
+      display:block;
+      color:var(--muted);
+      font-weight:600;
+      font-size:.72rem;
+    }
+
+    footer{
+      text-align:center;
+      padding:14px;
+      margin-top:auto;
+    }
+
+    /* Splash / Entrada */
+    .splash{
+      position:fixed;
+      inset:0;
+      background:radial-gradient(1200px 800px at 50% -10%, #22314f 0%, #0b1422 55%, #000 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+    }
+    .splash .box{
+      width:min(740px,92vw);
+      padding:28px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:linear-gradient(180deg,rgba(10,16,28,.7),rgba(8,12,22,.9));
+    }
+    .badge{
+      display:inline-block;
+      border:1px solid var(--line);
+      padding:4px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:.82rem;
+    }
+    .hero{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-top:8px;
+      margin-bottom:10px;
+    }
+    .hero .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background:conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), var(--accent));
+      filter:saturate(1.3) brightness(1.05);
+      border:1px solid var(--line);
+    }
+    .hero h1{
+      margin:0;
+      font-size:1.7rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .hero p{
+      margin:0;
+      color:var(--muted);
+    }
+  </style>
 </head>
 <body>
-<div class="wrap" id="appRoot" data-theme="">
+<div class="wrap" id="appRoot">
+
   <header>
     <div class="bar">
       <div class="brand">INTEL • PM</div>
-      <div class="status" id="status">portal</div>
+      <div class="status" id="status">portal tático</div>
       <div class="grow"></div>
-      <button class="btn ghost" id="btnContrast">Alto Contraste</button>
-      <button class="btn ghost" id="btnFS">Tela Cheia</button>
+      <button class="btn ghost" id="btnContrast" title="Alternar alto contraste">🌓 Alto contraste</button>
+      <button class="btn ghost" id="btnFS" title="Alternar tela cheia">⛶ Tela cheia</button>
     </div>
   </header>
 
   <main>
+    <!-- LADO ESQUERDO: filtro + atalhos personalizados + informações -->
     <section class="card">
       <div class="head">
-        <div class="title">Atalhos de Pesquisa</div>
+        <div class="title">Portal de Inteligência</div>
+        <span class="pill">acesso rápido</span>
       </div>
       <div class="body">
-        <!-- Grupo Justiça -->
-        <div class="section-title"><div class="dot"></div><div class="title">Justiça / Tribunais</div></div>
-        <div class="grid cols-3">
-          <button class="qbtn" onclick="openUrl('https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca')"><span class="ico">🗂️</span><span>BNMP — Mandados<small>cnj.jus.br</small></span></button>
-          <button class="qbtn" onclick="openUrl('https://extrajudicial.tjsp.jus.br/validade-selo')"><span class="ico">✅</span><span>Validade de Selo — TJSP<small>tjsp.jus.br</small></span></button>
-          <button class="qbtn" onclick="openUrl('https://esaj.tjsp.jus.br/cpopg/open.do')"><span class="ico">⚖️</span><span>Consulta Processo — TJSP<small>tjsp.jus.br</small></span></button>
+        <div class="search">
+          <input id="filtro" placeholder="Filtrar atalhos — ex.: CPF, BNMP, TJSP, veículo">
+          <button class="btn" id="btnLimpar">Limpar</button>
+        </div>
+        <p class="hint" style="margin-bottom:12px">
+          Dica: digite parte do nome ou sigla (ex.: <b>bnmp</b>, <b>cpf</b>, <b>veículo</b>). Teclas <b>1 a 9</b> acionam os primeiros atalhos visíveis.
+        </p>
+
+        <details>
+          <summary>Adicionar atalho personalizado</summary>
+          <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:10px">
+            <div class="field">
+              <label>Nome</label>
+              <input id="novoNome" placeholder="Ex.: SINESP Veículo">
+            </div>
+            <div class="field">
+              <label>URL</label>
+              <input id="novoURL" placeholder="https://exemplo.gov.br">
+            </div>
+          </div>
+          <div class="grid" style="grid-template-columns:auto 1fr; align-items:center; margin-top:10px; gap:10px">
+            <button class="btn primary" id="btnAddAtalho">Salvar</button>
+            <span class="mini">Os atalhos ficam salvos <b>somente neste aparelho</b> (localStorage).</span>
+          </div>
+        </details>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+
+        <p class="hint">
+          Nenhuma informação de consulta passa por este portal. Ele apenas abre os
+          sites oficiais em nova aba. Ajuste os links conforme normas internas.
+        </p>
+      </div>
+    </section>
+
+    <!-- LADO DIREITO: grupos de atalhos -->
+    <section class="card">
+      <div class="head">
+        <div class="title">Atalhos táticos</div>
+        <span class="pill" id="countHint">0 atalhos</span>
+      </div>
+      <div class="body">
+
+        <!-- Grupo Pessoa -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Pessoa</div>
+        </div>
+        <div class="grid cols-3" id="grupo-pessoa"></div>
+
+        <!-- Grupo Veículo -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Veículo</div>
+        </div>
+        <div class="grid cols-3" id="grupo-veiculo"></div>
+
+        <!-- Grupo Documentos / Empresas -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Documentos / Empresas</div>
+        </div>
+        <div class="grid cols-3" id="grupo-docs"></div>
+
+        <!-- Grupo Justiça / Tribunais -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Justiça / Tribunais</div>
+        </div>
+        <div class="grid cols-3" id="grupo-justica"></div>
+
+        <!-- Grupo Receita Federal (já separado se quiser deixar específico) -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Receita Federal</div>
+        </div>
+        <div class="grid cols-2" id="grupo-receita"></div>
+
+        <!-- Meus Atalhos -->
+        <div class="section-title">
+          <div class="dot"></div>
+          <div class="title">Meus atalhos</div>
+        </div>
+        <div class="grid cols-4" id="grupo-custom"></div>
+        <div class="hint" id="vazioCustom" style="margin-top:6px;display:none">
+          Nenhum atalho personalizado salvo ainda.
         </div>
 
-        <!-- Grupo Receita Federal -->
-        <div class="section-title" style="margin-top:16px"><div class="dot"></div><div class="title">Receita Federal</div></div>
-        <div class="grid cols-2">
-          <button class="qbtn" onclick="openUrl('https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp')"><span class="ico">🆔</span><span>Consulta CPF<small>receita.fazenda.gov.br</small></span></button>
-          <button class="qbtn" onclick="openUrl('https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp')"><span class="ico">🏢</span><span>Consulta CNPJ<small>receita.fazenda.gov.br</small></span></button>
-        </div>
       </div>
     </section>
   </main>
 
-  <footer class="hint" style="text-align:center;padding:14px">© INTEL • PM — uso interno.</footer>
+  <footer class="hint">
+    © INTEL • PM — uso interno. Ajuste, versione e compartilhe somente conforme normas da corporação.
+  </footer>
 </div>
 
+<!-- Splash / Entrada -->
 <div class="splash" id="splash">
   <div class="box">
     <span class="badge">CLASSIFICAÇÃO: INTERNO</span>
@@ -96,32 +438,250 @@
       <div class="logo"></div>
       <div>
         <h1>Portal INTEL • PM</h1>
-        <p>Interface tática de consultas — acesso controlado</p>
+        <p>Atalhos táticos para apoio rápido ao serviço operacional.</p>
       </div>
     </div>
+    <p class="hint">
+      Este portal é apenas uma <b>camada de atalho</b>. Nenhum dado digitado nas páginas de destino
+      passa por aqui. Use sempre de forma responsável e dentro das normas da corporação.
+    </p>
     <div class="row" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
       <button class="btn primary" id="btnEntrar">Entrar</button>
+      <button class="btn ghost" id="btnSobre">Sobre</button>
     </div>
-    <p class="hint" style="margin-top:10px">Ao entrar, você reconhece o uso responsável e conforme normas da corporação.</p>
+    <p class="hint" style="margin-top:10px">
+      Ao entrar, você reconhece o uso responsável e em conformidade com a legislação e regulamentos internos.
+    </p>
   </div>
 </div>
 
 <script>
-const $ = sel => document.querySelector(sel);
-function openUrl(url){ window.open(url, '_blank', 'noopener'); }
-/* Splash */
-const splash = $('#splash');
-$('#btnEntrar').addEventListener('click', ()=> splash.style.display='none');
-/* Tema */
-const root = $('#appRoot');
-$('#btnContrast').addEventListener('click', ()=> root.setAttribute('data-theme', root.getAttribute('data-theme')==='hc' ? '' : 'hc'));
-/* Tela cheia */
-$('#btnFS').addEventListener('click', ()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); });
+  /* ======== HELPERS ======== */
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  function toast(msg){
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.position = 'fixed';
+    t.style.left = '50%';
+    t.style.bottom = '18px';
+    t.style.transform = 'translateX(-50%)';
+    t.style.background = 'rgba(9,16,24,.96)';
+    t.style.border = '1px solid rgba(255,255,255,.18)';
+    t.style.padding = '8px 12px';
+    t.style.borderRadius = '10px';
+    t.style.zIndex = 2000;
+    t.style.fontSize = '.9rem';
+    document.body.appendChild(t);
+    setTimeout(()=> t.remove(), 1600);
+  }
+
+  function openUrl(url){
+    if(url) window.open(url, '_blank', 'noopener');
+  }
+
+  /* ======== SPLASH / ENTRADA ======== */
+  const splash = $('#splash');
+  const ENTER_KEY = 'intelpm.entered';
+
+  if(sessionStorage.getItem(ENTER_KEY) === '1'){
+    splash.style.display = 'none';
+  }
+
+  $('#btnEntrar').addEventListener('click', () => {
+    splash.style.display = 'none';
+    sessionStorage.setItem(ENTER_KEY,'1');
+    toast('Acesso concedido');
+  });
+
+  $('#btnSobre').addEventListener('click', () => {
+    alert(
+      'INTEL • PM — Portal de atalhos táticos.\n\n' +
+      '- Não armazena dados de consulta.\n' +
+      '- Atalhos e preferências ficam apenas neste aparelho (localStorage).\n' +
+      '- Ajuste os links conforme os sistemas e normas da sua unidade.'
+    );
+  });
+
+  /* ======== TEMA / TELA CHEIA ======== */
+  const root = $('#appRoot');
+
+  $('#btnContrast').addEventListener('click', () => {
+    const cur = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', cur === 'hc' ? '' : 'hc');
+  });
+
+  $('#btnFS').addEventListener('click', () => {
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen();
+    }else{
+      document.exitFullscreen();
+    }
+  });
+
+  /* ======== DADOS BASE DE ATALHOS ======== */
+  const BASE_ATALHOS = {
+    pessoa: [
+      {nome:'Consulta CPF — Receita', sigla:'cpf pessoa receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
+      {nome:'Consulta processos — TJSP', sigla:'tjsp pessoa processo', url:'https://esaj.tjsp.jus.br/cpopg/open.do', ico:'⚖️'},
+      {nome:'BNMP — Mandados', sigla:'bnmp mandados pessoa', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🗂️'},
+    ],
+    veiculo: [
+      {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'},
+      {nome:'Detran-SP — IPVA / débitos', sigla:'ipva debitos veiculo', url:'https://portal.fazenda.sp.gov.br/servicos/ipva', ico:'💰'},
+      {nome:'Portal geral de multas', sigla:'multas veiculo', url:'https://www.gov.br/pt-br/servicos/consultar-multas-de-veiculos', ico:'📄'},
+    ],
+    docs: [
+      {nome:'Consulta CNPJ — Receita', sigla:'cnpj empresa receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
+      {nome:'Validade de selo — TJSP', sigla:'tjsp selo cartorio', url:'https://extrajudicial.tjsp.jus.br/validade-selo', ico:'✅'},
+    ],
+    justica: [
+      {nome:'BNMP — Mandados', sigla:'bnmp cnj justica', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🗂️'},
+      {nome:'TJSP — Consulta Processo', sigla:'tjsp processo justica', url:'https://esaj.tjsp.jus.br/cpopg/open.do', ico:'⚖️'},
+    ],
+    receita: [
+      {nome:'Consulta CPF', sigla:'cpf receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
+      {nome:'Consulta CNPJ', sigla:'cnpj receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
+    ]
+  };
+
+  const LS_KEY = 'intelpm.custom.shortcuts';
+  const loadCustom = () => JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+  const saveCustom = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
+
+  /* ======== RENDER ======== */
+  const boxPessoa   = $('#grupo-pessoa');
+  const boxVeiculo  = $('#grupo-veiculo');
+  const boxDocs     = $('#grupo-docs');
+  const boxJustica  = $('#grupo-justica');
+  const boxReceita  = $('#grupo-receita');
+  const boxCustom   = $('#grupo-custom');
+  const vazioCustom = $('#vazioCustom');
+  const countHint   = $('#countHint');
+
+  function renderBtn(item, isCustom=false, idx=null){
+    const b = document.createElement('button');
+    b.className = 'qbtn';
+    b.setAttribute('data-name', (item.nome || '').toLowerCase());
+    b.setAttribute('data-sigla', (item.sigla || '').toLowerCase());
+
+    let host = '';
+    try{ host = new URL(item.url).hostname; }catch{}
+
+    b.innerHTML = `
+      <span class="ico">${item.ico || '🔗'}</span>
+      <span>
+        <span style="display:block">${item.nome}</span>
+        <small>${host}</small>
+      </span>
+    `;
+
+    b.addEventListener('click', () => openUrl(item.url));
+
+    if(isCustom){
+      const del = document.createElement('span');
+      del.title = 'Remover atalho';
+      del.textContent = '✖';
+      del.style.marginLeft = 'auto';
+      del.style.opacity = .7;
+      del.style.fontWeight = '900';
+      del.style.cursor = 'pointer';
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const cur = loadCustom();
+        cur.splice(idx, 1);
+        saveCustom(cur);
+        renderAll();
+        toast('Atalho removido');
+      });
+      b.appendChild(del);
+    }
+
+    return b;
+  }
+
+  function renderGroup(container, items, isCustom=false){
+    container.innerHTML = '';
+    items.forEach((it, i) => container.appendChild(renderBtn(it, isCustom, i)));
+  }
+
+  function filterItems(items, term){
+    if(!term) return items;
+    return items.filter(it =>
+      it.nome.toLowerCase().includes(term) ||
+      (it.sigla || '').toLowerCase().includes(term)
+    );
+  }
+
+  function renderAll(){
+    const term = ($('#filtro').value || '').trim().toLowerCase();
+
+    const pessoa  = filterItems(BASE_ATALHOS.pessoa, term);
+    const veiculo = filterItems(BASE_ATALHOS.veiculo, term);
+    const docs    = filterItems(BASE_ATALHOS.docs, term);
+    const just    = filterItems(BASE_ATALHOS.justica, term);
+    const rec     = filterItems(BASE_ATALHOS.receita, term);
+    const custom  = filterItems(loadCustom(), term);
+
+    renderGroup(boxPessoa,  pessoa, false);
+    renderGroup(boxVeiculo, veiculo, false);
+    renderGroup(boxDocs,    docs,    false);
+    renderGroup(boxJustica, just,    false);
+    renderGroup(boxReceita, rec,     false);
+    renderGroup(boxCustom,  custom,  true);
+
+    vazioCustom.style.display = custom.length ? 'none' : 'block';
+
+    const total = pessoa.length + veiculo.length + docs.length + just.length + rec.length + custom.length;
+    countHint.textContent = `${total} atalhos`;
+  }
+
+  renderAll();
+
+  /* ======== BUSCA / LIMPAR ======== */
+  $('#filtro').addEventListener('input', renderAll);
+  $('#btnLimpar').addEventListener('click', () => {
+    $('#filtro').value = '';
+    renderAll();
+  });
+
+  /* ======== NOVO ATALHO PERSONALIZADO ======== */
+  $('#btnAddAtalho').addEventListener('click', () => {
+    const nome = ($('#novoNome').value || '').trim();
+    const url  = ($('#novoURL').value  || '').trim();
+
+    if(!nome || !url){
+      toast('Preencha Nome e URL');
+      return;
+    }
+    try{
+      new URL(url);
+    }catch{
+      toast('URL inválida');
+      return;
+    }
+
+    const cur = loadCustom();
+    cur.unshift({nome, url, sigla:nome, ico:'🔎'});
+    saveCustom(cur);
+
+    $('#novoNome').value = '';
+    $('#novoURL').value  = '';
+    renderAll();
+    toast('Atalho salvo');
+  });
+
+  /* ======== TECLAS RÁPIDAS (1..9) ======== */
+  document.addEventListener('keydown', (e) => {
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    const n = parseInt(e.key, 10);
+    if(isNaN(n) || n < 1) return;
+
+    const visibles = $$('.qbtn');
+    const idx = n - 1;
+    if(visibles[idx]) visibles[idx].click();
+  });
 </script>
 </body>
 </html>
-
-
-
-
-
