@@ -227,25 +227,25 @@
       .cols-2,.cols-3,.cols-4{grid-template-columns:minmax(0,1fr)}
     }
 
-   /* ====== CARDS COM ÍCONE CENTRAL (BEM MENORES) ====== */
+  /* ====== CARDS RETANGULARES COM ÍCONE CENTRAL ====== */
 .qbtn{
   position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:3px;
+  gap:4px;
   border-radius:14px;
-  padding:6px;
+  padding:8px 10px;
   border:1px solid rgba(148,163,184,.6);
   background:linear-gradient(135deg,rgba(248,250,252,1),rgba(241,245,249,1));
   cursor:pointer;
   transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
   text-align:center;
 
-  /* menores */
-  aspect-ratio: 3 / 2;    /* mais retangular, menos alto */
-  min-height:72px;
+  /* mais retangular (largura > altura) */
+  aspect-ratio: 16 / 9;
+  min-height:64px;
 }
 
 .qbtn:hover{
@@ -263,7 +263,7 @@
 
 .qbtn-main{
   display:block;
-  font-size:.75rem;
+  font-size:.78rem;
   font-weight:600;
   color:#0f172a;
 }
@@ -289,23 +289,24 @@
   color:#0f172a;
 }
 
-/* MOBILE: ainda mais compacto */
+/* MOBILE: ainda mais "deitado" e compacto */
 @media (max-width:600px){
   .qbtn{
-    aspect-ratio: 2.6 / 2;
-    min-height:60px;
-    padding:4px;
+    aspect-ratio: 18 / 9;  /* ainda mais retangular */
+    min-height:56px;
+    padding:6px 8px;
   }
   .qbtn-ico{
     font-size:1.35rem;
   }
   .qbtn-main{
-    font-size:.72rem;
+    font-size:.75rem;
   }
   .qbtn-meta{
     font-size:.65rem;
   }
 }
+
 
     .custom-empty{
       font-size:.78rem;
@@ -644,4 +645,5 @@
 </script>
 </body>
 </html>
+
 
