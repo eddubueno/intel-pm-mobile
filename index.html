@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>INTEL • PM — Portal Tático</title>
+  <title>Apoio Operacional — Painel Tático</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
@@ -95,6 +95,112 @@
     .btn:active{transform:scale(.97)}
     .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(34,211,238,.22), rgba(34,211,238,.06))}
     .btn.ghost{background:transparent}
+
+    /* HERO FUTURISTA */
+    .hero-banner{
+      border-bottom:1px solid var(--line);
+      background:radial-gradient(1200px 800px at 20% -20%, rgba(34,211,238,.2) 0%, rgba(15,23,42,1) 50%, #020617 100%);
+      padding:18px 18px 22px;
+    }
+    .hero-inner{
+      max-width:960px;
+      margin:0 auto;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .hero-logo-wrap{
+      width:80px;
+      height:80px;
+      position:relative;
+    }
+    .hero-logo-core{
+      width:100%;
+      height:100%;
+      border-radius:20px;
+      background:conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), var(--accent));
+      border:1px solid rgba(255,255,255,.28);
+      position:relative;
+      overflow:hidden;
+      animation:spinGlow 12s linear infinite;
+    }
+    .hero-logo-core::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(
+        135deg,
+        rgba(0,0,0,.0) 0,
+        rgba(0,0,0,.0) 6px,
+        rgba(0,0,0,.18) 6px,
+        rgba(0,0,0,.18) 10px
+      );
+      mix-blend-mode:multiply;
+      animation:scan 3.8s linear infinite;
+    }
+    .hero-logo-core::after{
+      content:"AO";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:1.4rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(0,0,0,.8);
+    }
+    .hero-logo-ring{
+      position:absolute;
+      inset:-6px;
+      border-radius:26px;
+      border:1px dashed rgba(148,163,184,.6);
+      animation:pulseRing 3.4s ease-in-out infinite;
+    }
+    .hero-text{
+      flex:1;
+      min-width:220px;
+    }
+    .hero-text h1{
+      margin:0 0 4px;
+      font-size:1.6rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .hero-text p{
+      margin:0;
+      color:var(--muted);
+      font-size:.95rem;
+      max-width:520px;
+    }
+    .hero-actions{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-start;
+      margin-top:10px;
+    }
+    .hero-meta{
+      font-family:"Space Mono",monospace;
+      font-size:.78rem;
+      color:var(--muted);
+      opacity:.9;
+    }
+
+    @keyframes spinGlow{
+      0%{transform:rotate(0deg)}
+      100%{transform:rotate(360deg)}
+    }
+    @keyframes scan{
+      0%{transform:translateY(100%)}
+      100%{transform:translateY(-100%)}
+    }
+    @keyframes pulseRing{
+      0%,100%{opacity:.45;transform:scale(1)}
+      50%{opacity:.9;transform:scale(1.05)}
+    }
 
     main{
       padding:18px;
@@ -259,57 +365,6 @@
       padding:14px;
       margin-top:auto;
     }
-
-    /* Splash / Entrada */
-    .splash{
-      position:fixed;
-      inset:0;
-      background:radial-gradient(1200px 800px at 50% -10%, #22314f 0%, #0b1422 55%, #000 100%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-    }
-    .splash .box{
-      width:min(740px,92vw);
-      padding:28px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:linear-gradient(180deg,rgba(10,16,28,.7),rgba(8,12,22,.9));
-    }
-    .badge{
-      display:inline-block;
-      border:1px solid var(--line);
-      padding:4px 10px;
-      border-radius:999px;
-      color:var(--muted);
-      font-size:.82rem;
-    }
-    .hero{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      margin-top:8px;
-      margin-bottom:10px;
-    }
-    .hero .logo{
-      width:56px;
-      height:56px;
-      border-radius:12px;
-      background:conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), var(--accent));
-      filter:saturate(1.3) brightness(1.05);
-      border:1px solid var(--line);
-    }
-    .hero h1{
-      margin:0;
-      font-size:1.7rem;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-    .hero p{
-      margin:0;
-      color:var(--muted);
-    }
   </style>
 </head>
 <body>
@@ -317,20 +372,37 @@
 
   <header>
     <div class="bar">
-      <div class="brand">INTEL • PM</div>
-      <div class="status" id="status">portal tático</div>
+      <div class="brand">APOIO OPERACIONAL</div>
+      <div class="status" id="status">intel / pm</div>
       <div class="grow"></div>
       <button class="btn ghost" id="btnContrast" title="Alternar alto contraste">🌓 Alto contraste</button>
       <button class="btn ghost" id="btnFS" title="Alternar tela cheia">⛶ Tela cheia</button>
     </div>
   </header>
 
-  <main>
+  <!-- HERO FUTURISTA COM LOGO ANIMADO + BOTÃO ACESSAR -->
+  <section class="hero-banner">
+    <div class="hero-inner">
+      <div class="hero-logo-wrap">
+        <div class="hero-logo-core"></div>
+        <div class="hero-logo-ring"></div>
+      </div>
+      <div class="hero-text">
+        <h1>APOIO OPERACIONAL</h1>
+        <p>Painel tático de atalhos e recursos para o serviço operacional. Interface discreta, rápida e pensada para uso em viatura.</p>
+        <div class="hero-actions">
+          <button class="btn primary" id="btnAcessar">▶ ACESSAR</button>
+          <span class="hero-meta">Nível de acesso: interno · classificação: uso restrito conforme normas da corporação.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="mainContent">
     <!-- LADO ESQUERDO: filtro + atalhos personalizados + informações -->
     <section class="card">
       <div class="head">
-        <div class="title">Portal de Inteligência</div>
-        <span class="pill">acesso rápido</span>
+        <div class="title">Painel de Apoio</div>
       </div>
       <div class="body">
         <div class="search">
@@ -346,7 +418,7 @@
           <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:10px">
             <div class="field">
               <label>Nome</label>
-              <input id="novoNome" placeholder="Ex.: SINESP Veículo">
+              <input id="novoNome" placeholder="Ex.: Sistema interno unidade">
             </div>
             <div class="field">
               <label>URL</label>
@@ -362,8 +434,8 @@
         <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
 
         <p class="hint">
-          Nenhuma informação de consulta passa por este portal. Ele apenas abre os
-          sites oficiais em nova aba. Ajuste os links conforme normas internas.
+          Nenhuma informação de consulta passa por este painel. Ele apenas abre os
+          sites oficiais em nova aba. Ajuste os links conforme normas internas da sua unidade.
         </p>
       </div>
     </section>
@@ -404,7 +476,7 @@
         </div>
         <div class="grid cols-3" id="grupo-justica"></div>
 
-        <!-- Grupo Receita Federal (já separado se quiser deixar específico) -->
+        <!-- Receita Federal -->
         <div class="section-title">
           <div class="dot"></div>
           <div class="title">Receita Federal</div>
@@ -426,33 +498,8 @@
   </main>
 
   <footer class="hint">
-    © INTEL • PM — uso interno. Ajuste, versione e compartilhe somente conforme normas da corporação.
+    Apoio Operacional — uso interno. Ajuste, versione e compartilhe somente conforme normas da corporação.
   </footer>
-</div>
-
-<!-- Splash / Entrada -->
-<div class="splash" id="splash">
-  <div class="box">
-    <span class="badge">CLASSIFICAÇÃO: INTERNO</span>
-    <div class="hero">
-      <div class="logo"></div>
-      <div>
-        <h1>Portal INTEL • PM</h1>
-        <p>Atalhos táticos para apoio rápido ao serviço operacional.</p>
-      </div>
-    </div>
-    <p class="hint">
-      Este portal é apenas uma <b>camada de atalho</b>. Nenhum dado digitado nas páginas de destino
-      passa por aqui. Use sempre de forma responsável e dentro das normas da corporação.
-    </p>
-    <div class="row" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
-      <button class="btn primary" id="btnEntrar">Entrar</button>
-      <button class="btn ghost" id="btnSobre">Sobre</button>
-    </div>
-    <p class="hint" style="margin-top:10px">
-      Ao entrar, você reconhece o uso responsável e em conformidade com a legislação e regulamentos internos.
-    </p>
-  </div>
 </div>
 
 <script>
@@ -481,27 +528,10 @@
     if(url) window.open(url, '_blank', 'noopener');
   }
 
-  /* ======== SPLASH / ENTRADA ======== */
-  const splash = $('#splash');
-  const ENTER_KEY = 'intelpm.entered';
-
-  if(sessionStorage.getItem(ENTER_KEY) === '1'){
-    splash.style.display = 'none';
-  }
-
-  $('#btnEntrar').addEventListener('click', () => {
-    splash.style.display = 'none';
-    sessionStorage.setItem(ENTER_KEY,'1');
-    toast('Acesso concedido');
-  });
-
-  $('#btnSobre').addEventListener('click', () => {
-    alert(
-      'INTEL • PM — Portal de atalhos táticos.\n\n' +
-      '- Não armazena dados de consulta.\n' +
-      '- Atalhos e preferências ficam apenas neste aparelho (localStorage).\n' +
-      '- Ajuste os links conforme os sistemas e normas da sua unidade.'
-    );
+  /* ======== BOTÃO ACESSAR (rola até o painel) ======== */
+  $('#btnAcessar').addEventListener('click', () => {
+    const main = $('#mainContent');
+    if(main) main.scrollIntoView({behavior:'smooth'});
   });
 
   /* ======== TEMA / TELA CHEIA ======== */
@@ -529,8 +559,7 @@
     ],
     veiculo: [
       {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'},
-      {nome:'Detran-SP — IPVA / débitos', sigla:'ipva debitos veiculo', url:'https://portal.fazenda.sp.gov.br/servicos/ipva', ico:'💰'},
-      {nome:'Portal geral de multas', sigla:'multas veiculo', url:'https://www.gov.br/pt-br/servicos/consultar-multas-de-veiculos', ico:'📄'},
+      // IPVA e Portal geral de multas foram removidos a pedido
     ],
     docs: [
       {nome:'Consulta CNPJ — Receita', sigla:'cnpj empresa receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
