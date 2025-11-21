@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Apoio Operacional — Console</title>
+  <title>Apoio Operacional</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
@@ -20,7 +20,7 @@
       --accent-soft:#e0f2fe;
       --accent2:#22c55e;
       --radius:16px;
-      --shadow:0 18px 40px rgba(15,23,42,.12);
+      --shadow:0 18px 40px rgba(15,23,42,.10);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -50,7 +50,7 @@
     .bar{
       max-width:1040px;
       margin:0 auto;
-      padding:14px 16px;
+      padding:12px 16px;
       display:flex;
       align-items:center;
       gap:10px;
@@ -63,8 +63,8 @@
     }
 
     .brand-logo{
-      width:30px;
-      height:30px;
+      width:28px;
+      height:28px;
       border-radius:10px;
       background:conic-gradient(from 180deg at 50% 50%, #0ea5e9, #22c55e, #0ea5e9);
       position:relative;
@@ -81,7 +81,7 @@
 
     .brand{
       font-weight:800;
-      font-size:.95rem;
+      font-size:.9rem;
       letter-spacing:.18em;
       text-transform:uppercase;
       color:#0f172a;
@@ -90,7 +90,7 @@
     .status{
       font-family:"Space Mono",monospace;
       font-size:.75rem;
-      padding:3px 9px;
+      padding:3px 8px;
       border-radius:999px;
       background:rgba(148,163,184,.10);
       color:var(--muted);
@@ -105,74 +105,6 @@
       padding:0 16px 16px;
     }
 
-    /* HERO SIMPLES, SEM TEXTO LONGO NEM BOTÃO */
-    .hero{
-      margin-bottom:18px;
-      border-radius:20px;
-      border:1px solid rgba(148,163,184,.35);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(59,130,246,.17) 0, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(45,212,191,.18) 0, transparent 55%),
-        #f8fafc;
-      box-shadow:var(--shadow);
-      padding:16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .hero-main{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .hero-title{
-      font-size:1.05rem;
-      font-weight:700;
-      letter-spacing:.20em;
-      text-transform:uppercase;
-      color:#0f172a;
-    }
-
-    .hero-sub{
-      font-size:.88rem;
-      color:var(--muted);
-    }
-
-    .hero-meta{
-      font-family:"Space Mono",monospace;
-      font-size:.78rem;
-      color:var(--muted);
-      opacity:.9;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-auto-flow:column;
-      gap:10px;
-      font-size:.75rem;
-      color:var(--muted);
-    }
-
-    .hero-chip{
-      padding:5px 9px;
-      border-radius:999px;
-      background:rgba(15,23,42,.03);
-      border:1px solid rgba(148,163,184,.45);
-      display:flex;
-      align-items:center;
-      gap:6px;
-      white-space:nowrap;
-    }
-
-    .hero-chip span:first-child{
-      font-size:.9rem;
-    }
-
-    /* CARD PRINCIPAL */
     .card{
       border-radius:18px;
       border:1px solid var(--line);
@@ -191,15 +123,10 @@
 
     .card-title{
       font-weight:700;
-      font-size:.95rem;
-      letter-spacing:.12em;
+      font-size:.9rem;
+      letter-spacing:.16em;
       text-transform:uppercase;
       color:#0f172a;
-    }
-
-    .card-sub{
-      font-size:.8rem;
-      color:var(--muted);
     }
 
     .card-head-right{
@@ -207,6 +134,8 @@
       display:flex;
       align-items:center;
       gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
     .search-wrap{
@@ -215,8 +144,8 @@
       gap:6px;
       padding:4px 8px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,.5);
-      background:rgba(248,250,252,.9);
+      border:1px solid rgba(148,163,184,.7);
+      background:rgba(248,250,252,.95);
     }
 
     .search-icon{
@@ -248,6 +177,7 @@
       display:inline-flex;
       align-items:center;
       gap:4px;
+      white-space:nowrap;
     }
     .btn-mini:hover{
       background:#e2f3ff;
@@ -256,15 +186,14 @@
     }
 
     .card-body{
-      padding:12px 14px 16px;
+      padding:10px 14px 16px;
     }
 
     .section-title{
       display:flex;
       align-items:center;
       gap:8px;
-      margin:8px 0 6px;
-      margin-top:12px;
+      margin:10px 0 6px;
     }
 
     .section-dot{
@@ -275,9 +204,9 @@
     }
 
     .section-label{
-      font-size:.82rem;
+      font-size:.8rem;
       font-weight:600;
-      letter-spacing:.08em;
+      letter-spacing:.10em;
       text-transform:uppercase;
       color:#0f172a;
     }
@@ -303,7 +232,7 @@
       align-items:flex-start;
       gap:8px;
       border-radius:14px;
-      padding:10px 10px;
+      padding:9px 10px;
       border:1px solid rgba(148,163,184,.6);
       background:linear-gradient(135deg,rgba(248,250,252,1),rgba(241,245,249,1));
       cursor:pointer;
@@ -346,14 +275,13 @@
     }
 
     .custom-empty{
-      font-size:.8rem;
+      font-size:.78rem;
       color:var(--muted);
       margin-top:4px;
     }
 
-    /* Form de novo atalho (inline, discreto) */
     .custom-form{
-      margin-top:10px;
+      margin-top:8px;
       padding:8px 10px;
       border-radius:12px;
       background:var(--accent-soft);
@@ -413,7 +341,7 @@
         <div class="brand-logo"></div>
         <div>
           <div class="brand">APOIO OPERACIONAL</div>
-          <div class="status">console · intel / pm</div>
+          <div class="status">console</div>
         </div>
       </div>
       <div class="grow"></div>
@@ -421,66 +349,60 @@
   </header>
 
   <main>
-   
-    </section>
-
-    <!-- CARD ÚNICO DE ATALHOS -->
     <section class="card">
+      <!-- TOPO: Meus atalhos + busca -->
       <div class="card-head">
-        <div>
-          <div class="card-title">Atalhos operacionais</div>
-          <div class="card-sub">Selecione o contexto e toque no serviço desejado.</div>
-        </div>
+        <div class="card-title">Meus atalhos</div>
         <div class="card-head-right">
           <div class="search-wrap">
             <span class="search-icon">🔍</span>
             <input id="filtro" placeholder="Buscar atalhos">
           </div>
           <button class="btn-mini" id="btnLimpar">Limpar</button>
+          <button class="btn-mini" id="btnToggleCustom">➕ Novo atalho</button>
         </div>
       </div>
 
-      <!-- Meus Atalhos -->
-        <div class="section-title" style="margin-top:14px">
-          <div class="section-dot"></div>
-          <div class="section-label">Meus atalhos</div>
-          <button class="btn-mini" id="btnToggleCustom" style="margin-left:8px;">➕ Novo atalho</button>
-        </div>
+      <div class="card-body">
+
+        <!-- Form novo atalho -->
         <div class="custom-form" id="customForm">
           <input id="novoNome" placeholder="Nome do atalho (ex.: Sistema interno)">
           <input id="novoURL" placeholder="URL completa (https://...)">
           <button class="btn-save" id="btnAddAtalho">Salvar</button>
         </div>
 
+        <!-- Grid Meus atalhos -->
         <div class="grid cols-4" id="grupo-custom" style="margin-top:8px"></div>
         <div class="custom-empty" id="vazioCustom">Nenhum atalho personalizado cadastrado.</div>
-      </div>
-    </section>
-  </main>
 
-      <div class="card-body">
-        <!-- Grupo Pessoa -->
+        <!-- SEPARADOR -->
+        <div style="border-top:1px dashed rgba(148,163,184,.5); margin:14px 0 10px;"></div>
+
+        <!-- ABAIXO: atalhos padrão -->
+
+        <!-- Pessoa -->
         <div class="section-title">
           <div class="section-dot"></div>
           <div class="section-label">Pessoa</div>
         </div>
         <div class="grid cols-3" id="grupo-pessoa"></div>
 
-        <!-- Grupo Veículo -->
+        <!-- Veículo -->
         <div class="section-title">
           <div class="section-dot"></div>
           <div class="section-label">Veículo</div>
         </div>
         <div class="grid cols-3" id="grupo-veiculo"></div>
 
-        <!-- Grupo Documentos / Empresas -->
+        <!-- Documentos / Empresas -->
         <div class="section-title">
           <div class="section-dot"></div>
           <div class="section-label">Documentos / Empresas</div>
         </div>
         <div class="grid cols-3" id="grupo-docs"></div>
 
-        <!-- Grupo Justiça / Tribunais -->
+        <!-- Justiça / Tribunais -->
         <div class="section-title">
           <div class="section-dot"></div>
           <div class="section-label">Justiça / Tribunais</div>
@@ -494,16 +416,12 @@
         </div>
         <div class="grid cols-2" id="grupo-receita"></div>
 
-        
-
-        <div class="grid cols-4" id="grupo-custom" style="margin-top:8px"></div>
-        <div class="custom-empty" id="vazioCustom">Nenhum atalho personalizado cadastrado.</div>
       </div>
     </section>
   </main>
 
   <footer>
-    Apoio Operacional — console de atalhos. Ajuste os links conforme os sistemas autorizados na sua unidade.
+    Apoio Operacional — ajuste os links conforme os sistemas autorizados na sua unidade.
   </footer>
 </div>
 
@@ -534,7 +452,7 @@
     if(url) window.open(url, '_blank', 'noopener');
   }
 
-  /* DADOS BASE */
+  /* Atalhos padrão */
   const BASE_ATALHOS = {
     pessoa: [
       {nome:'Consulta CPF — Receita', sigla:'cpf pessoa receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
@@ -543,7 +461,6 @@
     ],
     veiculo: [
       {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'}
-      // IPVA e Portal geral de multas removidos conforme pedido
     ],
     docs: [
       {nome:'Consulta CNPJ — Receita', sigla:'cnpj empresa receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
@@ -570,7 +487,6 @@
   const boxReceita  = $('#grupo-receita');
   const boxCustom   = $('#grupo-custom');
   const vazioCustom = $('#vazioCustom');
-  const countHint   = null; // não exibimos contador separado agora
 
   function renderBtn(item, isCustom=false, idx=null){
     const b = document.createElement('button');
@@ -645,14 +561,14 @@
 
   renderAll();
 
-  /* Busca / limpar */
+  // Busca / limpar
   $('#filtro').addEventListener('input', renderAll);
   $('#btnLimpar').addEventListener('click', () => {
     $('#filtro').value = '';
     renderAll();
   });
 
-  /* Form de novo atalho (toggle) */
+  // Form novo atalho (toggle)
   const customForm = $('#customForm');
   $('#btnToggleCustom').addEventListener('click', () => {
     const showing = customForm.style.display === 'grid';
@@ -684,7 +600,7 @@
     toast('Atalho salvo');
   });
 
-  /* Teclas rápidas 1..9 */
+  // Teclas rápidas 1..9
   document.addEventListener('keydown', (e) => {
     if(e.altKey || e.ctrlKey || e.metaKey) return;
     const n = parseInt(e.key, 10);
@@ -697,5 +613,3 @@
 </script>
 </body>
 </html>
-
-
