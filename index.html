@@ -440,6 +440,24 @@
         </div>
       </div>
 
+      <!-- Meus Atalhos -->
+        <div class="section-title" style="margin-top:14px">
+          <div class="section-dot"></div>
+          <div class="section-label">Meus atalhos</div>
+          <button class="btn-mini" id="btnToggleCustom" style="margin-left:8px;">➕ Novo atalho</button>
+        </div>
+        <div class="custom-form" id="customForm">
+          <input id="novoNome" placeholder="Nome do atalho (ex.: Sistema interno)">
+          <input id="novoURL" placeholder="URL completa (https://...)">
+          <button class="btn-save" id="btnAddAtalho">Salvar</button>
+        </div>
+
+        <div class="grid cols-4" id="grupo-custom" style="margin-top:8px"></div>
+        <div class="custom-empty" id="vazioCustom">Nenhum atalho personalizado cadastrado.</div>
+      </div>
+    </section>
+  </main>
+
       <div class="card-body">
         <!-- Grupo Pessoa -->
         <div class="section-title">
@@ -476,17 +494,7 @@
         </div>
         <div class="grid cols-2" id="grupo-receita"></div>
 
-        <!-- Meus Atalhos -->
-        <div class="section-title" style="margin-top:14px">
-          <div class="section-dot"></div>
-          <div class="section-label">Meus atalhos</div>
-          <button class="btn-mini" id="btnToggleCustom" style="margin-left:8px;">➕ Novo atalho</button>
-        </div>
-        <div class="custom-form" id="customForm">
-          <input id="novoNome" placeholder="Nome do atalho (ex.: Sistema interno)">
-          <input id="novoURL" placeholder="URL completa (https://...)">
-          <button class="btn-save" id="btnAddAtalho">Salvar</button>
-        </div>
+        
 
         <div class="grid cols-4" id="grupo-custom" style="margin-top:8px"></div>
         <div class="custom-empty" id="vazioCustom">Nenhum atalho personalizado cadastrado.</div>
@@ -689,4 +697,5 @@
 </script>
 </body>
 </html>
+
 
