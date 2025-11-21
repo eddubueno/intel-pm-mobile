@@ -3,39 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Apoio Operacional — Painel Tático</title>
+  <title>Apoio Operacional — Console</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#0e1420;
-      --panel:#121a2a;
-      --ink:#eef6ff;
-      --muted:#9fb3c9;
-      --line:rgba(255,255,255,.14);
-      --accent:#22d3ee;
-      --accent2:#6aa3ff;
-      --glass:linear-gradient(180deg,rgba(23,35,56,.72),rgba(14,22,36,.9));
+      /* Tema claro futurista */
+      --bg:#e5f0ff;
+      --bg2:#f9fafb;
+      --panel:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --line:rgba(15,23,42,.12);
+      --accent:#0ea5e9;
+      --accent-soft:#e0f2fe;
+      --accent2:#22c55e;
       --radius:16px;
-    }
-    [data-theme="hc"]{
-      --bg:#000;
-      --panel:#0b0b0b;
-      --ink:#fff;
-      --muted:#cfcfcf;
-      --line:rgba(255,255,255,.35);
-      --accent:#00fff0;
-      --accent2:#9cc3ff;
+      --shadow:0 18px 40px rgba(15,23,42,.12);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
 
     html,body{
       height:100%;
-      background:radial-gradient(1200px 800px at 78% -10%, #1b2a44 0%, #0f1a2a 55%, var(--bg) 100%);
-      color:var(--ink);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;
+      background:radial-gradient(1200px 800px at 0% 0%, var(--bg) 0%, var(--bg2) 40%, #ffffff 100%);
+      color:var(--ink);
     }
 
     .wrap{
@@ -47,141 +41,107 @@
     header{
       position:sticky;
       top:0;
-      z-index:50;
-      border-bottom:1px solid var(--line);
-      background:linear-gradient(0deg,rgba(10,18,32,.7),rgba(10,18,32,.96));
-      backdrop-filter:saturate(1.2) blur(10px);
+      z-index:10;
+      backdrop-filter:blur(12px);
+      background:linear-gradient(180deg,rgba(248,250,252,.92),rgba(248,250,252,.86));
+      border-bottom:1px solid rgba(148,163,184,.25);
     }
 
     .bar{
+      max-width:1040px;
+      margin:0 auto;
+      padding:14px 16px;
       display:flex;
       align-items:center;
-      gap:12px;
-      padding:12px 14px;
+      gap:10px;
+    }
+
+    .brand-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .brand-logo{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      background:conic-gradient(from 180deg at 50% 50%, #0ea5e9, #22c55e, #0ea5e9);
+      position:relative;
+      overflow:hidden;
+    }
+    .brand-logo::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(circle at 30% 10%, rgba(255,255,255,.9) 0, transparent 50%),
+                 radial-gradient(circle at 80% 90%, rgba(15,23,42,.45) 0, transparent 55%);
+      opacity:.85;
     }
 
     .brand{
-      font-weight:900;
-      letter-spacing:.08em;
+      font-weight:800;
+      font-size:.95rem;
+      letter-spacing:.18em;
       text-transform:uppercase;
-      color:var(--accent);
+      color:#0f172a;
     }
 
     .status{
       font-family:"Space Mono",monospace;
-      font-size:.8rem;
-      border:1px solid var(--line);
-      padding:4px 8px;
+      font-size:.75rem;
+      padding:3px 9px;
       border-radius:999px;
+      background:rgba(148,163,184,.10);
       color:var(--muted);
+      border:1px solid rgba(148,163,184,.45);
     }
 
     .grow{flex:1}
 
-    .btn{
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(15,23,42,.4);
-      color:var(--ink);
-      padding:7px 13px;
-      font-size:.85rem;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      cursor:pointer;
-      transition:background .12s ease, transform .06s ease, border-color .12s ease;
+    main{
+      max-width:1040px;
+      margin:16px auto 26px;
+      padding:0 16px 16px;
     }
-    .btn:hover{background:rgba(15,23,42,.9);border-color:rgba(255,255,255,.26)}
-    .btn:active{transform:scale(.97)}
-    .btn.primary{border-color:transparent;background:linear-gradient(180deg, rgba(34,211,238,.22), rgba(34,211,238,.06))}
-    .btn.ghost{background:transparent}
 
-    /* HERO FUTURISTA */
-    .hero-banner{
-      border-bottom:1px solid var(--line);
-      background:radial-gradient(1200px 800px at 20% -20%, rgba(34,211,238,.2) 0%, rgba(15,23,42,1) 50%, #020617 100%);
-      padding:18px 18px 22px;
-    }
-    .hero-inner{
-      max-width:960px;
-      margin:0 auto;
+    /* HERO SIMPLES, SEM TEXTO LONGO NEM BOTÃO */
+    .hero{
+      margin-bottom:18px;
+      border-radius:20px;
+      border:1px solid rgba(148,163,184,.35);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(59,130,246,.17) 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(45,212,191,.18) 0, transparent 55%),
+        #f8fafc;
+      box-shadow:var(--shadow);
+      padding:16px 18px;
       display:flex;
-      gap:18px;
       align-items:center;
+      justify-content:space-between;
+      gap:14px;
       flex-wrap:wrap;
     }
-    .hero-logo-wrap{
-      width:80px;
-      height:80px;
-      position:relative;
-    }
-    .hero-logo-core{
-      width:100%;
-      height:100%;
-      border-radius:20px;
-      background:conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), var(--accent));
-      border:1px solid rgba(255,255,255,.28);
-      position:relative;
-      overflow:hidden;
-      animation:spinGlow 12s linear infinite;
-    }
-    .hero-logo-core::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:repeating-linear-gradient(
-        135deg,
-        rgba(0,0,0,.0) 0,
-        rgba(0,0,0,.0) 6px,
-        rgba(0,0,0,.18) 6px,
-        rgba(0,0,0,.18) 10px
-      );
-      mix-blend-mode:multiply;
-      animation:scan 3.8s linear infinite;
-    }
-    .hero-logo-core::after{
-      content:"AO";
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:1.4rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:rgba(0,0,0,.8);
-    }
-    .hero-logo-ring{
-      position:absolute;
-      inset:-6px;
-      border-radius:26px;
-      border:1px dashed rgba(148,163,184,.6);
-      animation:pulseRing 3.4s ease-in-out infinite;
-    }
-    .hero-text{
-      flex:1;
-      min-width:220px;
-    }
-    .hero-text h1{
-      margin:0 0 4px;
-      font-size:1.6rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .hero-text p{
-      margin:0;
-      color:var(--muted);
-      font-size:.95rem;
-      max-width:520px;
-    }
-    .hero-actions{
+
+    .hero-main{
       display:flex;
       flex-direction:column;
-      gap:8px;
-      align-items:flex-start;
-      margin-top:10px;
+      gap:4px;
     }
+
+    .hero-title{
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:.20em;
+      text-transform:uppercase;
+      color:#0f172a;
+    }
+
+    .hero-sub{
+      font-size:.88rem;
+      color:var(--muted);
+    }
+
     .hero-meta{
       font-family:"Space Mono",monospace;
       font-size:.78rem;
@@ -189,181 +149,258 @@
       opacity:.9;
     }
 
-    @keyframes spinGlow{
-      0%{transform:rotate(0deg)}
-      100%{transform:rotate(360deg)}
-    }
-    @keyframes scan{
-      0%{transform:translateY(100%)}
-      100%{transform:translateY(-100%)}
-    }
-    @keyframes pulseRing{
-      0%,100%{opacity:.45;transform:scale(1)}
-      50%{opacity:.9;transform:scale(1.05)}
-    }
-
-    main{
-      padding:18px;
+    .hero-grid{
       display:grid;
-      gap:18px;
-      grid-template-columns:340px 1fr;
-      align-items:flex-start;
-    }
-    @media (max-width:980px){
-      main{grid-template-columns:1fr}
-    }
-
-    .card{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      overflow:hidden;
-      background:var(--glass);
-    }
-    .card .head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
-    }
-    .card .title{
-      font-weight:800;
-      letter-spacing:.02em;
-    }
-    .card .body{
-      padding:14px;
-    }
-
-    .hint{
-      color:var(--muted);
-      font-size:.92rem;
-    }
-
-    .pill{
-      border:1px solid var(--line);
-      padding:2px 8px;
-      border-radius:999px;
-      color:var(--muted);
-      font-size:.75rem;
-    }
-
-    /* Busca / lado esquerdo */
-    .search{
-      display:flex;
+      grid-auto-flow:column;
       gap:10px;
-      align-items:center;
-      margin-bottom:12px;
-    }
-    .search input{
-      flex:1;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      color:var(--ink);
-      font-size:1rem;
-      outline:none;
-    }
-    .search input:focus{
-      border-color:rgba(34,211,238,.6);
-      box-shadow:0 0 0 4px rgba(34,211,238,.14);
+      font-size:.75rem;
+      color:var(--muted);
     }
 
-    .field{
+    .hero-chip{
+      padding:5px 9px;
+      border-radius:999px;
+      background:rgba(15,23,42,.03);
+      border:1px solid rgba(148,163,184,.45);
       display:flex;
-      flex-direction:column;
+      align-items:center;
       gap:6px;
+      white-space:nowrap;
+    }
+
+    .hero-chip span:first-child{
       font-size:.9rem;
     }
-    .field input{
-      padding:10px 12px;
-      border-radius:10px;
+
+    /* CARD PRINCIPAL */
+    .card{
+      border-radius:18px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      color:var(--ink);
-      outline:none;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
-    details summary{
-      cursor:pointer;
-      font-weight:800;
-      margin-bottom:4px;
-      list-style:none;
+    .card-head{
+      padding:10px 14px;
+      border-bottom:1px solid rgba(148,163,184,.35);
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
-    details summary::-webkit-details-marker{display:none}
 
-    .mini{
-      font-size:.86rem;
+    .card-title{
+      font-weight:700;
+      font-size:.95rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#0f172a;
+    }
+
+    .card-sub{
+      font-size:.8rem;
       color:var(--muted);
     }
 
-    /* Grupos de atalhos */
+    .card-head-right{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .search-wrap{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      background:rgba(248,250,252,.9);
+    }
+
+    .search-icon{
+      font-size:.8rem;
+      color:var(--muted);
+    }
+
+    #filtro{
+      border:none;
+      background:transparent;
+      outline:none;
+      font-size:.8rem;
+      color:var(--ink);
+      min-width:0;
+    }
+
+    #filtro::placeholder{
+      color:rgba(148,163,184,.9);
+    }
+
+    .btn-mini{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.7);
+      background:rgba(248,250,252,.9);
+      padding:4px 10px;
+      font-size:.75rem;
+      color:var(--muted);
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .btn-mini:hover{
+      background:#e2f3ff;
+      color:#0369a1;
+      border-color:#0ea5e9;
+    }
+
+    .card-body{
+      padding:12px 14px 16px;
+    }
+
     .section-title{
       display:flex;
       align-items:center;
-      gap:10px;
-      margin:8px 0;
-      margin-top:14px;
+      gap:8px;
+      margin:8px 0 6px;
+      margin-top:12px;
     }
-    .section-title .dot{
+
+    .section-dot{
       width:9px;
       height:9px;
       border-radius:999px;
       background:var(--accent);
     }
 
+    .section-label{
+      font-size:.82rem;
+      font-weight:600;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#0f172a;
+    }
+
     .grid{
       display:grid;
-      gap:12px;
+      gap:10px;
     }
 
-    .cols-2{grid-template-columns:repeat(2,1fr)}
-    .cols-3{grid-template-columns:repeat(3,1fr)}
-    .cols-4{grid-template-columns:repeat(4,1fr)}
+    .cols-2{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .cols-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+    .cols-4{grid-template-columns:repeat(4, minmax(0,1fr))}
 
-    @media (max-width:1100px){
-      .cols-4{grid-template-columns:repeat(3,1fr)}
+    @media (max-width:900px){
+      .cols-3,.cols-4{grid-template-columns:repeat(2, minmax(0,1fr))}
     }
-    @media (max-width:780px){
-      .cols-3,.cols-4,.cols-2{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:520px){
-      .cols-3,.cols-4,.cols-2{grid-template-columns:1fr}
+    @media (max-width:600px){
+      .cols-2,.cols-3,.cols-4{grid-template-columns:minmax(0,1fr)}
     }
 
     .qbtn{
       display:flex;
-      align-items:center;
-      gap:.9rem;
-      border:1px solid rgba(255,255,255,.16);
-      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-      padding:14px;
+      align-items:flex-start;
+      gap:8px;
       border-radius:14px;
-      font-weight:800;
+      padding:10px 10px;
+      border:1px solid rgba(148,163,184,.6);
+      background:linear-gradient(135deg,rgba(248,250,252,1),rgba(241,245,249,1));
       cursor:pointer;
+      transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
       text-align:left;
-      transition:transform .06s ease, border-color .12s ease, background .12s ease;
     }
+
     .qbtn:hover{
       transform:translateY(-1px);
-      border-color:rgba(255,255,255,.34);
+      border-color:#0ea5e9;
+      box-shadow:0 10px 22px rgba(15,23,42,.12);
+      background:linear-gradient(135deg,#f9fbff,#e0f2fe);
     }
-    .qbtn .ico{
-      font-size:1.25rem;
+
+    .qbtn-ico{
       width:1.6rem;
+      font-size:1.2rem;
       text-align:center;
     }
-    .qbtn small{
+
+    .qbtn-main{
       display:block;
-      color:var(--muted);
+      font-size:.85rem;
       font-weight:600;
+      color:#0f172a;
+    }
+
+    .qbtn-meta{
+      display:block;
       font-size:.72rem;
+      color:var(--muted);
+    }
+
+    .qbtn-remove{
+      margin-left:auto;
+      font-size:.8rem;
+      color:#94a3b8;
+      cursor:pointer;
+      padding-left:4px;
+    }
+
+    .custom-empty{
+      font-size:.8rem;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    /* Form de novo atalho (inline, discreto) */
+    .custom-form{
+      margin-top:10px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:var(--accent-soft);
+      border:1px solid rgba(56,189,248,.7);
+      display:none;
+      grid-template-columns:1.1fr 1.3fr auto;
+      gap:8px;
+      align-items:center;
+    }
+
+    .custom-form input{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,.7);
+      font-size:.8rem;
+      outline:none;
+      background:#eff6ff;
+      color:#0f172a;
+    }
+
+    .custom-form input::placeholder{
+      color:rgba(148,163,184,.9);
+    }
+
+    .btn-save{
+      border-radius:999px;
+      border:none;
+      padding:6px 12px;
+      background:#0ea5e9;
+      color:white;
+      font-size:.8rem;
+      font-weight:600;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .btn-save:hover{
+      background:#0284c7;
     }
 
     footer{
-      text-align:center;
-      padding:14px;
       margin-top:auto;
+      padding:10px 16px 16px;
+      font-size:.78rem;
+      color:var(--muted);
+      text-align:center;
     }
   </style>
 </head>
@@ -372,139 +409,108 @@
 
   <header>
     <div class="bar">
-      <div class="brand">APOIO OPERACIONAL</div>
-      <div class="status" id="status">intel / pm</div>
+      <div class="brand-wrap">
+        <div class="brand-logo"></div>
+        <div>
+          <div class="brand">APOIO OPERACIONAL</div>
+          <div class="status">console · intel / pm</div>
+        </div>
+      </div>
       <div class="grow"></div>
-      <button class="btn ghost" id="btnContrast" title="Alternar alto contraste">🌓 Alto contraste</button>
-      <button class="btn ghost" id="btnFS" title="Alternar tela cheia">⛶ Tela cheia</button>
     </div>
   </header>
 
-  <!-- HERO FUTURISTA COM LOGO ANIMADO + BOTÃO ACESSAR -->
-  <section class="hero-banner">
-    <div class="hero-inner">
-      <div class="hero-logo-wrap">
-        <div class="hero-logo-core"></div>
-        <div class="hero-logo-ring"></div>
+  <main>
+    <!-- Cabeçalho visual simples, sem botão ACESSAR -->
+    <section class="hero">
+      <div class="hero-main">
+        <div class="hero-title">APOIO OPERACIONAL</div>
+        <div class="hero-sub">Console de consulta rápida para uso em serviço. Organize apenas os atalhos que você realmente utiliza.</div>
+        <div class="hero-meta">Nada é armazenado em servidor · Atalhos personalizados ficam somente neste dispositivo.</div>
       </div>
-      <div class="hero-text">
-        <h1>APOIO OPERACIONAL</h1>
-        <p>Painel tático de atalhos e recursos para o serviço operacional. Interface discreta, rápida e pensada para uso em viatura.</p>
-        <div class="hero-actions">
-          <button class="btn primary" id="btnAcessar">▶ ACESSAR</button>
-          <span class="hero-meta">Nível de acesso: interno · classificação: uso restrito conforme normas da corporação.</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main id="mainContent">
-    <!-- LADO ESQUERDO: filtro + atalhos personalizados + informações -->
-    <section class="card">
-      <div class="head">
-        <div class="title">Painel de Apoio</div>
-      </div>
-      <div class="body">
-        <div class="search">
-          <input id="filtro" placeholder="Filtrar atalhos — ex.: CPF, BNMP, TJSP, veículo">
-          <button class="btn" id="btnLimpar">Limpar</button>
-        </div>
-        <p class="hint" style="margin-bottom:12px">
-          Dica: digite parte do nome ou sigla (ex.: <b>bnmp</b>, <b>cpf</b>, <b>veículo</b>). Teclas <b>1 a 9</b> acionam os primeiros atalhos visíveis.
-        </p>
-
-        <details>
-          <summary>Adicionar atalho personalizado</summary>
-          <div class="grid" style="grid-template-columns:1fr 1fr; margin-top:10px">
-            <div class="field">
-              <label>Nome</label>
-              <input id="novoNome" placeholder="Ex.: Sistema interno unidade">
-            </div>
-            <div class="field">
-              <label>URL</label>
-              <input id="novoURL" placeholder="https://exemplo.gov.br">
-            </div>
-          </div>
-          <div class="grid" style="grid-template-columns:auto 1fr; align-items:center; margin-top:10px; gap:10px">
-            <button class="btn primary" id="btnAddAtalho">Salvar</button>
-            <span class="mini">Os atalhos ficam salvos <b>somente neste aparelho</b> (localStorage).</span>
-          </div>
-        </details>
-
-        <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
-
-        <p class="hint">
-          Nenhuma informação de consulta passa por este painel. Ele apenas abre os
-          sites oficiais em nova aba. Ajuste os links conforme normas internas da sua unidade.
-        </p>
+      <div class="hero-grid">
+        <div class="hero-chip"><span>●</span><span>Contextos: Pessoa · Veículo · Documentos · Justiça</span></div>
+        <div class="hero-chip"><span>⌨</span><span>Atalhos numéricos: teclas 1–9 disparam os primeiros botões visíveis</span></div>
       </div>
     </section>
 
-    <!-- LADO DIREITO: grupos de atalhos -->
+    <!-- CARD ÚNICO DE ATALHOS -->
     <section class="card">
-      <div class="head">
-        <div class="title">Atalhos táticos</div>
-        <span class="pill" id="countHint">0 atalhos</span>
+      <div class="card-head">
+        <div>
+          <div class="card-title">Atalhos operacionais</div>
+          <div class="card-sub">Selecione o contexto e toque no serviço desejado.</div>
+        </div>
+        <div class="card-head-right">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="filtro" placeholder="Buscar atalhos">
+          </div>
+          <button class="btn-mini" id="btnLimpar">Limpar</button>
+        </div>
       </div>
-      <div class="body">
 
+      <div class="card-body">
         <!-- Grupo Pessoa -->
         <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Pessoa</div>
+          <div class="section-dot"></div>
+          <div class="section-label">Pessoa</div>
         </div>
         <div class="grid cols-3" id="grupo-pessoa"></div>
 
         <!-- Grupo Veículo -->
         <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Veículo</div>
+          <div class="section-dot"></div>
+          <div class="section-label">Veículo</div>
         </div>
         <div class="grid cols-3" id="grupo-veiculo"></div>
 
         <!-- Grupo Documentos / Empresas -->
         <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Documentos / Empresas</div>
+          <div class="section-dot"></div>
+          <div class="section-label">Documentos / Empresas</div>
         </div>
         <div class="grid cols-3" id="grupo-docs"></div>
 
         <!-- Grupo Justiça / Tribunais -->
         <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Justiça / Tribunais</div>
+          <div class="section-dot"></div>
+          <div class="section-label">Justiça / Tribunais</div>
         </div>
         <div class="grid cols-3" id="grupo-justica"></div>
 
         <!-- Receita Federal -->
         <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Receita Federal</div>
+          <div class="section-dot"></div>
+          <div class="section-label">Receita Federal</div>
         </div>
         <div class="grid cols-2" id="grupo-receita"></div>
 
         <!-- Meus Atalhos -->
-        <div class="section-title">
-          <div class="dot"></div>
-          <div class="title">Meus atalhos</div>
+        <div class="section-title" style="margin-top:14px">
+          <div class="section-dot"></div>
+          <div class="section-label">Meus atalhos</div>
+          <button class="btn-mini" id="btnToggleCustom" style="margin-left:8px;">➕ Novo atalho</button>
         </div>
-        <div class="grid cols-4" id="grupo-custom"></div>
-        <div class="hint" id="vazioCustom" style="margin-top:6px;display:none">
-          Nenhum atalho personalizado salvo ainda.
+        <div class="custom-form" id="customForm">
+          <input id="novoNome" placeholder="Nome do atalho (ex.: Sistema interno)">
+          <input id="novoURL" placeholder="URL completa (https://...)">
+          <button class="btn-save" id="btnAddAtalho">Salvar</button>
         </div>
 
+        <div class="grid cols-4" id="grupo-custom" style="margin-top:8px"></div>
+        <div class="custom-empty" id="vazioCustom">Nenhum atalho personalizado cadastrado.</div>
       </div>
     </section>
   </main>
 
-  <footer class="hint">
-    Apoio Operacional — uso interno. Ajuste, versione e compartilhe somente conforme normas da corporação.
+  <footer>
+    Apoio Operacional — console de atalhos. Ajuste os links conforme os sistemas autorizados na sua unidade.
   </footer>
 </div>
 
 <script>
-  /* ======== HELPERS ======== */
-  const $ = sel => document.querySelector(sel);
+  const $  = sel => document.querySelector(sel);
   const $$ = sel => Array.from(document.querySelectorAll(sel));
 
   function toast(msg){
@@ -514,12 +520,14 @@
     t.style.left = '50%';
     t.style.bottom = '18px';
     t.style.transform = 'translateX(-50%)';
-    t.style.background = 'rgba(9,16,24,.96)';
-    t.style.border = '1px solid rgba(255,255,255,.18)';
-    t.style.padding = '8px 12px';
-    t.style.borderRadius = '10px';
-    t.style.zIndex = 2000;
-    t.style.fontSize = '.9rem';
+    t.style.background = 'rgba(15,23,42,.95)';
+    t.style.color = '#e5f0ff';
+    t.style.border = '1px solid rgba(148,163,184,.8)';
+    t.style.padding = '6px 10px';
+    t.style.borderRadius = '999px';
+    t.style.zIndex = 50;
+    t.style.fontSize = '.8rem';
+    t.style.boxShadow = '0 10px 20px rgba(15,23,42,.35)';
     document.body.appendChild(t);
     setTimeout(()=> t.remove(), 1600);
   }
@@ -528,29 +536,7 @@
     if(url) window.open(url, '_blank', 'noopener');
   }
 
-  /* ======== BOTÃO ACESSAR (rola até o painel) ======== */
-  $('#btnAcessar').addEventListener('click', () => {
-    const main = $('#mainContent');
-    if(main) main.scrollIntoView({behavior:'smooth'});
-  });
-
-  /* ======== TEMA / TELA CHEIA ======== */
-  const root = $('#appRoot');
-
-  $('#btnContrast').addEventListener('click', () => {
-    const cur = root.getAttribute('data-theme');
-    root.setAttribute('data-theme', cur === 'hc' ? '' : 'hc');
-  });
-
-  $('#btnFS').addEventListener('click', () => {
-    if(!document.fullscreenElement){
-      document.documentElement.requestFullscreen();
-    }else{
-      document.exitFullscreen();
-    }
-  });
-
-  /* ======== DADOS BASE DE ATALHOS ======== */
+  /* DADOS BASE */
   const BASE_ATALHOS = {
     pessoa: [
       {nome:'Consulta CPF — Receita', sigla:'cpf pessoa receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
@@ -558,8 +544,8 @@
       {nome:'BNMP — Mandados', sigla:'bnmp mandados pessoa', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🗂️'},
     ],
     veiculo: [
-      {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'},
-      // IPVA e Portal geral de multas foram removidos a pedido
+      {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'}
+      // IPVA e Portal geral de multas removidos conforme pedido
     ],
     docs: [
       {nome:'Consulta CNPJ — Receita', sigla:'cnpj empresa receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
@@ -575,11 +561,10 @@
     ]
   };
 
-  const LS_KEY = 'intelpm.custom.shortcuts';
+  const LS_KEY = 'apoiooperacional.custom.shortcuts';
   const loadCustom = () => JSON.parse(localStorage.getItem(LS_KEY) || '[]');
   const saveCustom = (arr) => localStorage.setItem(LS_KEY, JSON.stringify(arr));
 
-  /* ======== RENDER ======== */
   const boxPessoa   = $('#grupo-pessoa');
   const boxVeiculo  = $('#grupo-veiculo');
   const boxDocs     = $('#grupo-docs');
@@ -587,7 +572,7 @@
   const boxReceita  = $('#grupo-receita');
   const boxCustom   = $('#grupo-custom');
   const vazioCustom = $('#vazioCustom');
-  const countHint   = $('#countHint');
+  const countHint   = null; // não exibimos contador separado agora
 
   function renderBtn(item, isCustom=false, idx=null){
     const b = document.createElement('button');
@@ -599,32 +584,29 @@
     try{ host = new URL(item.url).hostname; }catch{}
 
     b.innerHTML = `
-      <span class="ico">${item.ico || '🔗'}</span>
+      <span class="qbtn-ico">${item.ico || '🔗'}</span>
       <span>
-        <span style="display:block">${item.nome}</span>
-        <small>${host}</small>
+        <span class="qbtn-main">${item.nome}</span>
+        <span class="qbtn-meta">${host}</span>
       </span>
     `;
 
     b.addEventListener('click', () => openUrl(item.url));
 
     if(isCustom){
-      const del = document.createElement('span');
-      del.title = 'Remover atalho';
-      del.textContent = '✖';
-      del.style.marginLeft = 'auto';
-      del.style.opacity = .7;
-      del.style.fontWeight = '900';
-      del.style.cursor = 'pointer';
-      del.addEventListener('click', (e) => {
+      const rem = document.createElement('span');
+      rem.className = 'qbtn-remove';
+      rem.textContent = '✕';
+      rem.title = 'Remover atalho';
+      rem.addEventListener('click', (e) => {
         e.stopPropagation();
         const cur = loadCustom();
-        cur.splice(idx, 1);
+        cur.splice(idx,1);
         saveCustom(cur);
         renderAll();
         toast('Atalho removido');
       });
-      b.appendChild(del);
+      b.appendChild(rem);
     }
 
     return b;
@@ -653,7 +635,7 @@
     const rec     = filterItems(BASE_ATALHOS.receita, term);
     const custom  = filterItems(loadCustom(), term);
 
-    renderGroup(boxPessoa,  pessoa, false);
+    renderGroup(boxPessoa,  pessoa,  false);
     renderGroup(boxVeiculo, veiculo, false);
     renderGroup(boxDocs,    docs,    false);
     renderGroup(boxJustica, just,    false);
@@ -661,27 +643,30 @@
     renderGroup(boxCustom,  custom,  true);
 
     vazioCustom.style.display = custom.length ? 'none' : 'block';
-
-    const total = pessoa.length + veiculo.length + docs.length + just.length + rec.length + custom.length;
-    countHint.textContent = `${total} atalhos`;
   }
 
   renderAll();
 
-  /* ======== BUSCA / LIMPAR ======== */
+  /* Busca / limpar */
   $('#filtro').addEventListener('input', renderAll);
   $('#btnLimpar').addEventListener('click', () => {
     $('#filtro').value = '';
     renderAll();
   });
 
-  /* ======== NOVO ATALHO PERSONALIZADO ======== */
+  /* Form de novo atalho (toggle) */
+  const customForm = $('#customForm');
+  $('#btnToggleCustom').addEventListener('click', () => {
+    const showing = customForm.style.display === 'grid';
+    customForm.style.display = showing ? 'none' : 'grid';
+  });
+
   $('#btnAddAtalho').addEventListener('click', () => {
     const nome = ($('#novoNome').value || '').trim();
     const url  = ($('#novoURL').value  || '').trim();
 
     if(!nome || !url){
-      toast('Preencha Nome e URL');
+      toast('Informe nome e URL completa');
       return;
     }
     try{
@@ -692,7 +677,7 @@
     }
 
     const cur = loadCustom();
-    cur.unshift({nome, url, sigla:nome, ico:'🔎'});
+    cur.unshift({nome, url, sigla:nome, ico:'⭐'});
     saveCustom(cur);
 
     $('#novoNome').value = '';
@@ -701,7 +686,7 @@
     toast('Atalho salvo');
   });
 
-  /* ======== TECLAS RÁPIDAS (1..9) ======== */
+  /* Teclas rápidas 1..9 */
   document.addEventListener('keydown', (e) => {
     if(e.altKey || e.ctrlKey || e.metaKey) return;
     const n = parseInt(e.key, 10);
