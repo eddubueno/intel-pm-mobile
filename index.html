@@ -227,86 +227,142 @@
       .cols-2,.cols-3,.cols-4{grid-template-columns:minmax(0,1fr)}
     }
 
-  /* ====== CARDS RETANGULARES COM ÍCONE CENTRAL ====== */
-.qbtn{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  border-radius:14px;
-  padding:8px 10px;
-  border:1px solid rgba(148,163,184,.6);
-  background:linear-gradient(135deg,rgba(248,250,252,1),rgba(241,245,249,1));
-  cursor:pointer;
-  transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
-  text-align:center;
+    /* ====== CARDS RETANGULARES COM ÍCONE CENTRAL ====== */
+    .qbtn{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      border-radius:12px;
+      padding:6px 8px;
+      border:1px solid rgba(148,163,184,.5);
+      background:#f8fafc;
+      cursor:pointer;
+      transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+      text-align:center;
+      min-height:56px; /* bem menor */
+    }
 
-  /* mais retangular (largura > altura) */
-  aspect-ratio: 16 / 9;
-  min-height:64px;
-}
+    .qbtn:hover{
+      transform:translateY(-1px);
+      border-color:#0ea5e9;
+      box-shadow:0 10px 22px rgba(15,23,42,.12);
+      background:#eef4ff;
+    }
 
-.qbtn:hover{
-  transform:translateY(-1px);
-  border-color:#0ea5e9;
-  box-shadow:0 10px 22px rgba(15,23,42,.12);
-  background:linear-gradient(135deg,#f9fbff,#e0f2fe);
-}
+    .qbtn-ico{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:32px;
+      height:32px;
+      border-radius:999px;
+      font-size:1.35rem;
+      line-height:1;
+      margin-bottom:2px;
+      background:rgba(148,163,184,.14);
+      color:#0f172a;
+    }
 
-.qbtn-ico{
-  font-size:1.5rem;
-  line-height:1;
-  margin-bottom:1px;
-}
+    .qbtn-main{
+      display:block;
+      font-size:.78rem;
+      font-weight:600;
+      color:#0f172a;
+    }
 
-.qbtn-main{
-  display:block;
-  font-size:.78rem;
-  font-weight:600;
-  color:#0f172a;
-}
+    .qbtn-meta{
+      display:block;
+      font-size:.68rem;
+      color:var(--muted);
+    }
 
-.qbtn-meta{
-  display:block;
-  font-size:.68rem;
-  color:var(--muted);
-}
+    .qbtn-remove{
+      position:absolute;
+      top:4px;
+      right:4px;
+      font-size:.65rem;
+      color:#94a3b8;
+      cursor:pointer;
+      padding:1px 4px;
+      border-radius:999px;
+      background:rgba(248,250,252,.95);
+    }
+    .qbtn-remove:hover{
+      color:#0f172a;
+    }
 
-.qbtn-remove{
-  position:absolute;
-  top:4px;
-  right:4px;
-  font-size:.65rem;
-  color:#94a3b8;
-  cursor:pointer;
-  padding:1px 4px;
-  border-radius:999px;
-  background:rgba(248,250,252,.9);
-}
-.qbtn-remove:hover{
-  color:#0f172a;
-}
+    /* MOBILE: ainda mais compacto */
+    @media (max-width:600px){
+      .qbtn{
+        min-height:50px;
+        padding:5px 6px;
+      }
+      .qbtn-ico{
+        width:28px;
+        height:28px;
+        font-size:1.25rem;
+      }
+      .qbtn-main{
+        font-size:.74rem;
+      }
+      .qbtn-meta{
+        font-size:.64rem;
+      }
+    }
 
-/* MOBILE: ainda mais "deitado" e compacto */
-@media (max-width:600px){
-  .qbtn{
-    aspect-ratio: 18 / 9;  /* ainda mais retangular */
-    min-height:56px;
-    padding:6px 8px;
-  }
-  .qbtn-ico{
-    font-size:1.35rem;
-  }
-  .qbtn-main{
-    font-size:.75rem;
-  }
-  .qbtn-meta{
-    font-size:.65rem;
-  }
-}
+    /* ====== CORES POR GRUPO ====== */
+    /* Pessoa = azul */
+    #grupo-pessoa .qbtn{
+      background:linear-gradient(135deg,#eef2ff,#e0f2fe);
+      border-color:rgba(59,130,246,.55);
+    }
+    #grupo-pessoa .qbtn-ico{
+      background:rgba(59,130,246,.16);
+      color:#1d4ed8;
+    }
 
+    /* Veículo = laranja */
+    #grupo-veiculo .qbtn{
+      background:linear-gradient(135deg,#fff7ed,#fffbeb);
+      border-color:rgba(249,115,22,.55);
+    }
+    #grupo-veiculo .qbtn-ico{
+      background:rgba(249,115,22,.18);
+      color:#c2410c;
+    }
+
+    /* Documentos / Empresas = cinza/azulado */
+    #grupo-docs .qbtn{
+      background:linear-gradient(135deg,#f9fafb,#e5e7eb);
+      border-color:rgba(107,114,128,.55);
+    }
+    #grupo-docs .qbtn-ico{
+      background:rgba(107,114,128,.18);
+      color:#374151;
+    }
+
+    /* Justiça / Tribunais = roxo */
+    #grupo-justica .qbtn{
+      background:linear-gradient(135deg,#f5f3ff,#eef2ff);
+      border-color:rgba(139,92,246,.55);
+    }
+    #grupo-justica .qbtn-ico{
+      background:rgba(139,92,246,.18);
+      color:#6d28d9;
+    }
+
+    /* Receita Federal = verde */
+    #grupo-receita .qbtn{
+      background:linear-gradient(135deg,#ecfdf3,#dcfce7);
+      border-color:rgba(34,197,94,.55);
+    }
+    #grupo-receita .qbtn-ico{
+      background:rgba(34,197,94,.18);
+      color:#15803d;
+    }
 
     .custom-empty{
       font-size:.78rem;
@@ -489,24 +545,24 @@
   /* Atalhos padrão */
   const BASE_ATALHOS = {
     pessoa: [
-      {nome:'Consulta CPF — Receita', sigla:'cpf pessoa receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
+      {nome:'Consulta CPF — Receita', sigla:'cpf pessoa receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🪪'},
       {nome:'Consulta processos — TJSP', sigla:'tjsp pessoa processo', url:'https://esaj.tjsp.jus.br/cpopg/open.do', ico:'⚖️'},
-      {nome:'BNMP — Mandados', sigla:'bnmp mandados pessoa', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🗂️'},
+      {nome:'BNMP — Mandados', sigla:'bnmp mandados pessoa', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🚨'},
     ],
     veiculo: [
       {nome:'Detran-SP — Veículos', sigla:'detran sp veiculo', url:'https://www.detran.sp.gov.br', ico:'🚗'}
     ],
     docs: [
       {nome:'Consulta CNPJ — Receita', sigla:'cnpj empresa receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
-      {nome:'Validade de selo — TJSP', sigla:'tjsp selo cartorio', url:'https://extrajudicial.tjsp.jus.br/validade-selo', ico:'✅'},
+      {nome:'Validade de selo — TJSP', sigla:'tjsp selo cartorio', url:'https://extrajudicial.tjsp.jus.br/validade-selo', ico:'📜'},
     ],
     justica: [
-      {nome:'BNMP — Mandados', sigla:'bnmp cnj justica', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🗂️'},
+      {nome:'BNMP — Mandados', sigla:'bnmp cnj justica', url:'https://portalbnmp.cnj.jus.br/#/captcha/%2Fpesquisa-peca', ico:'🚨'},
       {nome:'TJSP — Consulta Processo', sigla:'tjsp processo justica', url:'https://esaj.tjsp.jus.br/cpopg/open.do', ico:'⚖️'},
     ],
     receita: [
-      {nome:'Consulta CPF', sigla:'cpf receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🆔'},
-      {nome:'Consulta CNPJ', sigla:'cnpj receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏢'},
+      {nome:'Consulta CPF', sigla:'cpf receita', url:'https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp', ico:'🧾'},
+      {nome:'Consulta CNPJ', sigla:'cnpj receita', url:'https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Solicitacao.asp', ico:'🏛️'},
     ]
   };
 
@@ -645,5 +701,3 @@
 </script>
 </body>
 </html>
-
-
